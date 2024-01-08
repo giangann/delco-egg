@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { RouterProvider } from "react-router-dom";
 import "./App.css";
+import { useDevice } from "./hooks/useDevice";
+import { appRouters } from "./route/Route";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const { isMobile } = useDevice();
 
   return (
     <div>
-      <p>Delco egg project</p>
+      <RouterProvider router={appRouters} />
     </div>
   );
 }
