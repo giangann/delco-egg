@@ -7,6 +7,7 @@ import { DetailForm } from "../pages/EggApplication/DetailForm";
 import SCREEN_PATHS from "../shared/constants/screenPaths";
 import { About } from "../pages/About/About";
 import { Contact } from "../pages/Contact/Contact";
+import { Login } from "../pages/Login/Login";
 
 const routes: RouteObject[] = [
   {
@@ -38,6 +39,10 @@ const routes: RouteObject[] = [
         element: <Contact />,
       },
     ],
+  },
+  {
+    path: SCREEN_PATHS.LOGIN,
+    element: <Login />,
   },
 ];
 
