@@ -44,11 +44,11 @@ const ProcessBoxDesktop = ({
         sx={{
           display: "flex",
           flexDirection: isLeft ? "row" : "row-reverse",
-          alignItems:'center'
+          alignItems: "center",
         }}
       >
         <Box sx={{ paddingTop: 4, paddingLeft: !isLeft ? 2 : 0 }}>
-          <TitleText sx={{ textAlign: isLeft ? "left" : "right", mb:2 }}>
+          <TitleText sx={{ textAlign: isLeft ? "left" : "right", mb: 2 }}>
             {titleText}
           </TitleText>
           {children}
@@ -66,6 +66,7 @@ const TitleText = styled(Typography)(({ theme }) => ({
   fontSize: 24,
   fontWeight: 900,
   textAlign: "center",
+  [theme.breakpoints.down("xl")]: {},
 }));
 
 const HeadingText = styled(Typography)(({ theme }) => ({
@@ -80,6 +81,7 @@ const HeadingText = styled(Typography)(({ theme }) => ({
 
 const ContentText = styled(Typography)(({ theme }) => ({
   color: `#000000${OPACITY_TO_HEX["85"]}`,
+  [theme.breakpoints.down("xl")]: {},
 }));
 
 const ContentTextSmallLineHeight = styled(Typography)(({ theme }) => ({
@@ -91,10 +93,10 @@ const ContentTextSmallLineHeight = styled(Typography)(({ theme }) => ({
   },
 }));
 
-const intro = [
-  "DELCO đặc biệt quan tâm đến môi trường vi khí hậu trong nhà gà, kiểm soát nhiệt độ, độ ẩm, nồng độ CO2... trong chuồng. Môi trường chăn nuôi tối ưu giúp đàn gà khoẻ mạnh, hạn chế dịch bệnh và cho tỷ lệ đẻ trứng trung bình 85-90%",
-  "Nguồn thức ăn và nguồn nước dùng cho chăn nuôi cũng được kiểm soát kĩ càng, không chứa kim loại nặng, không chứa vi sinh vật có hại, không chứa Chloramphenicol, Salbutamol... gây ảnh hưởng đến sức khoẻ gà và chất lượng trứng.",
-];
+// const intro = [
+//   "DELCO đặc biệt quan tâm đến môi trường vi khí hậu trong nhà gà, kiểm soát nhiệt độ, độ ẩm, nồng độ CO2... trong chuồng. Môi trường chăn nuôi tối ưu giúp đàn gà khoẻ mạnh, hạn chế dịch bệnh và cho tỷ lệ đẻ trứng trung bình 85-90%",
+//   "Nguồn thức ăn và nguồn nước dùng cho chăn nuôi cũng được kiểm soát kĩ càng, không chứa kim loại nặng, không chứa vi sinh vật có hại, không chứa Chloramphenicol, Salbutamol... gây ảnh hưởng đến sức khoẻ gà và chất lượng trứng.",
+// ];
 
 const part1 = {
   title: "HẠ TẦNG",

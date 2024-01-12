@@ -2,10 +2,6 @@ import * as React from "react";
 import { Input as BaseInput } from "@mui/base/Input";
 import { styled } from "@mui/system";
 
-interface CustomInputProps {
-  placeholder?: string;
-}
-
 export const CustomInput = React.forwardRef(function CustomInput(
   props: React.InputHTMLAttributes<HTMLInputElement>,
   ref: React.ForwardedRef<HTMLDivElement>

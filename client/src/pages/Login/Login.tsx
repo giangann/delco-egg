@@ -26,7 +26,11 @@ export const Login = () => {
           <Stack spacing={2} alignItems={"center"}>
             <CustomInput placeholder="Tên đăng nhập" />
             <CustomInput placeholder="Mật khẩu" />
-            <Button sx={{ width: "50%" }} variant="contained">
+            <Button
+              onClick={handleLogin}
+              sx={{ width: "50%" }}
+              variant="contained"
+            >
               Submit
             </Button>
             <Link to="#">

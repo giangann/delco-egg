@@ -33,4 +33,5 @@ const BigNumberStyled = styled(Typography)(({ theme }) => ({
   color: "green",
   fontSize: 100,
   fontWeight: 700,
+  [theme.breakpoints.down("xl")]: {},
 }));

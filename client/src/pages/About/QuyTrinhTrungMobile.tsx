@@ -49,6 +49,7 @@ const TitleNumber = styled(Typography)(({ theme }) => ({
   fontSize: 40,
   fontWeight: 900,
   textAlign: "center",
+  [theme.breakpoints.up("sm")]: {},
 }));
 
 const TitleText = styled(Typography)(({ theme }) => ({
@@ -56,27 +57,31 @@ const TitleText = styled(Typography)(({ theme }) => ({
   fontSize: 18,
   fontWeight: 900,
   textAlign: "center",
+  [theme.breakpoints.up("sm")]: {},
 }));
 
 const HeadingText = styled(Typography)(({ theme }) => ({
   fontSize: 16,
   fontWeight: 700,
   textAlign: "center",
+  [theme.breakpoints.up("sm")]: {},
 }));
 
 const ContentText = styled(Typography)(({ theme }) => ({
   color: `#000000${OPACITY_TO_HEX["85"]}`,
+  [theme.breakpoints.up("sm")]: {},
 }));
 
 const ContentTextSmallLineHeight = styled(Typography)(({ theme }) => ({
   color: `#000000${OPACITY_TO_HEX["75"]}`,
   lineHeight: "16px",
+  [theme.breakpoints.up("sm")]: {},
 }));
 
-const intro = [
-  "DELCO đặc biệt quan tâm đến môi trường vi khí hậu trong nhà gà, kiểm soát nhiệt độ, độ ẩm, nồng độ CO2... trong chuồng. Môi trường chăn nuôi tối ưu giúp đàn gà khoẻ mạnh, hạn chế dịch bệnh và cho tỷ lệ đẻ trứng trung bình 85-90%",
-  "Nguồn thức ăn và nguồn nước dùng cho chăn nuôi cũng được kiểm soát kĩ càng, không chứa kim loại nặng, không chứa vi sinh vật có hại, không chứa Chloramphenicol, Salbutamol... gây ảnh hưởng đến sức khoẻ gà và chất lượng trứng.",
-];
+// const intro = [
+//   "DELCO đặc biệt quan tâm đến môi trường vi khí hậu trong nhà gà, kiểm soát nhiệt độ, độ ẩm, nồng độ CO2... trong chuồng. Môi trường chăn nuôi tối ưu giúp đàn gà khoẻ mạnh, hạn chế dịch bệnh và cho tỷ lệ đẻ trứng trung bình 85-90%",
+//   "Nguồn thức ăn và nguồn nước dùng cho chăn nuôi cũng được kiểm soát kĩ càng, không chứa kim loại nặng, không chứa vi sinh vật có hại, không chứa Chloramphenicol, Salbutamol... gây ảnh hưởng đến sức khoẻ gà và chất lượng trứng.",
+// ];
 
 const part1 = {
   title: "HẠ TẦNG",

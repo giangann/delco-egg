@@ -1,8 +1,8 @@
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import { userAtom } from "../atom/useAtom";
 
 const useAuth = () => {
-  const [user, setUser] = useAtom(userAtom);
+  const [user] = useAtomValue(userAtom);
   const isAuthenticated = user;
 
   return {

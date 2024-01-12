@@ -26,7 +26,7 @@ export const Home = () => {
           ))}
         </Grid>
       </Paper>
-      <Paper elevation={1} sx={{ padding: 2, mt:8 }}>
+      <Paper elevation={1} sx={{ padding: 2, mt: 8 }}>
         <Box>
           <TitleText>Thao tác</TitleText>
           <Grid container spacing={3}>
@@ -67,6 +67,7 @@ const TitleText = styled(Typography)(({ theme }) => ({
   fontSize: 24,
   fontWeight: 900,
   textAlign: "center",
+  [theme.breakpoints.up("sm")]: {},
 }));
 
 const UnitText = styled(Typography)(({ theme }) => ({
@@ -74,18 +75,21 @@ const UnitText = styled(Typography)(({ theme }) => ({
   fontSize: 16,
   fontWeight: 500,
   textAlign: "center",
+  [theme.breakpoints.up("sm")]: {},
 }));
 
 const TypeText = styled(Typography)(({ theme }) => ({
   fontSize: 18,
   fontWeight: 700,
   textAlign: "center",
+  [theme.breakpoints.up("sm")]: {},
 }));
 
 const PriceText = styled(Typography)(({ theme }) => ({
   fontSize: 20,
   fontWeight: 800,
   textAlign: "center",
+  [theme.breakpoints.up("sm")]: {},
 }));
 type Item = {
   path: string;
