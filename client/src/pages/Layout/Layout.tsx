@@ -8,7 +8,7 @@ export const Layout = () => {
     console.log("layout rendered");
   }, []);
   return (
-    <div style={{ width: "100vw", height: "100vh", backgroundColor: "pink" }}>
+    <div style={{ width: "100vw", height: "100vh", backgroundColor: "white" }}>
       <Header/>
       <Outlet/>
       <Footer/>
