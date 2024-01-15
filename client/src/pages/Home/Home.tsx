@@ -12,8 +12,6 @@ import SCREEN_PATHS from "../../shared/constants/screenPaths";
 export const Home = () => {
   return (
     <Container>
-      <p>Home</p>
-
       <Paper elevation={1} sx={{ padding: 2 }}>
         <TitleText>Giá trứng hôm nay</TitleText>
         <UnitText>{"(vnđ/quả)"}</UnitText>
@@ -114,7 +112,7 @@ const items: Item[] = [
   },
 ];
 
-const eggPrices = [
+export const eggPrices = [
   {
     type: "Mix 1",
     price: 3000,

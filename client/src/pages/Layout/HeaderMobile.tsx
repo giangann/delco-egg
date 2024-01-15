@@ -4,6 +4,7 @@ import {
   IconamoonProfileCircleFill,
   MaterialSymbolsNotificationsActiveRounded,
 } from "../../shared/icons/Icon";
+import { LinkCustom } from "../../styled/styled";
 
 export const HeaderMobile = () => {
   return (
@@ -20,14 +21,14 @@ export const HeaderMobile = () => {
           <IconParkHamburgerButton style={{ color: "black" }} />
         </IconButton>
       </Box>
-      <Box>
+      <LinkCustom to="/">
         <Typography
           variant="h1"
           style={{ color: "white", fontWeight: 900, fontSize: 18 }}
         >
           Delco Egg
         </Typography>
-      </Box>
+      </LinkCustom>
       <Box>
         <IconButton>
           <MaterialSymbolsNotificationsActiveRounded

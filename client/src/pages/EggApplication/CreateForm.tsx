@@ -1,7 +1,11 @@
+import { CreateFormOpt1 } from "./CreateFormOpt1";
+import { CreateFormOpt2 } from "./CreateFormOpt2";
+
 export const CreateForm = () => {
   return (
-    <div style={{ backgroundColor: "blue", width: "60vw", height: "60vh" }}>
-      <h1>Tao don dat trung</h1>
-    </div>
+    <>
+      {/* <CreateFormOpt1 /> */}
+      <CreateFormOpt2 />
+    </>
   );
 };

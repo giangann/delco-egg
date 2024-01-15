@@ -33,7 +33,10 @@ const grey = {
 
 const InputElement = styled("input")(
   ({ theme }) => `
-  width: 320px;
+  // text-align:center;
+  width:320px;
+  max-width: 100%;
+  box-sizing:border-box;
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 0.875rem;
   font-weight: 400;

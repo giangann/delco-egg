@@ -1,4 +1,5 @@
 import { Box, styled } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export const BoxAbsoluteFull = styled(Box)({
   position: "absolute",
@@ -14,7 +15,11 @@ export const BoxAbsoluteFullAlignCenter = styled(BoxAbsoluteFull)({
   justifyContent: "center",
 });
 
-export const alginCenterSx = {
+export const LinkCustom = styled(Link)({
+  textDecoration:'none'
+});
+
+export const alignCenterSx = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",

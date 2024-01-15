@@ -4,6 +4,8 @@ import {
   IconamoonProfileCircleFill,
   MaterialSymbolsNotificationsActiveRounded,
 } from "../../shared/icons/Icon";
+import { Link } from "react-router-dom";
+import { LinkCustom } from "../../styled/styled";
 
 export const HeaderDesktop = () => {
   return (
@@ -21,12 +23,14 @@ export const HeaderDesktop = () => {
         </IconButton>
       </Box>
       <Box>
-        <Typography
-          variant="h1"
-          style={{ color: "white", fontWeight: 900, fontSize: 18 }}
-        >
-          Delco Egg
-        </Typography>
+        <LinkCustom to="/">
+          <Typography
+            variant="h1"
+            style={{ color: "white", fontWeight: 900, fontSize: 18 }}
+          >
+            Delco Egg
+          </Typography>
+        </LinkCustom>
       </Box>
       <Box>
         <IconButton>
