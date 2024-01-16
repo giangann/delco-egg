@@ -19,6 +19,7 @@ export const CustomTablePagination = ({ lengthOfRows }: CustomTablePaginationPro
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
   ) => {
+    console.log(event)
     setPage(newPage);
   };
 
