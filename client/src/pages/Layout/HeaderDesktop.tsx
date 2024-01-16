@@ -4,7 +4,6 @@ import {
   IconamoonProfileCircleFill,
   MaterialSymbolsNotificationsActiveRounded,
 } from "../../shared/icons/Icon";
-import { Link } from "react-router-dom";
 import { LinkCustom } from "../../styled/styled";
 
 export const HeaderDesktop = () => {

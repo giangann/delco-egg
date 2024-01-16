@@ -10,6 +10,9 @@ export const HeaderMobile = () => {
   return (
     <Box
       sx={{
+        position:'sticky',
+        top:0,
+        zIndex:4,
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
