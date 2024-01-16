@@ -5,8 +5,20 @@ import {
   MaterialSymbolsNotificationsActiveRounded,
 } from "../../shared/icons/Icon";
 import { LinkCustom } from "../../styled/styled";
+import { useState } from "react";
+import { CustomDrawer } from "../../components/Drawer/CustomDrawer";
+import { items } from "../Home/Home";
 
 export const HeaderMobile = () => {
+  const [openDrawer, setOpenDrawer] = useState(false)
+
+  const onOpenDrawer = () =>{
+    setOpenDrawer(true)
+  }
+  const onCloseDrawer = () =>{
+    setOpenDrawer(false)
+  }
+
   return (
     <Box
       sx={{
@@ -20,7 +32,7 @@ export const HeaderMobile = () => {
       }}
     >
       <Box>
-        <IconButton>
+        <IconButton onClick={onOpenDrawer}>
           <IconParkHamburgerButton style={{ color: "black" }} />
         </IconButton>
       </Box>
@@ -43,6 +55,8 @@ export const HeaderMobile = () => {
           <IconamoonProfileCircleFill style={{ color: "white" }} />
         </IconButton>
       </Box>
+
+      <CustomDrawer item={items} open={openDrawer} onClose={onCloseDrawer} />
     </Box>
   );
 };

@@ -93,7 +93,7 @@ type Item = {
   path: string;
   text: string;
 };
-const items: Item[] = [
+export const items: Item[] = [
   {
     path: SCREEN_PATHS.CREATE,
     text: "Tạo đơn đặt trứng",
