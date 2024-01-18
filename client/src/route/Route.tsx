@@ -8,6 +8,8 @@ import SCREEN_PATHS from "../shared/constants/screenPaths";
 import { About } from "../pages/About/About";
 import { Contact } from "../pages/Contact/Contact";
 import { Login } from "../pages/Login/Login";
+import { QuyTrinhCraw } from "../pages/About/craw/QuyTrinhCraw";
+import { Header } from "../pages/Layout/Header";
 
 const routes: RouteObject[] = [
   {
@@ -39,6 +41,15 @@ const routes: RouteObject[] = [
         element: <Contact />,
       },
     ],
+  },
+  {
+    path: SCREEN_PATHS.QUY_TRINH,
+    element: (
+      <div>
+        <Header />
+        <QuyTrinhCraw />
+      </div>
+    ),
   },
   {
     path: SCREEN_PATHS.LOGIN,

@@ -8,6 +8,7 @@ import { LinkCustom } from "../../styled/styled";
 import { useState } from "react";
 import { CustomDrawer } from "../../components/Drawer/CustomDrawer";
 import { items } from "../Home/Home";
+import { BACKGROUND_COLOR } from "../../styled/color";
 
 export const HeaderMobile = () => {
   const [openDrawer, setOpenDrawer] = useState(false)
@@ -28,7 +29,7 @@ export const HeaderMobile = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        backgroundColor: "green",
+        backgroundColor: BACKGROUND_COLOR['HEADER'],
       }}
     >
       <Box>

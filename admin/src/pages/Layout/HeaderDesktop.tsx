@@ -5,6 +5,7 @@ import {
   MaterialSymbolsNotificationsActiveRounded,
 } from "../../shared/icons/Icon";
 import { LinkCustom } from "../../styled/styled";
+import { BACKGROUND_COLOR } from "../../styled/color";
 
 export const HeaderDesktop = () => {
   return (
@@ -13,7 +14,7 @@ export const HeaderDesktop = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        backgroundColor: "green",
+        backgroundColor: BACKGROUND_COLOR["HEADER"],
       }}
     >
       <Box>
