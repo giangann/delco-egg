@@ -69,10 +69,10 @@ export const List = () => {
             .map((row, index) => (
               <TableRow key={index}>
                 <TableCell>{row.formId}</TableCell>
-                <TableCell>{row.date}</TableCell>
-                <TableCell>{row.time}</TableCell>
+                <TableCell>{row.dateCreated}</TableCell>
+                <TableCell>{row.timeCreated}</TableCell>
                 <TableCell>{row.status}</TableCell>
-                <TableCell>{row.price}</TableCell>
+                <TableCell>{row.totalPrice}</TableCell>
               </TableRow>
             ))}
 

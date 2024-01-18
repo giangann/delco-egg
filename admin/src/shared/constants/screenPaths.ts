@@ -9,7 +9,6 @@ const SCREEN_PATHS = {
   FORGOT_PASSWORD: "/forgot-password",
   RESET_PASSWORD: "/reset-password",
   ACCOUNT_USER: "/account-user",
-  MY_PROFILE: "/my-profile",
   GROUP_USER: "/group-user",
   NOTIFICATION: "/notification",
   MANAGEMENT_PERMISSIONS: "/management-permission",
@@ -25,8 +24,7 @@ const SCREEN_PATHS = {
   BOOK_MANAGEMENT: "/book-management",
   CHAPTER: "/book-management/:slug",
   // ---------------------------------------------------
-  ABOUT: "/ve-chung-toi",
-  CONTACT: "/lien-he",
+  MY_PROFILE: "/my-profile",
   APPLICATION: {
     CREATE: `${SLUG.APPLICATION}/tao-moi`,
     LIST: `${SLUG.APPLICATION}/danh-sach`,
