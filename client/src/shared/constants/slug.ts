@@ -4,4 +4,5 @@ export const SLUG = {
   AUTHOR: "/tac-gia/",
   // ---------------------------------------------------
   APPLICATION: "/don-dat-trung",
+  ABOUT: "/ve-chung-toi",
 };

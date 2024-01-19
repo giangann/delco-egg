@@ -25,8 +25,9 @@ const SCREEN_PATHS = {
   BOOK_MANAGEMENT: "/book-management",
   CHAPTER: "/book-management/:slug",
   // ---------------------------------------------------
-  ABOUT: "/ve-chung-toi",
-  QUY_TRINH:'/quy-trinh-trung',
+  ABOUT: SLUG.ABOUT,
+  QUY_TRINH: `/quy-trinh-trung`,
+  CHUNG_NHAN: `${SLUG.ABOUT}/chung-nhan`,
   CONTACT: "/lien-he",
   CREATE: `${SLUG.APPLICATION}/tao-moi`,
   LIST: `${SLUG.APPLICATION}/danh-sach`,

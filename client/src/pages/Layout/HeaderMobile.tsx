@@ -30,6 +30,7 @@ export const HeaderMobile = () => {
         alignItems: "center",
         justifyContent: "space-between",
         backgroundColor: BACKGROUND_COLOR["HEADER"],
+        height: 50,
       }}
     >
       <Box>

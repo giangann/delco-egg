@@ -1,7 +1,13 @@
-import { useDevice } from "../../hooks/useDevice";
-import { QuyTrinhTrungDesktop } from "./QuyTrinhTrungDesktop";
-import { QuyTrinhTrungMobile } from "./QuyTrinhTrungMobile";
 export const QuyTrinhTrung = () => {
-  const { isMobile } = useDevice();
-  return isMobile ? <QuyTrinhTrungMobile /> : <QuyTrinhTrungDesktop />;
+  const height = window.innerHeight - 70;
+  return (
+    <div>
+      <iframe
+        src="./html_craw/quy-trinh-trung.html"
+        width="100%"
+        height={height}
+        style={{ border: "none" }}
+      ></iframe>
+    </div>
+  );
 };

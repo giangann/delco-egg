@@ -16,7 +16,11 @@ export const BoxAbsoluteFullAlignCenter = styled(BoxAbsoluteFull)({
 });
 
 export const LinkCustom = styled(Link)({
-  textDecoration:'none'
+  textDecoration: "none",
+});
+export const ATagCustom = styled("a")({
+  textDecoration: "none",
+  color: "inherit",
 });
 
 export const alignCenterSx = {

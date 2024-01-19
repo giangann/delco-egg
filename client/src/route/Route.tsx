@@ -1,15 +1,16 @@
 import { RouteObject, createBrowserRouter } from "react-router-dom";
-import { Layout } from "../pages/Layout/Layout";
-import { Home } from "../pages/Home/Home";
-import { CreateForm } from "../pages/EggApplication/CreateForm";
-import { List } from "../pages/EggApplication/List";
-import { DetailForm } from "../pages/EggApplication/DetailForm";
-import SCREEN_PATHS from "../shared/constants/screenPaths";
 import { About } from "../pages/About/About";
+import { ChungNhanAnToan } from "../pages/About/ChungNhanAnToan";
+import { QuyTrinhTrung } from "../pages/About/QuyTrinhTrung";
 import { Contact } from "../pages/Contact/Contact";
-import { Login } from "../pages/Login/Login";
-import { QuyTrinhCraw } from "../pages/About/craw/QuyTrinhCraw";
+import { CreateForm } from "../pages/EggApplication/CreateForm";
+import { DetailForm } from "../pages/EggApplication/DetailForm";
+import { List } from "../pages/EggApplication/List";
+import { Home } from "../pages/Home/Home";
 import { Header } from "../pages/Layout/Header";
+import { Layout } from "../pages/Layout/Layout";
+import { Login } from "../pages/Login/Login";
+import SCREEN_PATHS from "../shared/constants/screenPaths";
 
 const routes: RouteObject[] = [
   {
@@ -37,6 +38,10 @@ const routes: RouteObject[] = [
         element: <About />,
       },
       {
+        path: SCREEN_PATHS.CHUNG_NHAN,
+        element: <ChungNhanAnToan />,
+      },
+      {
         path: SCREEN_PATHS.CONTACT,
         element: <Contact />,
       },
@@ -47,7 +52,7 @@ const routes: RouteObject[] = [
     element: (
       <div>
         <Header />
-        <QuyTrinhCraw />
+        <QuyTrinhTrung />
       </div>
     ),
   },

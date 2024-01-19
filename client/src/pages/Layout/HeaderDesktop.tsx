@@ -15,6 +15,7 @@ export const HeaderDesktop = () => {
         alignItems: "center",
         justifyContent: "space-between",
         backgroundColor: BACKGROUND_COLOR["HEADER"],
+        height: 70,
       }}
     >
       <Box>
