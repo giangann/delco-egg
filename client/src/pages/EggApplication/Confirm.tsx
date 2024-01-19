@@ -10,6 +10,7 @@ import {
   styled,
 } from "@mui/material";
 import { useDevice } from "../../hooks/useDevice";
+import { PageTitleText } from "../../styled/styled";
 
 interface Row {
   type: string;
@@ -22,9 +23,9 @@ export const Confirm = () => {
   const { isMobile } = useDevice();
 
   return (
-    <Container>
+    <Container sx={{ minHeight: "85vh" }}>
       <Paper elevation={isMobile ? 0 : 1} sx={{ padding: { xs: 0, sm: 2 } }}>
-        <TitleText mt={4}>Xác nhận</TitleText>
+        <PageTitleText mt={3}>Xác nhận</PageTitleText>
 
         {/* table */}
         <Box mt={2}>
@@ -59,10 +60,10 @@ export const Confirm = () => {
         </Box>
 
         {/* time */}
-        <Box mt={2}>
-          <HeadingText> 2. Thời gian </HeadingText>
-          <SubHeadingText> - Ngày: 20/01/2024</SubHeadingText>
-          <SubHeadingText> - Giờ: 16:25</SubHeadingText>
+        <Box mt={4} mb={2}>
+          <HeadingText mb={1}> 2. Thời gian </HeadingText>
+          <SubHeadingText mb={0.5}> - Ngày:{"  "}20 / 01 / 2024</SubHeadingText>
+          <SubHeadingText> - Giờ:{"  "}16 giờ 25 phút</SubHeadingText>
         </Box>
       </Paper>
     </Container>
@@ -96,13 +97,6 @@ const orderItems = [
     quantity: 200000,
   },
 ];
-const TitleText = styled(Typography)(({ theme }) => ({
-  color: "green",
-  fontSize: 24,
-  fontWeight: 900,
-  textAlign: "center",
-  [theme.breakpoints.up("sm")]: {},
-}));
 const TotalText = styled(Typography)(({ theme }) => ({
   fontWeight: 900,
   [theme.breakpoints.up("sm")]: {},
@@ -116,5 +110,6 @@ const HeadingText = styled(Typography)(({ theme }) => ({
 const SubHeadingText = styled(Typography)(({ theme }) => ({
   fontWeight: 700,
   fontSize: 16,
+  letterSpacing: 1,
   [theme.breakpoints.up("sm")]: {},
 }));

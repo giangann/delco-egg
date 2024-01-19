@@ -6,7 +6,7 @@ import { useDevice } from "../../hooks/useDevice";
 import { postApi } from "../../lib/utils/fetch/fetchRequest";
 
 interface ILogin {
-  username: string;
+  email: string;
   password: string;
 }
 export const Login = () => {
@@ -15,7 +15,7 @@ export const Login = () => {
   const handleLogin = async (value: ILogin) => {
     console.log("trying to login", value);
 
-    const res = await postApi("test/post", value);
+    const res = await postApi("auth/login", value);
     console.log(res);
   };
 
@@ -38,7 +38,7 @@ export const Login = () => {
           <form onSubmit={handleSubmit(handleLogin)}>
             <Stack spacing={2} alignItems={"center"}>
               <CustomInput
-                {...register("username")}
+                {...register("email")}
                 required
                 placeholder="Tên đăng nhập"
               />

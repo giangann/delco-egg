@@ -15,6 +15,7 @@ import {
 import dayjs, { Dayjs } from "dayjs";
 import React from "react";
 import { useDevice } from "../../hooks/useDevice";
+import { PageTitleText } from "../../styled/styled";
 
 export const ChooseTimeOpt1 = () => {
   const today = new Date();
@@ -25,23 +26,25 @@ export const ChooseTimeOpt1 = () => {
   return (
     <Container>
       <Paper elevation={isMobile ? 0 : 1} sx={{ padding: { xs: 0, sm: 2 } }}>
-        <TitleText mt={4}>Chọn thời gian lấy</TitleText>
+        <PageTitleText mt={3}>Chọn thời gian lấy</PageTitleText>
 
-        <Box mt={4}>
+        <Box mt={3}>
           {isMobile ? (
             <Stack>
               <Box>
-                <LabelText>Chọn ngày</LabelText>
-                <LabelText>{toReadableDate(day)}</LabelText>
+                <LabelText mb={2}>1. Chọn ngày</LabelText>
+                <LabelValueText>
+                  Đang chọn: {toReadableDate(day)}
+                </LabelValueText>
                 <DateCalendar
                   view="day"
                   value={day}
                   onChange={(newValue) => setDay(newValue)}
                 />
               </Box>
-              <Box>
+              <Box mb={5}>
                 <Box>
-                  <LabelText>Chọn giờ</LabelText>
+                  <LabelText>2. Chọn giờ</LabelText>
                   {/* <LabelText>{toReadableTime(time)}</LabelText> */}
                 </Box>
                 <MultiSectionDigitalClock
@@ -91,13 +94,15 @@ function toReadableDate(date: Dayjs | null) {
 // }
 
 const LabelText = styled(Typography)(({ theme }) => ({
-  textAlign: "center",
+  textAlign: "left",
+  fontWeight: 650,
+  fontSize: 17,
   [theme.breakpoints.up("sm")]: {},
 }));
-const TitleText = styled(Typography)(({ theme }) => ({
-  color: "green",
-  fontSize: 24,
-  fontWeight: 900,
+
+const LabelValueText = styled(Typography)(({ theme }) => ({
   textAlign: "center",
+  fontWeight: 500,
+  fontSize: 18,
   [theme.breakpoints.up("sm")]: {},
 }));

@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { CreateFormOpt2 } from "./CreateFormOpt2";
 import { Box, Button, Stack, Typography, styled } from "@mui/material";
 import { ChooseTime } from "./ChooseTime";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Confirm } from "./Confirm";
 
 const MAX_STEP = 3;
@@ -26,13 +26,13 @@ export const CreateForm = () => {
   }, []);
 
   return (
-    <Box>
+    <React.Fragment>
       {/* <Box sx={{ position: "relative" }}> */}
       {Steps[currStep]}
 
       {/* Button navbar area */}
       <CustomNavbar currStep={currStep} />
-    </Box>
+    </React.Fragment>
   );
 };
 
@@ -57,7 +57,7 @@ const CustomNavbar = ({ currStep }: { currStep: number }) => {
   return (
     <Box
       sx={{
-        position: "fixed",
+        position: "sticky",
         bottom: 0,
         left: 0,
         width: "100%",

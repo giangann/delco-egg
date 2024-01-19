@@ -1,18 +1,17 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import { Header } from "./Header";
 import { Footer } from "./Footer";
-import { Box } from "@mui/material";
+import { Header } from "./Header";
 
 export const Layout = () => {
   useEffect(() => {
     console.log("layout rendered");
   }, []);
   return (
-    <Box>
+    <React.Fragment>
       <Header />
       <Outlet />
       <Footer />
-    </Box>
+    </React.Fragment>
   );
 };

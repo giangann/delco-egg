@@ -1,9 +1,4 @@
-import {
-  Box,
-  Container,
-  Grid,
-  Typography
-} from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDevice } from "../../hooks/useDevice";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
@@ -90,18 +85,18 @@ const ItemBox = ({ image, link, caption }: ItemBoxProps) => {
         <Box
           position="relative"
           sx={{
-            minHeight: isMobile ? 400 : 400,
+            minHeight: isMobile ? 250 : 400,
             minWidth: isMobile ? 200 : 400,
             background: `url('${image}')`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
         />
-        <Box sx={{ p: 2, ...alignCenterSx }}>
+        <Box sx={{ p: { xs: 1, sm: 2 }, ...alignCenterSx }}>
           <Typography
             variant="h4"
             textAlign={"center"}
-            fontSize={isMobile ? 18 : 20}
+            fontSize={isMobile ? 22 : 26}
             fontWeight={900}
             color={GREEN["500"]}
           >

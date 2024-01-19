@@ -10,18 +10,16 @@ import { appRouters } from "./route/Route";
 
 function App() {
   return (
-    <div>
-      <ThemeProvider theme={newTheme}>
-        <LocalizationProvider
-          // localeText={
-          //   viVN.components.MuiLocalizationProvider.defaultProps.localeText
-          // }
-          dateAdapter={AdapterDayjs}
-        >
-          <RouterProvider router={appRouters} />
-        </LocalizationProvider>
-      </ThemeProvider>
-    </div>
+    <ThemeProvider theme={newTheme}>
+      <LocalizationProvider
+        // localeText={
+        //   viVN.components.MuiLocalizationProvider.defaultProps.localeText
+        // }
+        dateAdapter={AdapterDayjs}
+      >
+        <RouterProvider router={appRouters} />
+      </LocalizationProvider>
+    </ThemeProvider>
   );
 }
 

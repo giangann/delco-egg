@@ -1,3 +1,4 @@
+// @ts-nocheck
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
@@ -12,13 +13,14 @@ import {
   TableRow,
   Typography,
   styled,
-  useTheme
+  useTheme,
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import React from "react";
 import { CustomTablePagination } from "../../components/Table/CustomTablePagination";
 import { useDevice } from "../../hooks/useDevice";
 import { listForms } from "../../shared/constants/mockData";
+import { PageTitleText } from "../../styled/styled";
 interface TablePaginationActionsProps {
   count: number;
   page: number;
@@ -51,7 +53,7 @@ export const List = () => {
   return (
     <Container>
       <Paper elevation={isMobile ? 0 : 1} sx={{ padding: { xs: 0, sm: 2 } }}>
-        <TitleText mt={4}>Quản lý đơn đặt trứng</TitleText>
+        <PageTitleText mt={4}>Quản lý đơn đặt trứng</PageTitleText>
 
         <TableContainer>
           <TableHead>
@@ -76,7 +78,7 @@ export const List = () => {
               </TableRow>
             ))}
 
-          <CustomTablePagination lengthOfRows={listForms.length}/>
+          <CustomTablePagination lengthOfRows={listForms.length} />
         </TableContainer>
 
         <Box mt={2}></Box>
@@ -154,11 +156,3 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
     </Box>
   );
 }
-
-const TitleText = styled(Typography)(({ theme }) => ({
-  color: "green",
-  fontSize: 24,
-  fontWeight: 900,
-  textAlign: "center",
-  [theme.breakpoints.up("sm")]: {},
-}));

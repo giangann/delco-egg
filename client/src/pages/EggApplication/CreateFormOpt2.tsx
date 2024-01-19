@@ -23,14 +23,17 @@ import {
 } from "../../components/Select/CustomSelect";
 import { useDevice } from "../../hooks/useDevice";
 import { MaterialSymbolsClose } from "../../shared/icons/Icon";
-import { alignCenterSx } from "../../styled/styled";
+import { PageTitleText, alignCenterSx } from "../../styled/styled";
 import { eggPrices } from "../Home/Home";
 export const CreateFormOpt2 = () => {
   const { isMobile } = useDevice();
   return (
     <Container>
-      <Paper elevation={isMobile ? 0 : 1} sx={{ padding: { xs: 0, sm: 2 } }}>
-        <TitleText>Chọn loại và nhập số lượng</TitleText>
+      <Paper
+        elevation={isMobile ? 0 : 1}
+        sx={{ padding: { xs: 0, sm: 2 }, mt: 3 }}
+      >
+        <PageTitleText mb={2}>Chọn loại và nhập số lượng</PageTitleText>
 
         <Grid container spacing={1}>
           {eggPrices.map((type) => (
@@ -260,13 +263,6 @@ const Text = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.up("sm")]: {},
 }));
 const HelperText = styled(Typography)(({ theme }) => ({
-  textAlign: "center",
-  [theme.breakpoints.up("sm")]: {},
-}));
-const TitleText = styled(Typography)(({ theme }) => ({
-  color: "green",
-  fontSize: 24,
-  fontWeight: 900,
   textAlign: "center",
   [theme.breakpoints.up("sm")]: {},
 }));

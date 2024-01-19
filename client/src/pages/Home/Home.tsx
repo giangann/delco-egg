@@ -8,15 +8,20 @@ import {
   styled,
 } from "@mui/material";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
+import { GREEN } from "../../styled/color";
+import { LinkCustom, PageTitleText } from "../../styled/styled";
+import { IcBaselineAddCircleOutline } from "../../shared/icons/Icon";
+import { useDevice } from "../../hooks/useDevice";
 
 export const Home = () => {
+  const { isMobile } = useDevice();
   return (
     <Container>
-      <Paper elevation={1} sx={{ padding: 2 }}>
-        <TitleText>Giá trứng hôm nay</TitleText>
-        <UnitText>{"(vnđ/quả)"}</UnitText>
+      <Paper elevation={4} sx={{ padding: 2, mt: 3 }}>
+        <PageTitleText>Giá trứng hôm nay</PageTitleText>
+        {/* <UnitText>{"(vnđ/quả)"}</UnitText> */}
 
-        <Grid container spacing={1}>
+        <Grid mt={0} container columnSpacing={1} rowSpacing={3}>
           {eggPrices.map((type) => (
             <Grid item xs={4}>
               <PriceBox type={type.type} price={type.price} />
@@ -24,24 +29,31 @@ export const Home = () => {
           ))}
         </Grid>
       </Paper>
-      <Paper elevation={1} sx={{ padding: 2, mt: 8 }}>
+      <Paper elevation={0} sx={{ padding: 2, mt: 4 }}>
         <Box>
-          <TitleText>Thao tác</TitleText>
+          <PageTitleText mb={2}>Thao tác</PageTitleText>
           <Grid container spacing={3}>
             {items.map((item: Item, index: number) => (
               <Grid item xs={6} key={index}>
-                <Stack
-                  spacing={1}
-                  alignItems={"center"}
-                  flexDirection={"column"}
-                >
-                  <TypeText>{item.text}</TypeText>
-                  <a href={item.path}>
-                    <Typography sx={{ textAlign: "center" }} variant="caption">
-                      {">>>"}go
-                    </Typography>
-                  </a>
-                </Stack>
+                <LinkCustom to={item.path}>
+                  <Paper
+                    elevation={4}
+                    sx={{
+                      backgroundColor: GREEN["500"],
+                      py: 2,
+                      px: 1.5,
+                      color: "whitesmoke",
+                      minHeight: isMobile ? 90 : "none",
+                    }}
+                  >
+                    <Stack spacing={1} alignItems={"center"}>
+                      <TypeText>{item.text}</TypeText>
+                      <IcBaselineAddCircleOutline
+                        fontSize={isMobile ? 20 : 24}
+                      />
+                    </Stack>
+                  </Paper>{" "}
+                </LinkCustom>
               </Grid>
             ))}
           </Grid>
@@ -53,39 +65,58 @@ export const Home = () => {
 
 const PriceBox = ({ type, price }: { type: string; price: number }) => {
   return (
-    <Box sx={{ backgroundColor: "whitesmoke" }}>
-      <TypeText>{type}</TypeText>
-      <PriceText>{price}</PriceText>
+    <Box sx={{ backgroundColor: "whitesmoke", py: 1.5 }}>
+      <Stack spacing={1.25}>
+        <LineBlockInPriceBox>
+          <TypeText>{type}</TypeText>
+        </LineBlockInPriceBox>
+        <LineBlockInPriceBox>
+          <InfoTextKey>{"Khối lượng"}</InfoTextKey>
+          <InfoTextValue>{"10 quả 500g"}</InfoTextValue>
+        </LineBlockInPriceBox>
+        <LineBlockInPriceBox>
+          <InfoTextKey>{"Giá 1 quả"}</InfoTextKey>
+          <PriceText>{price} đ</PriceText>
+        </LineBlockInPriceBox>
+      </Stack>
     </Box>
   );
 };
 
-const TitleText = styled(Typography)(({ theme }) => ({
-  color: "green",
-  fontSize: 24,
-  fontWeight: 900,
-  textAlign: "center",
-  [theme.breakpoints.up("sm")]: {},
-}));
+const LineBlockInPriceBox = styled(Box)({});
 
-const UnitText = styled(Typography)(({ theme }) => ({
-  color: "green",
-  fontSize: 16,
-  fontWeight: 500,
-  textAlign: "center",
-  [theme.breakpoints.up("sm")]: {},
-}));
+// const UnitText = styled(Typography)(({ theme }) => ({
+//   color: GREEN["500"],
+//   fontSize: 16,
+//   fontWeight: 500,
+//   textAlign: "center",
+//   [theme.breakpoints.up("sm")]: {},
+// }));
 
 const TypeText = styled(Typography)(({ theme }) => ({
   fontSize: 18,
   fontWeight: 700,
+
+  textAlign: "center",
+  [theme.breakpoints.up("sm")]: {},
+}));
+
+const InfoTextKey = styled(Typography)(({ theme }) => ({
+  fontSize: 14,
+  fontWeight: 400,
+  textAlign: "center",
+  [theme.breakpoints.up("sm")]: {},
+}));
+const InfoTextValue = styled(Typography)(({ theme }) => ({
+  fontSize: 14,
+  fontWeight: 600,
   textAlign: "center",
   [theme.breakpoints.up("sm")]: {},
 }));
 
 const PriceText = styled(Typography)(({ theme }) => ({
   fontSize: 20,
-  fontWeight: 800,
+  fontWeight: 700,
   textAlign: "center",
   [theme.breakpoints.up("sm")]: {},
 }));
@@ -100,7 +131,7 @@ export const items: Item[] = [
   },
   {
     path: SCREEN_PATHS.LIST,
-    text: "Lịch sử  đặt trúng",
+    text: "Lịch sử đặt trứng",
   },
   {
     path: SCREEN_PATHS.ABOUT,

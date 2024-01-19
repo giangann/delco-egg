@@ -19,14 +19,14 @@ export const CustomDrawer = (props: CustomDrawerProps) => {
   const { item, open, onClose, children, ...drawerProps } = props;
   return (
     <Drawer
-      PaperProps={{ sx: { backgroundColor: BLACK["900"], width: "60vw" } }}
+      PaperProps={{ sx: { backgroundColor: BLACK["900"], width: "65vw" } }}
       anchor="left"
       open={open}
       transitionDuration={800}
       onClose={onClose}
       {...drawerProps}
     >
-      <Stack sx={{ px: 6, py: 12 }} spacing={6}>
+      <Stack sx={{ paddingLeft: 6, py: 12 }} spacing={6}>
         {[...item, { text: "Về trang chủ", path: "/" }].map((item, index) => (
           <Stack key={index} direction="row" spacing={1.5} alignItems="center">
             {/* @ts-ignore */}
