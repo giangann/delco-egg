@@ -2,9 +2,9 @@ import { Box, Container, Grid, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDevice } from "../../hooks/useDevice";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
-import ABOUT_BGIMG from "/images/quy-trinh/about-us-bg.jpg";
-import CHUNG_NHAN_BGIMG from "/images/quy-trinh/cnat.jpg";
-import QUY_TRINH_BGIMG from "/images/quy-trinh/quy-trinh-trung.jpg";
+import ABOUT_BGIMG from "/images/quy-trinh/about-us-bg.webp";
+import CHUNG_NHAN_BGIMG from "/images/quy-trinh/cnat.webp";
+import QUY_TRINH_BGIMG from "/images/quy-trinh/quy-trinh-trung.webp";
 
 import { OPACITY_TO_HEX } from "../../shared/constants/common";
 import { GREEN } from "../../styled/color";
