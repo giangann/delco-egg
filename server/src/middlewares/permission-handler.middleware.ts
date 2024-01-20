@@ -9,7 +9,7 @@ import ApiResponse from '../utilities/api-response.utility';
 
 export const isAdmin = () => {
   return async (req: IRequest, res: express.Response, next: express.NextFunction) => {
-    if (req.user.email !== 'admin@gmail.com') {
+    if (req.user.username !== 'admin@gmail.com') {
       return ApiResponse.error(res, httpStatusCodes.UNAUTHORIZED);
     }
     next();

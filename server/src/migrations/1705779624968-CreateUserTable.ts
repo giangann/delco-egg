@@ -1,11 +1,12 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateUserTable1651270421471 implements MigrationInterface {
-
+export class CreateUserTable1705779624968
+  implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
         name: 'user',
+        // username, password, phone_number, fullname, company_name, note, *softdelete
         columns: [
           {
             name: 'id',
@@ -15,17 +16,7 @@ export class CreateUserTable1651270421471 implements MigrationInterface {
             generationStrategy: 'increment',
           },
           {
-            name: 'createdAt',
-            type: 'datetime',
-            default: 'CURRENT_TIMESTAMP',
-          },
-          {
-            name: 'updatedAt',
-            type: 'datetime',
-            default: 'CURRENT_TIMESTAMP',
-          },
-          {
-            name: 'email',
+            name: 'username',
             type: 'varchar',
             length: '100',
             isNullable: false,
@@ -37,26 +28,46 @@ export class CreateUserTable1651270421471 implements MigrationInterface {
             isNullable: false,
           },
           {
-            name: 'firstName',
+            name: 'phone_number',
+            type: 'varchar',
+            length: '100',
+            isNullable: false,
+          },
+          {
+            name: 'fullname',
             type: 'varchar',
             length: '255',
             isNullable: false,
           },
           {
-            name: 'lastName',
+            name: 'company_name',
             type: 'varchar',
             length: '255',
-            isNullable: false,
+          },
+          {
+            name: 'note',
+            type: 'varchar',
+            length: '255',
           },
           {
             name: 'isDeleted',
             type: 'tinyint',
             default: '0',
           },
+          {
+            name: 'createdAt',
+            type: 'datetime',
+            default: 'CURRENT_TIMESTAMP',
+          },
+          {
+            name: 'updatedAt',
+            type: 'datetime',
+            default: 'CURRENT_TIMESTAMP',
+          },
         ],
         uniques: [
           {
-            columnNames: ['email'],
+            columnNames: ['username'],
           },
         ],
       }),
@@ -66,5 +77,4 @@ export class CreateUserTable1651270421471 implements MigrationInterface {
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropTable('user');
   }
-
 }

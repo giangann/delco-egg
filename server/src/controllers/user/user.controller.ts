@@ -8,7 +8,10 @@ import {
   IUpdateUser,
   IUserQueryParams,
 } from '../../interfaces/user.interface';
-import { IDeleteById, IDetailById } from '../../interfaces/common.interface';
+import {
+  IDeleteById,
+  IDetailById,
+} from '../../interfaces/common.interface';
 
 // Errors
 import { StringError } from '../../errors/string.error';
@@ -27,16 +30,22 @@ import constants from '../../constants';
 const create: IController = async (req, res) => {
   try {
     const params: ICreateUser = {
-      email: req.body.email,
+      username: req.body.username,
       password: req.body.password,
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-    }
+      phone_number: req.body.phone_number,
+      fullname: req.body.fullname,
+      company_name: req.body?.company_name,
+      note: req.body?.note,
+    };
     const user = await userService.create(params);
     return ApiResponse.result(res, user, httpStatusCodes.CREATED);
   } catch (e) {
     if (e.code === constants.ERROR_CODE.DUPLICATED) {
-      return ApiResponse.error(res, httpStatusCodes.CONFLICT, 'Email already exists.');
+      return ApiResponse.error(
+        res,
+        httpStatusCodes.CONFLICT,
+        'Username already exists.',
+      );
     }
     return ApiResponse.error(res, httpStatusCodes.BAD_REQUEST);
   }
@@ -45,17 +54,25 @@ const create: IController = async (req, res) => {
 const login: IController = async (req, res) => {
   try {
     const params: ILoginUser = {
-      email: req.body.email,
+      username: req.body.username,
       password: req.body.password,
-    }
+    };
     const user = await userService.login(params);
     const cookie = await generateUserCookie(user.id);
     return ApiResponse.result(res, user, httpStatusCodes.OK, cookie);
   } catch (e) {
     if (e instanceof StringError) {
-      return ApiResponse.error(res, httpStatusCodes.BAD_REQUEST, e.message);
+      return ApiResponse.error(
+        res,
+        httpStatusCodes.BAD_REQUEST,
+        e.message,
+      );
     }
-    return ApiResponse.error(res, httpStatusCodes.BAD_REQUEST, 'Something went wrong');
+    return ApiResponse.error(
+      res,
+      httpStatusCodes.BAD_REQUEST,
+      'Something went wrong',
+    );
   }
 };
 
@@ -68,7 +85,7 @@ const detail: IController = async (req, res) => {
   try {
     const params: IDetailById = {
       id: parseInt(req.params.id, 10),
-    }
+    };
     const data = await userService.detail(params);
     return ApiResponse.result(res, data, httpStatusCodes.OK);
   } catch (e) {
@@ -79,10 +96,14 @@ const detail: IController = async (req, res) => {
 const update: IController = async (req, res) => {
   try {
     const params: IUpdateUser = {
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
       id: parseInt(req.params.id, 10),
-    }
+      username: req.body?.username,
+      password: req.body?.password,
+      phone_number: req.body?.phone_number,
+      fullname: req.body?.fullname,
+      company_name: req.body?.company_name,
+      note: req.body?.note,
+    };
     await userService.update(params);
     return ApiResponse.result(res, params, httpStatusCodes.OK);
   } catch (e) {
@@ -93,10 +114,14 @@ const update: IController = async (req, res) => {
 const updateMe: IController = async (req, res) => {
   try {
     const params: IUpdateUser = {
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      id: req.user.id,
-    }
+      id: parseInt(req.params.id, 10),
+      username: req.body?.username,
+      password: req.body?.password,
+      phone_number: req.body?.phone_number,
+      fullname: req.body?.fullname,
+      company_name: req.body?.company_name,
+      note: req.body?.note,
+    };
     await userService.update(params);
     return ApiResponse.result(res, params, httpStatusCodes.OK);
   } catch (e) {
@@ -111,7 +136,13 @@ const list: IController = async (req, res) => {
     const keyword = ApiUtility.getQueryParam(req, 'keyword');
     const params: IUserQueryParams = { limit, page, keyword };
     const data = await userService.list(params);
-    return ApiResponse.result(res, data.response, httpStatusCodes.OK, null, data.pagination);
+    return ApiResponse.result(
+      res,
+      data.response,
+      httpStatusCodes.OK,
+      null,
+      data.pagination,
+    );
   } catch (e) {
     ApiResponse.exception(res, e);
   }
@@ -121,7 +152,7 @@ const remove: IController = async (req, res) => {
   try {
     const params: IDeleteById = {
       id: parseInt(req.params.id, 10),
-    }
+    };
     await userService.remove(params);
     return ApiResponse.result(res, params, httpStatusCodes.OK);
   } catch (e) {
@@ -132,7 +163,10 @@ const remove: IController = async (req, res) => {
 const generateUserCookie = async (userId: number) => {
   return {
     key: constants.COOKIE.COOKIE_USER,
-    value: await Encryption.generateCookie(constants.COOKIE.KEY_USER_ID, userId.toString()),
+    value: await Encryption.generateCookie(
+      constants.COOKIE.KEY_USER_ID,
+      userId.toString(),
+    ),
   };
 };
 

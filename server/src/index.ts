@@ -1,37 +1,23 @@
-// Import the express in typescript file
-import express from "express";
-import dotenv from "dotenv";
-import { route } from "./routes/testRoute";
-import cors from "cors";
-import bodyParser from 'body-parser';
-// run dotenv
-dotenv.config();
+require('dotenv').config();
 
-// Initialize the express engine
-const app: express.Application = express();
-app.use(
-  cors(
-    //  if don't have 2 line below, credentials: "include" attributes in fetch in front-end will got cors error
-    {
-      origin: "http://localhost:5173",
-      credentials: true,
-    }
-  )
-);
+import 'reflect-metadata';
+import { createConnection } from 'typeorm';
+import logger from './configs/logger.config';
+import app from './configs/express.config';
 
-app.use(bodyParser.json())
-// Take a port 3000 for running server.
-const port: number | string = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
 
-// Handling '/' Request
-app.get("/", (_req, _res) => {
-  _res.send("TypeScript With Express");
-});
+const connect = async () => {
+  try {
+    const connection = await createConnection(); // Connect to the DB that is setup in the ormconfig.js
+    await connection.runMigrations(); // Run all migrations
+    logger.info('Connect to database successfully');
+    app.listen(PORT, () => {
+      logger.info(`Server running at ${PORT}`);
+    });
+  } catch (e) {
+    logger.info(`The connection to database was failed with error: ${e}`);
+  }
+}
 
-app.use("/api/test", route);
-
-// Server setup
-app.listen(port, () => {
-  console.log(`TypeScript with Express 
-		http://localhost:${port}/`);
-});
+connect();

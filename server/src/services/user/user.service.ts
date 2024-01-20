@@ -15,7 +15,10 @@ import {
   IUpdateUser,
   IUserQueryParams,
 } from '../../interfaces/user.interface';
-import { IDeleteById, IDetailById } from '../../interfaces/common.interface';
+import {
+  IDeleteById,
+  IDetailById,
+} from '../../interfaces/common.interface';
 
 // Errors
 import { StringError } from '../../errors/string.error';
@@ -24,32 +27,34 @@ const where = { isDeleted: false };
 
 const create = async (params: ICreateUser) => {
   const item = new User();
-  item.email = params.email;
   item.password = await Encryption.generateHash(params.password, 10);
-  item.firstName = params.firstName;
-  item.lastName = params.lastName;
-  const userData = await getRepository(User).save(item);
+  const userData = await getRepository(User).save({
+    ...params,
+    ...item,
+  });
   return ApiUtility.sanitizeUser(userData);
 };
 
 const login = async (params: ILoginUser) => {
   const user = await getRepository(User)
     .createQueryBuilder('user')
-    .where('user.email = :email', { email: params.email })
+    .where('user.username = :username', { username: params.username })
     .select([
       'user.createdAt',
       'user.updatedAt',
       'user.id',
-      'user.email',
+      'user.username',
       'user.password',
-      'user.firstName',
-      'user.lastName',
+      'user.phone_number',
+      'user.fullname',
+      'user.company_name',
+      'user.note',
       'user.isDeleted',
     ])
     .getOne();
 
   if (!user) {
-    throw new StringError('Your email has not been registered');
+    throw new StringError('Your username has not been registered');
   }
 
   if (await Encryption.verifyHash(params.password, user.password)) {
@@ -71,7 +76,7 @@ const getById = async (params: IDetailById) => {
 const detail = async (params: IDetailById) => {
   const query = {
     where: { ...where, id: params.id },
-  }
+  };
 
   const user = await getRepository(User).findOne(query);
   if (!user) {
@@ -79,7 +84,7 @@ const detail = async (params: IDetailById) => {
   }
 
   return ApiUtility.sanitizeUser(user);
-}
+};
 
 const update = async (params: IUpdateUser) => {
   const query = { ...where, id: params.id };
@@ -90,15 +95,16 @@ const update = async (params: IUpdateUser) => {
   }
 
   return await getRepository(User).update(query, {
-    firstName: params.firstName,
-    lastName: params.lastName,
+    ...params,
     updatedAt: DateTimeUtility.getCurrentTimeStamp(),
   });
-}
+};
 
 const list = async (params: IUserQueryParams) => {
   let userRepo = getRepository(User).createQueryBuilder('user');
-  userRepo = userRepo.where('user.isDeleted = :isDeleted', { isDeleted: false });
+  userRepo = userRepo.where('user.isDeleted = :isDeleted', {
+    isDeleted: false,
+  });
 
   if (params.keyword) {
     userRepo = userRepo.andWhere(
@@ -110,9 +116,15 @@ const list = async (params: IUserQueryParams) => {
   // Pagination
   const paginationRepo = userRepo;
   const total = await paginationRepo.getMany();
-  const pagRes = ApiUtility.getPagination(total.length, params.limit, params.page);
+  const pagRes = ApiUtility.getPagination(
+    total.length,
+    params.limit,
+    params.page,
+  );
 
-  userRepo = userRepo.limit(params.limit).offset(ApiUtility.getOffset(params.limit, params.page));
+  userRepo = userRepo
+    .limit(params.limit)
+    .offset(ApiUtility.getOffset(params.limit, params.page));
   const users = await userRepo.getMany();
 
   const response = [];
@@ -136,7 +148,7 @@ const remove = async (params: IDeleteById) => {
     isDeleted: true,
     updatedAt: DateTimeUtility.getCurrentTimeStamp(),
   });
-}
+};
 
 export default {
   create,
@@ -146,4 +158,4 @@ export default {
   update,
   list,
   remove,
-}
+};
