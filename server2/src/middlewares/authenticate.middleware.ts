@@ -22,13 +22,13 @@ export default async (
 ) => {
   if (constants.APPLICATION.authorizationIgnorePath.indexOf(`${req.originalUrl}`) === -1) {
     const authorizationHeader = ApiUtility.getCookieFromRequest(req, constants.COOKIE.COOKIE_USER);
-
+    console.log(authorizationHeader)
     if (authorizationHeader) {
       const decoded = await Encryption.verifyCookie(authorizationHeader);
 
       if (decoded) {
         const user = await userService.getById({ id: decoded.data[constants.COOKIE.KEY_USER_ID] });
-
+        console.log(user)
         if (user) {
           // @ts-ignore
           req.user = user;

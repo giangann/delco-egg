@@ -2,7 +2,7 @@ import { baseURL } from "../../query/request";
 
 export const getApi = async (
   endpoint: string,
-  searchParams: Record<string, string>
+  searchParams?: Record<string, string>
 ) => {
   const queryParams = searchParams
     ? "?" + new URLSearchParams(searchParams)
@@ -13,6 +13,7 @@ export const getApi = async (
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
   });
 
   return respond.json();

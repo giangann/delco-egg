@@ -1,15 +1,25 @@
 import { ThemeOptions, ThemeProvider, createTheme } from "@mui/material";
-import { viVN as coreViVn } from '@mui/material/locale';
+import { viVN as coreViVn } from "@mui/material/locale";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { viVN } from "@mui/x-date-pickers/locales";
-import type { } from "@mui/x-date-pickers/themeAugmentation";
+import type {} from "@mui/x-date-pickers/themeAugmentation";
 import { RouterProvider } from "react-router-dom";
 import "./App.css";
 import { appRouters } from "./route/Route";
-
+import useAuth from "./hooks/useAuth";
+import { useEffect, useState } from "react";
 
 function App() {
+  const { checkUser } = useAuth();
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchUser = async () => {
+      await checkUser();
+      setLoading(false);
+    };
+    fetchUser();
+  }, []);
   return (
     <div>
       <ThemeProvider theme={newTheme}>
@@ -19,7 +29,7 @@ function App() {
           // }
           dateAdapter={AdapterDayjs}
         >
-          <RouterProvider router={appRouters} />
+          {loading ? "" : <RouterProvider router={appRouters} />}
         </LocalizationProvider>
       </ThemeProvider>
     </div>
@@ -30,15 +40,15 @@ const newTheme = (theme: ThemeOptions | undefined) =>
   createTheme(
     {
       ...theme,
-      components:{
-        MuiFab:{
-          styleOverrides:{
-            root:{
-              zIndex:1,
-            }
-          }
-        }
-      }
+      components: {
+        MuiFab: {
+          styleOverrides: {
+            root: {
+              zIndex: 1,
+            },
+          },
+        },
+      },
       // components: {
       //   MuiPickersToolbar: {
       //     styleOverrides: {

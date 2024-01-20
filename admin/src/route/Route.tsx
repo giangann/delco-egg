@@ -10,11 +10,17 @@ import { UserList } from "../pages/UserManagement/UserList";
 import { UserInformation } from "../pages/UserManagement/UserInformation";
 import { MyProfile } from "../pages/Setting/MyProfile";
 import { EggOrderDetail } from "../pages/EggApplication/EggOrderDetail";
+import { ProtectedRoute } from "./ProtectedRoute";
 
 const routes: RouteObject[] = [
   {
     path: "/",
-    element: <Layout />,
+    element: (
+      // @ts-ignore
+      <ProtectedRoute>
+        <Layout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,

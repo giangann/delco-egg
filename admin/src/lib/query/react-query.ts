@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from 'axios';
-import { DefaultOptions, QueryClient, QueryKey } from '@tanstack/react-query';
+import { DefaultOptions, QueryClient, QueryKey } from 'react-query';
 import { request } from './request';
 
 

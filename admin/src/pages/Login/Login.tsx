@@ -1,14 +1,27 @@
 import { Box, Button, Paper, Stack, Typography } from "@mui/material";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
 import { CustomInput } from "../../components/Input/CustomInput";
-import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 import { useDevice } from "../../hooks/useDevice";
 
+interface ILogin {
+  email: string;
+  password: string;
+}
 export const Login = () => {
   const { isMobile } = useDevice();
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const handleLogin = async (value: ILogin) => {
+    const res = await login(value.email, value.password);
+    console.log(res);
 
-  const handleLogin = async () => {
-    console.log("trying to login");
+    navigate("/");
   };
+
+  const { register, handleSubmit } = useForm<ILogin>();
+
   return (
     <Box>
       <Box
@@ -23,20 +36,26 @@ export const Login = () => {
           <Typography variant="h4" align="center" mb={3}>
             Đăng nhập
           </Typography>
-          <Stack spacing={2} alignItems={"center"}>
-            <CustomInput placeholder="Tên đăng nhập" />
-            <CustomInput placeholder="Mật khẩu" />
-            <Button
-              onClick={handleLogin}
-              sx={{ width: "50%" }}
-              variant="contained"
-            >
-              Submit
-            </Button>
-            <Link to="#">
-              <Typography variant="caption">Quên mật khẩu?</Typography>
-            </Link>
-          </Stack>
+          <form onSubmit={handleSubmit(handleLogin)}>
+            <Stack spacing={2} alignItems={"center"}>
+              <CustomInput
+                {...register("email")}
+                required
+                placeholder="Tên đăng nhập"
+              />
+              <CustomInput
+                {...register("password")}
+                required
+                placeholder="Mật khẩu"
+              />
+              <Button type="submit" sx={{ width: "50%" }} variant="contained">
+                Submit
+              </Button>
+              <Link to="#">
+                <Typography variant="caption">Quên mật khẩu?</Typography>
+              </Link>
+            </Stack>
+          </form>
         </Paper>
       </Box>
     </Box>
