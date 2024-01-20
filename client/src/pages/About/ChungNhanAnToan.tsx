@@ -84,17 +84,17 @@ const ItemBox = ({ image, link, caption }: ItemBoxProps) => {
 const certificates: ItemBoxProps[] = [
   {
     image: NUOC_CHAN_NUOI_IMG,
-    link: "public/pdf/3.Ket-qua-kiem-nghiem-nuoc-chan-nuoi.pdf",
+    link: "/pdf/3.Ket-qua-kiem-nghiem-nuoc-chan-nuoi.pdf",
     caption: "Kết quả kiểm nghiệm nước chăn nuôi",
   },
   {
     image: KIEM_NGHIEM_TRUNG_GA_IMG,
-    link: "public/pdf/3.Ket-qua-kiem-nghiem-nuoc-chan-nuoi.pdf",
+    link: "/pdf/4.-Ket-qua-kiem-nghiem-trung-ga.pdf",
     caption: "Kết quả kiểm nghiệm trứng gà",
   },
   {
     image: DIEU_KIEN_CHAN_NUOI_IMG,
-    link: "public/pdf/3.Ket-qua-kiem-nghiem-nuoc-chan-nuoi.pdf",
+    link: "/pdf/6.-Chung-nhan-co-so-du-dieu-kien-chan-nuoi.pdf",
     caption: "Chứng nhận cơ sở đủ điều kiện chăn nuôi",
   },
 ];
