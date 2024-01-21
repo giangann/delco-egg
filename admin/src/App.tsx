@@ -21,18 +21,16 @@ function App() {
     fetchUser();
   }, []);
   return (
-    <div>
-      <ThemeProvider theme={newTheme}>
-        <LocalizationProvider
-          // localeText={
-          //   viVN.components.MuiLocalizationProvider.defaultProps.localeText
-          // }
-          dateAdapter={AdapterDayjs}
-        >
-          {loading ? "" : <RouterProvider router={appRouters} />}
-        </LocalizationProvider>
-      </ThemeProvider>
-    </div>
+    <ThemeProvider theme={newTheme}>
+      <LocalizationProvider
+        // localeText={
+        //   viVN.components.MuiLocalizationProvider.defaultProps.localeText
+        // }
+        dateAdapter={AdapterDayjs}
+      >
+        {loading ? "" : <RouterProvider router={appRouters} />}
+      </LocalizationProvider>
+    </ThemeProvider>
   );
 }
 
