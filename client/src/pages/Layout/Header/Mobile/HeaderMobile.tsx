@@ -2,13 +2,17 @@ import { Box, IconButton, Typography, styled } from "@mui/material";
 import { useState } from "react";
 import { CustomDrawer } from "../../../../components/Drawer/CustomDrawer";
 import {
-  IconParkHamburgerButton,
-  IconamoonProfileCircleFill,
-  MaterialSymbolsNotificationsActiveRounded,
+  IconParkHamburgerButton
 } from "../../../../shared/icons/Icon";
 import { BACKGROUND_COLOR } from "../../../../styled/color";
-import { AlignCenterBox, LinkCustom, alignCenterSx } from "../../../../styled/styled";
+import {
+  AlignCenterBox,
+  LinkCustom,
+  alignCenterSx,
+} from "../../../../styled/styled";
 import { items } from "../../../Home/Home";
+import { NotificationMenu } from "./NotificationMenu";
+import { UserProfileMenu } from "./UserProfileMenu";
 
 export const HeaderMobile = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -52,15 +56,8 @@ export const HeaderMobile = () => {
       </BoxBasis>
       <BoxBasis>
         <AlignCenterBox justifyContent={"flex-end"}>
-          <CustomIconBtn>
-            <MaterialSymbolsNotificationsActiveRounded
-              style={{ color: "white" }}
-            />
-          </CustomIconBtn>
-
-          <CustomIconBtn>
-            <IconamoonProfileCircleFill style={{ color: "white" }} />
-          </CustomIconBtn>
+          <NotificationMenu />
+          <UserProfileMenu />
         </AlignCenterBox>
       </BoxBasis>
       <CustomDrawer item={items} open={openDrawer} onClose={onCloseDrawer} />
@@ -73,7 +70,7 @@ const BoxBasis = styled(Box)({
   flexBasis: "33%",
 });
 
-const CustomIconBtn = styled(IconButton)(({ theme }) => ({
+export const CustomIconBtn = styled(IconButton)(({ theme }) => ({
   paddingLeft: 0,
   [theme.breakpoints.up("sm")]: {
     padding: 1,

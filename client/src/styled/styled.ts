@@ -25,6 +25,11 @@ export const BoxAbsoluteFullAlignCenter = styled(BoxAbsoluteFull)({
   alignItems: "center",
   justifyContent: "center",
 });
+export const BoxAbsoluteFullAlignRight= styled(BoxAbsoluteFull)({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-end",
+});
 
 export const AlignCenterBox = styled(Box)({
   display: "flex",

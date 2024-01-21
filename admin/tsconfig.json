@@ -20,6 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "../client/src/components/Drawer/MobileDrawer.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
