@@ -7,7 +7,7 @@ import { CreateForm } from "../pages/EggApplication/CreateForm";
 import { DetailForm } from "../pages/EggApplication/DetailForm";
 import { List } from "../pages/EggApplication/List";
 import { Home } from "../pages/Home/Home";
-import { Header } from "../pages/Layout/Header";
+import { Header } from "../pages/Layout/Header/Header";
 import { Layout } from "../pages/Layout/Layout";
 import { Login } from "../pages/Login/Login";
 import SCREEN_PATHS from "../shared/constants/screenPaths";

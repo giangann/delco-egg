@@ -1,0 +1,3 @@
+const NotiTitleText = styled(Typography)(({ theme }) => ({
+    [theme.breakpoints.down('sm')]:{}
+}));
