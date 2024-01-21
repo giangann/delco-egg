@@ -1,11 +1,4 @@
-import {
-  Box,
-  IconButton,
-  Menu,
-  MenuItem,
-  Typography,
-  styled,
-} from "@mui/material";
+import { Box, IconButton, Menu, Typography, styled } from "@mui/material";
 import React from "react";
 import { MaterialSymbolsNotificationsActiveRounded } from "../../../../shared/icons/Icon";
 
@@ -19,10 +12,6 @@ export const NotificationMenu = () => {
     setAnchorEl(null);
   };
 
-  const handleLogout = async () => {
-    console.log("logout");
-    handleClose();
-  };
   return (
     <>
       <IconButton onClick={handleClick}>

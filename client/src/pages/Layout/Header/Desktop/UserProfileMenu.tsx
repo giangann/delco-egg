@@ -1,4 +1,4 @@
-import { Box, IconButton, Menu, MenuItem } from "@mui/material";
+import { IconButton, Menu, MenuItem } from "@mui/material";
 import React from "react";
 import { IconamoonProfileCircleFill } from "../../../../shared/icons/Icon";
 

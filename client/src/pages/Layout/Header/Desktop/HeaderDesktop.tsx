@@ -1,24 +1,15 @@
 import {
   Box,
   Container,
-  IconButton,
-  Menu,
-  MenuItem,
   Stack,
   Typography,
-  styled,
+  styled
 } from "@mui/material";
-import React from "react";
-import {
-  IconParkHamburgerButton,
-  IconamoonProfileCircleFill,
-  MaterialSymbolsNotificationsActiveRounded,
-} from "../../../../shared/icons/Icon";
 import { BACKGROUND_COLOR } from "../../../../styled/color";
 import { LinkCustom } from "../../../../styled/styled";
 import { items } from "../../../Home/Home";
-import { UserProfileMenu } from "./UserProfileMenu";
 import { NotificationMenu } from "./NotificationMenu";
+import { UserProfileMenu } from "./UserProfileMenu";
 
 export const HeaderDesktop = () => {
   return (
