@@ -11,11 +11,17 @@ import { Header } from "../pages/Layout/Header";
 import { Layout } from "../pages/Layout/Layout";
 import { Login } from "../pages/Login/Login";
 import SCREEN_PATHS from "../shared/constants/screenPaths";
+import { ProtectedRoute } from "./ProtectedRoute";
 
 const routes: RouteObject[] = [
   {
     path: "/",
-    element: <Layout />,
+    element: (
+      // @ts-ignore
+      <ProtectedRoute>
+        <Layout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,

@@ -38,6 +38,7 @@ const create: IController = async (req, res) => {
       note: req.body?.note,
     };
     const user = await userService.create(params);
+
     return ApiResponse.result(res, user, httpStatusCodes.CREATED);
   } catch (e) {
     if (e.code === constants.ERROR_CODE.DUPLICATED) {
@@ -59,6 +60,7 @@ const login: IController = async (req, res) => {
     };
     const user = await userService.login(params);
     const cookie = await generateUserCookie(user.id);
+
     return ApiResponse.result(res, user, httpStatusCodes.OK, cookie);
   } catch (e) {
     if (e instanceof StringError) {
@@ -77,8 +79,7 @@ const login: IController = async (req, res) => {
 };
 
 const me: IController = async (req, res) => {
-  const cookie = await generateUserCookie(req.user.id);
-  return ApiResponse.result(res, req.user, httpStatusCodes.OK, cookie);
+  return ApiResponse.result(res, req.user, httpStatusCodes.OK);
 };
 
 const detail: IController = async (req, res) => {
@@ -103,6 +104,7 @@ const update: IController = async (req, res) => {
       fullname: req.body?.fullname,
       company_name: req.body?.company_name,
       note: req.body?.note,
+      isAdmin: req.body?.isAdmin,
     };
     await userService.update(params);
     return ApiResponse.result(res, params, httpStatusCodes.OK);
@@ -134,7 +136,9 @@ const list: IController = async (req, res) => {
     const limit = ApiUtility.getQueryParam(req, 'limit');
     const page = ApiUtility.getQueryParam(req, 'page');
     const keyword = ApiUtility.getQueryParam(req, 'keyword');
-    const params: IUserQueryParams = { limit, page, keyword };
+    const isAdmin = ApiUtility.getQueryParam(req, 'isAdmin');
+
+    const params: IUserQueryParams = { limit, page, keyword, isAdmin };
     const data = await userService.list(params);
     return ApiResponse.result(
       res,

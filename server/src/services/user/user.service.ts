@@ -28,6 +28,7 @@ const where = { isDeleted: false };
 const create = async (params: ICreateUser) => {
   const item = new User();
   item.password = await Encryption.generateHash(params.password, 10);
+
   const userData = await getRepository(User).save({
     ...params,
     ...item,
@@ -108,9 +109,16 @@ const list = async (params: IUserQueryParams) => {
 
   if (params.keyword) {
     userRepo = userRepo.andWhere(
-      '(LOWER(user.firstName) LIKE LOWER(:keyword) OR LOWER(user.lastName) LIKE LOWER(:keyword))',
+      '(LOWER(user.fullname) LIKE LOWER(:keyword))',
       { keyword: `%${params.keyword}%` },
     );
+  }
+
+  if (params.isAdmin) {
+    console.log('is admin: ',params.isAdmin)
+    userRepo.andWhere('user.isAdmin = :isAdmin', {
+      isAdmin: params.isAdmin,
+    });
   }
 
   // Pagination

@@ -11,6 +11,7 @@ import { UserInformation } from "../pages/UserManagement/UserInformation";
 import { MyProfile } from "../pages/Setting/MyProfile";
 import { EggOrderDetail } from "../pages/EggApplication/EggOrderDetail";
 import { ProtectedRoute } from "./ProtectedRoute";
+import { UserCreateForm } from "../pages/UserManagement/UserCreateForm";
 
 const routes: RouteObject[] = [
   {
@@ -49,6 +50,10 @@ const routes: RouteObject[] = [
       {
         path: SCREEN_PATHS.USER.DETAIL,
         element: <UserInformation />,
+      },
+      {
+        path: SCREEN_PATHS.USER.CREATE,
+        element: <UserCreateForm />,
       },
       {
         path: SCREEN_PATHS.MY_PROFILE,

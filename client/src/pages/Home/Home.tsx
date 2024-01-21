@@ -12,9 +12,19 @@ import { GREEN } from "../../styled/color";
 import { LinkCustom, PageTitleText } from "../../styled/styled";
 import { IcBaselineAddCircleOutline } from "../../shared/icons/Icon";
 import { useDevice } from "../../hooks/useDevice";
+import { useEffect } from "react";
+import { getApi } from "../../lib/utils/fetch/fetchRequest";
 
 export const Home = () => {
   const { isMobile } = useDevice();
+
+  useEffect(() => {
+    async function fetchListUser() {
+      const res = await getApi("user/");
+      console.log(res);
+    }
+    fetchListUser();
+  });
   return (
     <Container>
       <Paper elevation={4} sx={{ padding: 2, mt: 3 }}>

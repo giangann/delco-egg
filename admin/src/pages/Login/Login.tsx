@@ -4,23 +4,19 @@ import { Link, useNavigate } from "react-router-dom";
 import { CustomInput } from "../../components/Input/CustomInput";
 import useAuth from "../../hooks/useAuth";
 import { useDevice } from "../../hooks/useDevice";
+import { IUserLogin } from "../../shared/types/user";
 
-interface ILogin {
-  email: string;
-  password: string;
-}
 export const Login = () => {
   const { isMobile } = useDevice();
   const { login } = useAuth();
   const navigate = useNavigate();
-  const handleLogin = async (value: ILogin) => {
-    const res = await login(value.email, value.password);
-    console.log(res);
-
+  const handleLogin = async (credentials: IUserLogin) => {
+    const res = await login(credentials);
+    console.log(res)
     navigate("/");
   };
 
-  const { register, handleSubmit } = useForm<ILogin>();
+  const { register, handleSubmit } = useForm<IUserLogin>();
 
   return (
     <Box>
@@ -39,7 +35,7 @@ export const Login = () => {
           <form onSubmit={handleSubmit(handleLogin)}>
             <Stack spacing={2} alignItems={"center"}>
               <CustomInput
-                {...register("email")}
+                {...register("username")}
                 required
                 placeholder="Tên đăng nhập"
               />

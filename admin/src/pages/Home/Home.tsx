@@ -8,8 +8,17 @@ import {
   styled,
 } from "@mui/material";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
+import { getApi } from "../../lib/utils/fetch/fetchRequest";
+import { useEffect } from "react";
 
 export const Home = () => {
+  useEffect(() => {
+    async function fetchListUser() {
+      const res = await getApi("user/", { isAdmin: '0' });
+      console.log(res);
+    }
+    fetchListUser();
+  });
   return (
     <Container>
       <Paper elevation={1} sx={{ padding: 2, mt: 8 }}>

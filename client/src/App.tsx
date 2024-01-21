@@ -7,8 +7,19 @@ import type {} from "@mui/x-date-pickers/themeAugmentation";
 import { RouterProvider } from "react-router-dom";
 import "./App.css";
 import { appRouters } from "./route/Route";
+import useAuth from "./hooks/useAuth";
+import { useEffect, useState } from "react";
 
 function App() {
+  const { checkUser } = useAuth();
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchUser = async () => {
+      await checkUser();
+      setLoading(false);
+    };
+    fetchUser();
+  }, []);
   return (
     <ThemeProvider theme={newTheme}>
       <LocalizationProvider
@@ -17,7 +28,7 @@ function App() {
         // }
         dateAdapter={AdapterDayjs}
       >
-        <RouterProvider router={appRouters} />
+        {loading ? "" : <RouterProvider router={appRouters} />}
       </LocalizationProvider>
     </ThemeProvider>
   );

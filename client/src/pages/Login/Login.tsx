@@ -1,25 +1,22 @@
 import { Box, Button, Paper, Stack, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CustomInput } from "../../components/Input/CustomInput";
+import useAuth from "../../hooks/useAuth";
 import { useDevice } from "../../hooks/useDevice";
-import { postApi } from "../../lib/utils/fetch/fetchRequest";
+import { IUserLogin } from "../../shared/types/user";
 
-interface ILogin {
-  email: string;
-  password: string;
-}
 export const Login = () => {
   const { isMobile } = useDevice();
-
-  const handleLogin = async (value: ILogin) => {
-    console.log("trying to login", value);
-
-    const res = await postApi("auth/login", value);
-    console.log(res);
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const handleLogin = async (credentials: IUserLogin) => {
+    const res = await login(credentials);
+    console.log(res)
+    navigate("/");
   };
 
-  const { register, handleSubmit } = useForm<ILogin>();
+  const { register, handleSubmit } = useForm<IUserLogin>();
 
   return (
     <Box>
@@ -38,7 +35,7 @@ export const Login = () => {
           <form onSubmit={handleSubmit(handleLogin)}>
             <Stack spacing={2} alignItems={"center"}>
               <CustomInput
-                {...register("email")}
+                {...register("username")}
                 required
                 placeholder="Tên đăng nhập"
               />

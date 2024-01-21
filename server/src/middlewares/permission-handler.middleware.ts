@@ -8,8 +8,12 @@ import IRequest from '../interfaces/IRequest';
 import ApiResponse from '../utilities/api-response.utility';
 
 export const isAdmin = () => {
-  return async (req: IRequest, res: express.Response, next: express.NextFunction) => {
-    if (req.user.username !== 'admin@gmail.com') {
+  return async (
+    req: IRequest,
+    res: express.Response,
+    next: express.NextFunction,
+  ) => {
+    if (!req.user.isAdmin) {
       return ApiResponse.error(res, httpStatusCodes.UNAUTHORIZED);
     }
     next();

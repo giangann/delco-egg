@@ -32,3 +32,17 @@ export const postApi = async (endpoint: string, data: any) => {
 
   return respond.json();
 };
+
+export const putApi = async (endpoint: string, data: any) => {
+  const fullUrl = baseURL + "/" + endpoint;
+  const respond = await fetch(fullUrl, {
+    method: "PUT", // or 'PUT'
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+    credentials: "include", // if don't have this, token can't be set to cookies
+  });
+
+  return respond.json();
+};

@@ -9,7 +9,6 @@ import { IPagination } from '../interfaces/common.interface';
 
 export default class ApiUtility {
   static getCookieFromRequest(req: Request, key: string) {
-    console.log(req.headers)
     if (req.headers.authorization) {
       return req.headers.authorization;
     }

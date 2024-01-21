@@ -29,6 +29,9 @@ export class User extends BaseEntity {
   @Column({ length: 255, nullable: false })
   fullname: string;
 
+  @Column({ default: false })
+  isAdmin: boolean;
+
   @Column({ length: 255 })
   company_name: string;
 

@@ -49,6 +49,27 @@ const newTheme = (theme: ThemeOptions | undefined) =>
           },
         },
       },
+      typography: {
+        fontFamily: "Montserrat",
+        h1: {
+          fontFamily: "Oswald",
+        },
+        h2: {
+          fontFamily: "Oswald",
+        },
+        h3: {
+          fontFamily: "Oswald",
+        },
+        h4: {
+          fontFamily: "Oswald",
+        },
+        h5: {
+          fontFamily: "Oswald",
+        },
+        h6: {
+          fontFamily: "Oswald",
+        },
+      },
       // components: {
       //   MuiPickersToolbar: {
       //     styleOverrides: {

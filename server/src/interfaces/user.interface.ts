@@ -10,6 +10,7 @@ export interface ICreateUser {
   phone_number: string;
   company_name?: string;
   note?: string;
+  isAdmin?: '0' | '1';
 }
 
 export interface ILoginUser {
@@ -25,8 +26,10 @@ export interface IUpdateUser {
   phone_number?: string;
   company_name?: string;
   note?: string;
+  isAdmin?: boolean;
 }
 
 export interface IUserQueryParams extends IBaseQueryParams {
   keyword?: string;
+  isAdmin?: boolean;
 }

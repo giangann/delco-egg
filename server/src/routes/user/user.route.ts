@@ -12,15 +12,11 @@ import { isAdmin } from '../../middlewares/permission-handler.middleware';
 
 const router = express.Router();
 
-router.get(
-  '/',
-  userController.list,
-);
+router.get('/', isAdmin(), userController.list);
 
-router.delete(
-  '/:id',
-  isAdmin(),
-  userController.remove,
-);
+router.delete('/:id', isAdmin(), userController.remove);
+router.put('/:id', isAdmin(), userController.update);
+
+router.post('/create', isAdmin(), userController.create);
 
 export default router;
