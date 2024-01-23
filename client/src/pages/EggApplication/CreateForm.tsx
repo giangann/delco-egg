@@ -1,10 +1,13 @@
 // import { CreateFormOpt1 } from "./CreateFormOpt1";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { CreateFormOpt2 } from "./CreateFormOpt2";
 import { Box, Button, Stack, Typography, styled } from "@mui/material";
-import { ChooseTime } from "./ChooseTime";
 import React, { useEffect } from "react";
+import { createPortal } from "react-dom";
+import { useForm } from "react-hook-form";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { IOrder } from "../../shared/types/order";
+import { ChooseTime } from "./ChooseTime";
 import { Confirm } from "./Confirm";
+import { CreateFormOpt2 } from "./CreateFormOpt2";
 
 const MAX_STEP = 3;
 
@@ -12,8 +15,11 @@ export const CreateForm = () => {
   const params = useSearchParams()[0];
   const currStep = Number(params.get("step"));
   const navigate = useNavigate();
+
+  const { register, ...useFormReturns } = useForm<IOrder>();
+
   const Steps: Record<string, React.ReactNode> = {
-    1: <CreateFormOpt2 />,
+    1: <CreateFormOpt2 register={register} {...useFormReturns} />,
     2: <ChooseTime />,
     3: <Confirm />,
   };
@@ -27,7 +33,6 @@ export const CreateForm = () => {
 
   return (
     <React.Fragment>
-      {/* <Box sx={{ position: "relative" }}> */}
       {Steps[currStep]}
 
       {/* Button navbar area */}
@@ -54,7 +59,7 @@ const CustomNavbar = ({ currStep }: { currStep: number }) => {
     }
   };
 
-  return (
+  return createPortal(
     <Box
       sx={{
         position: "sticky",
@@ -73,11 +78,13 @@ const CustomNavbar = ({ currStep }: { currStep: number }) => {
           <TextButton>{"< Prev"}</TextButton>
         </ButtonStep>
         <TextStep> {`${currStep}/${MAX_STEP}`}</TextStep>
+
         <ButtonStep disabled={!(currStep < MAX_STEP)} onClick={handleNext}>
           <TextButton>{"Next >"}</TextButton>
         </ButtonStep>
       </Stack>
-    </Box>
+    </Box>,
+    document.body
   );
 };
 

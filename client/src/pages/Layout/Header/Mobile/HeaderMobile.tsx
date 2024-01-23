@@ -1,9 +1,7 @@
 import { Box, IconButton, Typography, styled } from "@mui/material";
 import { useState } from "react";
 import { CustomDrawer } from "../../../../components/Drawer/CustomDrawer";
-import {
-  IconParkHamburgerButton
-} from "../../../../shared/icons/Icon";
+import { IconParkHamburgerButton } from "../../../../shared/icons/Icon";
 import { BACKGROUND_COLOR } from "../../../../styled/color";
 import {
   AlignCenterBox,
@@ -12,7 +10,7 @@ import {
 } from "../../../../styled/styled";
 import { items } from "../../../Home/Home";
 import { NotificationMenu } from "./NotificationMenu";
-import { UserProfileMenu } from "./UserProfileMenu";
+import { UserProfileMenu } from "../UserProfileMenu";
 
 export const HeaderMobile = () => {
   const [openDrawer, setOpenDrawer] = useState(false);

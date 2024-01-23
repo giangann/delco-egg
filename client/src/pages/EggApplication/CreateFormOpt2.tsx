@@ -6,50 +6,48 @@ import DialogTitle from "@mui/material/DialogTitle";
 import {
   Box,
   Button,
-  Container,
   Fab,
   Grid,
-  Paper,
   Stack,
   Typography,
   styled,
 } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { useState } from "react";
+import { UseFormReturn } from "react-hook-form";
 import { CustomInput } from "../../components/Input/CustomInput";
+import { Page } from "../../components/Page/Page";
 import {
   Option as CustomOption,
   CustomSelect,
 } from "../../components/Select/CustomSelect";
-import { useDevice } from "../../hooks/useDevice";
+import { randomizedListEgg } from "../../shared/constants/mockData";
 import { MaterialSymbolsClose } from "../../shared/icons/Icon";
-import { PageTitleText, alignCenterSx } from "../../styled/styled";
-import { eggPrices } from "../Home/Home";
-export const CreateFormOpt2 = () => {
-  const { isMobile } = useDevice();
+import { IEgg } from "../../shared/types/egg";
+import { IOrder } from "../../shared/types/order";
+import { alignCenterSx } from "../../styled/styled";
+
+type Step1Props = UseFormReturn<IOrder>;
+export const CreateFormOpt2 = (props: Step1Props) => {
+  const [data, setData] = useState(randomizedListEgg);
+
   return (
-    <Container>
-      <Paper
-        elevation={isMobile ? 0 : 1}
-        sx={{ padding: { xs: 0, sm: 2 }, mt: 3 }}
-      >
-        <PageTitleText mb={2}>Chọn loại và nhập số lượng</PageTitleText>
-
-        <Grid container spacing={1}>
-          {eggPrices.map((type) => (
-            <Grid item xs={6}>
-              <MixBox type={type.type} price={type.price} />
-            </Grid>
-          ))}
-        </Grid>
-      </Paper>
-
-      {/* <Paper elevation={1} sx={{ padding: 2 }}></Paper> */}
-    </Container>
+    <Page title="Chọn loại và nhập số lượng">
+      <Grid container spacing={1}>
+        {data.map((item, index) => (
+          <Grid item xs={6}>
+            <MixBox {...props} itemData={item} />
+          </Grid>
+        ))}
+      </Grid>
+    </Page>
   );
 };
 
-const MixBox = ({ type, price }: { type: string; price: number }) => {
+type MixBoxProps = Step1Props & { itemData: IEgg };
+const MixBox = ({ itemData, register, getValues, watch }: MixBoxProps) => {
+  const { price, name, onStock, weight } = itemData;
+
   const [offer, setOffer] = useState({ dealPrice: 0, numberOfEgg: 0 });
   const [active, setActive] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -59,6 +57,7 @@ const MixBox = ({ type, price }: { type: string; price: number }) => {
 
   const handleClose = () => {
     setOpenDialog(false);
+    console.log(getValues())
   };
 
   const handleAccept = () => {
@@ -119,12 +118,12 @@ const MixBox = ({ type, price }: { type: string; price: number }) => {
           </Fab>
         </Box>
       )}
-      <TypeText>{type}</TypeText>
+      <TypeText>{name}</TypeText>
 
       <Stack>
         <Row>
           <Text> Khối lượng: </Text>
-          <PriceText>{price / 10}</PriceText>
+          <PriceText>{weight}</PriceText>
         </Row>
         <Row>
           <Text> Giá đề xuất: </Text>
@@ -157,19 +156,14 @@ const MixBox = ({ type, price }: { type: string; price: number }) => {
             variant="contained"
             onClick={handleClickOpen}
           >
-            <TextButton color="black">Mua</TextButton>
+            <TextButton color="black">Chọn</TextButton>
           </Button>
         )}
       </Box>
 
       <BuyDialog open={openDialog} onClose={handleAccept}>
-        <DialogTitle
-          textAlign={"center"}
-          fontWeight={900}
-          fontSize={24}
-          id="alert-dialog-title"
-        >
-          {type.toUpperCase()}
+        <DialogTitle textAlign={"center"} fontWeight={900} fontSize={24}>
+          {name.toUpperCase()}
         </DialogTitle>
         <HelperText variant="caption">{`${price}đ / quả`}</HelperText>
         <HelperText variant="caption">{"500g / 10 quả"}</HelperText>
@@ -177,7 +171,7 @@ const MixBox = ({ type, price }: { type: string; price: number }) => {
         <DialogContent>
           <Stack mt={2} spacing={2}>
             <Box>
-              <Text> Giá mặc cả: </Text>
+              <LabelText> {'Chọn mức giá (mặc cả):'} </LabelText>
               <CustomSelect
                 slotProps={{ popper: { disablePortal: true } }}
                 style={{
@@ -186,6 +180,7 @@ const MixBox = ({ type, price }: { type: string; price: number }) => {
                   width: 150,
                   zIndex: 10,
                 }}
+                {...register("orders.0.deal_price")}
                 defaultValue={dealPriceOptions[0].value}
               >
                 {dealPriceOptions.map((price, index) => (
@@ -199,12 +194,13 @@ const MixBox = ({ type, price }: { type: string; price: number }) => {
             </Box>
 
             <Box>
-              <Text> Số lượng </Text>
+              <LabelText> Số lượng </LabelText>
               <CustomInput
                 style={{
                   width: 150,
                   textAlign: "center",
                 }}
+                {...register('orders.0.quantity')}
                 type="number"
                 placeholder="Nhập số lượng"
               />
@@ -260,6 +256,10 @@ const TextButton = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.up("sm")]: {},
 }));
 const Text = styled(Typography)(({ theme }) => ({
+  [theme.breakpoints.up("sm")]: {},
+}));
+const LabelText = styled(Typography)(({ theme }) => ({
+  fontSize:16,
   [theme.breakpoints.up("sm")]: {},
 }));
 const HelperText = styled(Typography)(({ theme }) => ({

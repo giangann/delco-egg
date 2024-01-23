@@ -9,7 +9,7 @@ import { BACKGROUND_COLOR } from "../../../../styled/color";
 import { LinkCustom } from "../../../../styled/styled";
 import { items } from "../../../Home/Home";
 import { NotificationMenu } from "./NotificationMenu";
-import { UserProfileMenu } from "./UserProfileMenu";
+import { UserProfileMenu } from "../UserProfileMenu";
 
 export const HeaderDesktop = () => {
   return (

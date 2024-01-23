@@ -1,16 +1,13 @@
 import {
   Box,
-  Container,
-  Paper,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
   Typography,
-  styled,
+  styled
 } from "@mui/material";
-import { useDevice } from "../../hooks/useDevice";
-import { PageTitleText } from "../../styled/styled";
+import { Page } from "../../components/Page/Page";
 
 interface Row {
   type: string;
@@ -20,53 +17,48 @@ interface Row {
 }
 
 export const Confirm = () => {
-  const { isMobile } = useDevice();
 
   return (
-    <Container sx={{ minHeight: "85vh" }}>
-      <Paper elevation={isMobile ? 0 : 1} sx={{ padding: { xs: 0, sm: 2 } }}>
-        <PageTitleText mt={3}>Xác nhận</PageTitleText>
-
-        {/* table */}
-        <Box mt={2}>
-          <HeadingText> 1. Đơn hàng </HeadingText>
-          <TableContainer>
-            <TableHead>
-              <TableRow>
-                <TableCell>Loại</TableCell>
-                <TableCell>{"Đơn giá (vnđ / 10 quả)"}</TableCell>
-                <TableCell>Số lượng</TableCell>
-                <TableCell> Thành tiền </TableCell>
-              </TableRow>
-            </TableHead>
-
-            {orderItems.map((row) => (
-              <TableRow key={row.type}>
-                <TableCell>{row.type}</TableCell>
-                <TableCell>{row.unitPrice}</TableCell>
-                <TableCell>{row.quantity}</TableCell>
-                <TableCell>{row.unitPrice * row.quantity}</TableCell>
-              </TableRow>
-            ))}
-            <TableRow sx={{ float: "right" }}>
-              <TableCell>
-                <TotalText fontWeight={900}>Tổng</TotalText>
-              </TableCell>
-              <TableCell align="right">
-                <TotalText>{subtotal(orderItems)}</TotalText>
-              </TableCell>
+    <Page title="Xác nhận">
+      {/* table */}
+      <Box mt={2}>
+        <HeadingText> 1. Đơn hàng </HeadingText>
+        <TableContainer>
+          <TableHead>
+            <TableRow>
+              <TableCell>Loại</TableCell>
+              <TableCell>{"Đơn giá (vnđ / 10 quả)"}</TableCell>
+              <TableCell>Số lượng</TableCell>
+              <TableCell> Thành tiền </TableCell>
             </TableRow>
-          </TableContainer>
-        </Box>
+          </TableHead>
 
-        {/* time */}
-        <Box mt={4} mb={2}>
-          <HeadingText mb={1}> 2. Thời gian </HeadingText>
-          <SubHeadingText mb={0.5}> - Ngày:{"  "}20 / 01 / 2024</SubHeadingText>
-          <SubHeadingText> - Giờ:{"  "}16 giờ 25 phút</SubHeadingText>
-        </Box>
-      </Paper>
-    </Container>
+          {orderItems.map((row) => (
+            <TableRow key={row.type}>
+              <TableCell>{row.type}</TableCell>
+              <TableCell>{row.unitPrice}</TableCell>
+              <TableCell>{row.quantity}</TableCell>
+              <TableCell>{row.unitPrice * row.quantity}</TableCell>
+            </TableRow>
+          ))}
+          <TableRow sx={{ float: "right" }}>
+            <TableCell>
+              <TotalText fontWeight={900}>Tổng</TotalText>
+            </TableCell>
+            <TableCell align="right">
+              <TotalText>{subtotal(orderItems)}</TotalText>
+            </TableCell>
+          </TableRow>
+        </TableContainer>
+      </Box>
+
+      {/* time */}
+      <Box mt={4} mb={2}>
+        <HeadingText mb={1}> 2. Thời gian </HeadingText>
+        <SubHeadingText mb={0.5}> - Ngày:{"  "}20 / 01 / 2024</SubHeadingText>
+        <SubHeadingText> - Giờ:{"  "}16 giờ 25 phút</SubHeadingText>
+      </Box>
+    </Page>
   );
 };
 

@@ -3,12 +3,14 @@ import { useForm } from "react-hook-form";
 import { CustomInput } from "../../components/Input/CustomInput";
 import { IUserCreate } from "../../shared/types/user";
 import { postApi } from "../../lib/utils/fetch/fetchRequest";
+import { toast } from "react-toastify";
 
 export const UserCreateForm = () => {
   const { register, handleSubmit } = useForm<IUserCreate>();
 
   const onSumbit = async (value: IUserCreate) => {
     const res = await postApi("user/create", value);
+    toast.success('sucess')
     console.log(res);
   };
   return (
@@ -19,7 +21,7 @@ export const UserCreateForm = () => {
             <CustomInput
               {...register("username")}
               placeholder="Tên đăng nhập"
-            />
+            />  
           </Grid>
 
           <Grid item xs={6} sm={3}>

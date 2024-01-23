@@ -1,11 +1,4 @@
-import {
-  Box,
-  Container,
-  Paper,
-  Stack,
-  Typography,
-  styled,
-} from "@mui/material";
+import { Box, Stack, Typography, styled } from "@mui/material";
 import {
   DateCalendar,
   MultiSectionDigitalClock,
@@ -14,8 +7,8 @@ import {
 } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
 import React from "react";
+import { Page } from "../../components/Page/Page";
 import { useDevice } from "../../hooks/useDevice";
-import { PageTitleText } from "../../styled/styled";
 
 export const ChooseTimeOpt1 = () => {
   const today = new Date();
@@ -24,56 +17,50 @@ export const ChooseTimeOpt1 = () => {
   const [time, setTime] = React.useState<Dayjs | null>(dayjs(today));
 
   return (
-    <Container>
-      <Paper elevation={isMobile ? 0 : 1} sx={{ padding: { xs: 0, sm: 2 } }}>
-        <PageTitleText mt={3}>Chọn thời gian lấy</PageTitleText>
-
-        <Box mt={3}>
-          {isMobile ? (
-            <Stack>
-              <Box>
-                <LabelText mb={2}>1. Chọn ngày</LabelText>
-                <LabelValueText>
-                  Đang chọn: {toReadableDate(day)}
-                </LabelValueText>
-                <DateCalendar
-                  view="day"
-                  value={day}
-                  onChange={(newValue) => setDay(newValue)}
-                />
-              </Box>
-              <Box mb={5}>
-                <Box>
-                  <LabelText>2. Chọn giờ</LabelText>
-                  {/* <LabelText>{toReadableTime(time)}</LabelText> */}
-                </Box>
-                <MultiSectionDigitalClock
-                  sx={{ justifyContent: "center" }}
-                  value={time}
-                  onChange={setTime}
-                  defaultValue={dayjs(today)}
-                  ampm={false}
-                />
-              </Box>
-            </Stack>
-          ) : (
-            <>
-              <StaticDatePicker
-                onChange={setDay}
+    <Page title="Chọn thời gian lấy">
+      <Box mt={3}>
+        {isMobile ? (
+          <Stack>
+            <Box>
+              <LabelText mb={2}>1. Chọn ngày</LabelText>
+              <LabelValueText>Đang chọn: {toReadableDate(day)}</LabelValueText>
+              <DateCalendar
+                view="day"
                 value={day}
-                defaultValue={dayjs(today)}
-                // defaultValue={dayjs("2022-04-17")}
+                onChange={(newValue) => setDay(newValue)}
               />
-              <StaticTimePicker
+            </Box>
+            <Box mb={5}>
+              <Box>
+                <LabelText>2. Chọn giờ</LabelText>
+                {/* <LabelText>{toReadableTime(time)}</LabelText> */}
+              </Box>
+              <MultiSectionDigitalClock
+                sx={{ justifyContent: "center" }}
                 value={time}
-                defaultValue={dayjs(today)}
                 onChange={setTime}
+                defaultValue={dayjs(today)}
+                ampm={false}
               />
-            </>
-          )}
-        </Box>
-      </Paper>
-    </Container>
+            </Box>
+          </Stack>
+        ) : (
+          <>
+            <StaticDatePicker
+              onChange={setDay}
+              value={day}
+              defaultValue={dayjs(today)}
+              // defaultValue={dayjs("2022-04-17")}
+            />
+            <StaticTimePicker
+              value={time}
+              defaultValue={dayjs(today)}
+              onChange={setTime}
+            />
+          </>
+        )}
+      </Box>
+    </Page>
   );
 };
 
