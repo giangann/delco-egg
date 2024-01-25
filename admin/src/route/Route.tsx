@@ -1,17 +1,19 @@
 import { RouteObject, createBrowserRouter } from "react-router-dom";
+import { EggOrderDetail } from "../pages/EggApplication/EggOrderDetail";
 import { EggOrderList } from "../pages/EggApplication/EggOrderList";
+import { CreateNewType } from "../pages/EggManagement/CreateNewType";
+import { ListType } from "../pages/EggManagement/ListType";
+import { UpdatePrice } from "../pages/EggManagement/UpdatePrice";
+import { UpdateQuantity } from "../pages/EggManagement/UpdateQuantity";
 import { Home } from "../pages/Home/Home";
 import { Layout } from "../pages/Layout/Layout";
 import { Login } from "../pages/Login/Login";
-import SCREEN_PATHS from "../shared/constants/screenPaths";
-import { UpdatePrice } from "../pages/EggManagement/UpdatePrice";
-import { UpdateQuantity } from "../pages/EggManagement/UpdateQuantity";
-import { UserList } from "../pages/UserManagement/UserList";
-import { UserInformation } from "../pages/UserManagement/UserInformation";
 import { MyProfile } from "../pages/Setting/MyProfile";
-import { EggOrderDetail } from "../pages/EggApplication/EggOrderDetail";
-import { ProtectedRoute } from "./ProtectedRoute";
 import { UserCreateForm } from "../pages/UserManagement/UserCreateForm";
+import { UserInformation } from "../pages/UserManagement/UserInformation";
+import { UserList } from "../pages/UserManagement/UserList";
+import SCREEN_PATHS from "../shared/constants/screenPaths";
+import { ProtectedRoute } from "./ProtectedRoute";
 
 const routes: RouteObject[] = [
   {
@@ -34,6 +36,14 @@ const routes: RouteObject[] = [
       {
         path: SCREEN_PATHS.APPLICATION.DETAIL,
         element: <EggOrderDetail />,
+      },
+      {
+        path: SCREEN_PATHS.EGG.LIST_TYPE,
+        element: <ListType />,
+      },
+      {
+        path: SCREEN_PATHS.EGG.CREATE_TYPE,
+        element: <CreateNewType />,
       },
       {
         path: SCREEN_PATHS.EGG.UPDATE_PRICE,

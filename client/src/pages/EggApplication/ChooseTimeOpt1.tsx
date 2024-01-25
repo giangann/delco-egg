@@ -9,13 +9,18 @@ import dayjs, { Dayjs } from "dayjs";
 import React from "react";
 import { Page } from "../../components/Page/Page";
 import { useDevice } from "../../hooks/useDevice";
+import { UseFormReturn } from "react-hook-form";
+import { IOrder } from "../../shared/types/order";
 
-export const ChooseTimeOpt1 = () => {
+type Step2Props = UseFormReturn<IOrder>;
+
+export const ChooseTimeOpt1 = ({ setValue, getValues }: Step2Props) => {
   const today = new Date();
   const { isMobile } = useDevice();
   const [day, setDay] = React.useState<Dayjs | null>(dayjs(today));
   const [time, setTime] = React.useState<Dayjs | null>(dayjs(today));
 
+  console.log(getValues());
   return (
     <Page title="Chọn thời gian lấy">
       <Box mt={3}>
@@ -23,11 +28,18 @@ export const ChooseTimeOpt1 = () => {
           <Stack>
             <Box>
               <LabelText mb={2}>1. Chọn ngày</LabelText>
-              <LabelValueText>Đang chọn: {toReadableDate(day)}</LabelValueText>
+              {/* <LabelValueText>Đang chọn: {toReadableDate(day)}</LabelValueText> */}
+              <LabelValueText>
+                Đang chọn: {day?.format("DD/MM/YYYY")}
+              </LabelValueText>
+
               <DateCalendar
                 view="day"
                 value={day}
-                onChange={(newValue) => setDay(newValue)}
+                onChange={(newValue) => {
+                  setDay(newValue);
+                  setValue("date", newValue.format(""));
+                }}
               />
             </Box>
             <Box mb={5}>
@@ -38,7 +50,9 @@ export const ChooseTimeOpt1 = () => {
               <MultiSectionDigitalClock
                 sx={{ justifyContent: "center" }}
                 value={time}
-                onChange={setTime}
+                onChange={(newValue) => {
+                  setTime(newValue), setValue("time", newValue.format(""));
+                }}
                 defaultValue={dayjs(today)}
                 ampm={false}
               />

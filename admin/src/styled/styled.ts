@@ -19,13 +19,18 @@ export const BoxAbsoluteFull = styled(Box)({
   width: "100%",
   height: "100%",
 });
+export const BoxAbsoluteFullAlignTopRight = styled(BoxAbsoluteFull)({
+  display: "flex",
+  alignItems: "flex-start",
+  justifyContent: "flex-end",
+});
 
 export const BoxAbsoluteFullAlignCenter = styled(BoxAbsoluteFull)({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
 });
-export const BoxAbsoluteFullAlignRight= styled(BoxAbsoluteFull)({
+export const BoxAbsoluteFullAlignRight = styled(BoxAbsoluteFull)({
   display: "flex",
   alignItems: "center",
   justifyContent: "flex-end",
@@ -38,6 +43,10 @@ export const AlignCenterBox = styled(Box)({
 
 export const FlexDefaultBox = styled(Box)({
   display: "flex",
+});
+
+export const BoxFlexEnd = styled(FlexDefaultBox)({
+  justifyContent: "flex-end",
 });
 
 // Link
@@ -56,3 +65,9 @@ export const alignCenterSx = {
   alignItems: "center",
   justifyContent: "center",
 };
+
+// BUTTON
+export const TextButton = styled(Typography)(({ theme }) => ({
+  textTransform: "none",
+  [theme.breakpoints.up("sm")]: {},
+}));

@@ -14,7 +14,7 @@ import { useEffect } from "react";
 export const Home = () => {
   useEffect(() => {
     async function fetchListUser() {
-      const res = await getApi("user/", { isAdmin: '0' });
+      const res = await getApi("user/", { isAdmin: "0" });
       console.log(res);
     }
     fetchListUser();
@@ -77,23 +77,39 @@ const PriceText = styled(Typography)(({ theme }) => ({
   textAlign: "center",
   [theme.breakpoints.up("sm")]: {},
 }));
-type Item = {
+export type Item = {
   path: string;
   text: string;
+  children?: Item[];
 };
 export const items: Item[] = [
   {
-    path: SCREEN_PATHS.EGG.UPDATE_PRICE,
-    text: "Cập nhật giá trứng",
-  },
-  {
     path: SCREEN_PATHS.APPLICATION.LIST,
-    text: "Quản lý đặt trứng",
+    text: "Quản lý đơn hàng",
   },
   {
-    path: SCREEN_PATHS.EGG.UPDATE_QUANTITY,
-    text: "Cập nhật số lượng trứng",
+    path: "#",
+    text: "Quản lý trứng",
+    children: [
+      {
+        path: SCREEN_PATHS.EGG.UPDATE_PRICE,
+        text: "Cập nhật giá trứng",
+      },
+      {
+        path: SCREEN_PATHS.EGG.UPDATE_QUANTITY,
+        text: "Cập nhật số lượng trứng",
+      },
+      {
+        path: SCREEN_PATHS.EGG.LIST_TYPE,
+        text: "Danh sách loại trứng",
+      },
+      {
+        path: SCREEN_PATHS.EGG.CREATE_TYPE,
+        text: "Tạo mới loại trứng",
+      },
+    ],
   },
+
   {
     path: SCREEN_PATHS.USER.LIST,
     text: "Quản lý người dùng",

@@ -36,7 +36,7 @@ export const CreateFormOpt2 = (props: Step1Props) => {
       <Grid container spacing={1}>
         {data.map((item, index) => (
           <Grid item xs={6}>
-            <MixBox {...props} itemData={item} />
+            <MixBox {...props} itemData={item} itemId={index} />
           </Grid>
         ))}
       </Grid>
@@ -44,9 +44,17 @@ export const CreateFormOpt2 = (props: Step1Props) => {
   );
 };
 
-type MixBoxProps = Step1Props & { itemData: IEgg };
-const MixBox = ({ itemData, register, getValues, watch }: MixBoxProps) => {
-  const { price, name, onStock, weight } = itemData;
+type MixBoxProps = Step1Props & { itemData: IEgg; itemId: number };
+const MixBox = ({
+  itemData,
+  itemId,
+  register,
+  getValues,
+  setValue,
+  watch,
+  control,
+}: MixBoxProps) => {
+  const { price, type_name, onStock, weight } = itemData;
 
   const [offer, setOffer] = useState({ dealPrice: 0, numberOfEgg: 0 });
   const [active, setActive] = useState(false);
@@ -57,7 +65,7 @@ const MixBox = ({ itemData, register, getValues, watch }: MixBoxProps) => {
 
   const handleClose = () => {
     setOpenDialog(false);
-    console.log(getValues())
+    console.log(getValues());
   };
 
   const handleAccept = () => {
@@ -118,7 +126,7 @@ const MixBox = ({ itemData, register, getValues, watch }: MixBoxProps) => {
           </Fab>
         </Box>
       )}
-      <TypeText>{name}</TypeText>
+      <TypeText>{type_name}</TypeText>
 
       <Stack>
         <Row>
@@ -163,7 +171,7 @@ const MixBox = ({ itemData, register, getValues, watch }: MixBoxProps) => {
 
       <BuyDialog open={openDialog} onClose={handleAccept}>
         <DialogTitle textAlign={"center"} fontWeight={900} fontSize={24}>
-          {name.toUpperCase()}
+          {type_name.toUpperCase()}
         </DialogTitle>
         <HelperText variant="caption">{`${price}đ / quả`}</HelperText>
         <HelperText variant="caption">{"500g / 10 quả"}</HelperText>
@@ -171,16 +179,22 @@ const MixBox = ({ itemData, register, getValues, watch }: MixBoxProps) => {
         <DialogContent>
           <Stack mt={2} spacing={2}>
             <Box>
-              <LabelText> {'Chọn mức giá (mặc cả):'} </LabelText>
+              <LabelText> {"Chọn mức giá (mặc cả):"} </LabelText>
+
               <CustomSelect
-                slotProps={{ popper: { disablePortal: true } }}
+                onChange={(value) =>
+                  // @ts-ignore
+                  setValue(`orders.${itemId}.deal_price`, event?.target?.value)
+                }
+                slotProps={{
+                  popper: { disablePortal: true },
+                }}
                 style={{
                   backgroundColor: !active ? grey["300"] : "",
                   color: !active ? grey["600"] : "",
                   width: 150,
                   zIndex: 10,
                 }}
-                {...register("orders.0.deal_price")}
                 defaultValue={dealPriceOptions[0].value}
               >
                 {dealPriceOptions.map((price, index) => (
@@ -188,6 +202,9 @@ const MixBox = ({ itemData, register, getValues, watch }: MixBoxProps) => {
                     sx={{ fontWeight: index ? 500 : 900 }}
                     key={index}
                     value={price.value}
+                    slotProps={{
+                      root: { value: price.value },
+                    }}
                   >{`${price.value}`}</CustomOption>
                 ))}
               </CustomSelect>
@@ -200,7 +217,13 @@ const MixBox = ({ itemData, register, getValues, watch }: MixBoxProps) => {
                   width: 150,
                   textAlign: "center",
                 }}
-                {...register('orders.0.quantity')}
+                onChange={(event) =>
+                  setValue(
+                    `orders.${itemId}.quantity`,
+                    Number(event.target.value)
+                  )
+                }
+                // {...register(`orders.${itemId}.quantity`)}
                 type="number"
                 placeholder="Nhập số lượng"
               />
@@ -259,7 +282,7 @@ const Text = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.up("sm")]: {},
 }));
 const LabelText = styled(Typography)(({ theme }) => ({
-  fontSize:16,
+  fontSize: 16,
   [theme.breakpoints.up("sm")]: {},
 }));
 const HelperText = styled(Typography)(({ theme }) => ({

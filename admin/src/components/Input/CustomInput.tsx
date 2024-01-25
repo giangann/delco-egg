@@ -37,7 +37,7 @@ const InputElement = styled("input")(
   width:320px;
   max-width: 100%;
   box-sizing:border-box;
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: Montserrat;
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.5;
@@ -64,6 +64,11 @@ const InputElement = styled("input")(
   // firefox
   &:focus-visible {
     outline: 0;
+  }
+
+  @media only screen and (min-width: 768px){
+    /*Tablets [601px -> 1200px]*/
+  font-size: 1rem;
   }
 `
 );

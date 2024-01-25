@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { IOrder } from "../../shared/types/order";
-import { ChooseTime } from "./ChooseTime";
+import { ChooseTimeOpt1 } from "./ChooseTimeOpt1";
 import { Confirm } from "./Confirm";
 import { CreateFormOpt2 } from "./CreateFormOpt2";
 
@@ -16,12 +16,24 @@ export const CreateForm = () => {
   const currStep = Number(params.get("step"));
   const navigate = useNavigate();
 
-  const { register, ...useFormReturns } = useForm<IOrder>();
+  const { register, control, ...useFormReturns } = useForm<IOrder>();
 
   const Steps: Record<string, React.ReactNode> = {
-    1: <CreateFormOpt2 register={register} {...useFormReturns} />,
-    2: <ChooseTime />,
-    3: <Confirm />,
+    1: (
+      <CreateFormOpt2
+        register={register}
+        control={control}
+        {...useFormReturns}
+      />
+    ),
+    2: (
+      <ChooseTimeOpt1
+        register={register}
+        control={control}
+        {...useFormReturns}
+      />
+    ),
+    3: <Confirm register={register} control={control} {...useFormReturns} />,
   };
 
   useEffect(() => {

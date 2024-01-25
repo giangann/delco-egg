@@ -13,5 +13,5 @@ export class Egg extends BaseEntity {
   type_name: string;
 
   @Column({ nullable: false })
-  weight: number;
+  weight: string;
 }

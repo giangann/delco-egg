@@ -29,6 +29,7 @@ const create: IController = async (req, res) => {
 const update: IController = async (req, res) => {
   try {
     const params: IUpdateEgg = {
+      id: parseInt(req.params.id),
       ...req.body,
     };
     await eggService.update(params);

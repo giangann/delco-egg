@@ -36,6 +36,8 @@ const SCREEN_PATHS = {
     DETAIL: `${SLUG.USER}/chi-tiet/:id`,
   },
   EGG: {
+    LIST_TYPE: `${SLUG.EGG}/danh-sach-cac-loai`,
+    CREATE_TYPE: `${SLUG.EGG}/tao-loai-moi`,
     UPDATE_PRICE: `${SLUG.EGG}/cap-nhat-gia`,
     UPDATE_QUANTITY: `${SLUG.EGG}/cap-nhat-so-luong`,
     UPDATE_TYPE: `${SLUG.EGG}/cap-nhat-mix`,

@@ -1,6 +1,6 @@
 export interface IEgg {
   id: number;
-  name: string;
+  type_name: string;
   weight: number;
   price: number;
   onStock: number;
