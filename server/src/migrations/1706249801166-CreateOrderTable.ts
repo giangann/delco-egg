@@ -4,15 +4,13 @@ import {
   Table,
   TableForeignKey,
 } from 'typeorm';
-
-export class CreateEggPriceAndQtyTable1705749450064
+import APP_CONSTANTS from '../constants/application';
+export class CreateOrderTable1706249801166
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'egg_price_qty',
-        // columns: egg_id, type_name, price_1, price_2, price_3, quantity, date
-        // price can be null because bash script will run on midnight to update quantity (can be edit later)
+        name: 'order',
         columns: [
           {
             name: 'id',
@@ -22,50 +20,52 @@ export class CreateEggPriceAndQtyTable1705749450064
             generationStrategy: 'increment',
           },
           {
-            name: 'egg_id',
+            name: 'user_id',
             type: 'int',
-            isUnique: true,
+            isNullable: false,
           },
           {
-            name: 'price_1',
+            name: 'status',
             type: 'int',
-            isNullable: true,
-          },
-          {
-            name: 'price_2',
-            type: 'int',
-            isNullable: true,
-          },
-          {
-            name: 'price_3',
-            type: 'int',
-            isNullable: true,
-          },
-          {
-            name: 'quantity',
-            type: 'int',
-            isNullable: true,
+            isNullable: false,
+            default: APP_CONSTANTS.status.WAITING_APPROVAL,
           },
           {
             name: 'date',
+            type: 'date',
+            isNullable: false,
+          },
+          {
+            name: 'time',
+            type: 'time',
+            isNullable: false,
+          },
+          {
+            name: 'createdAt',
+            type: 'datetime',
+            default: 'CURRENT_TIMESTAMP',
+          },
+          {
+            name: 'updatedAt',
             type: 'datetime',
             default: 'CURRENT_TIMESTAMP',
           },
         ],
       }),
     );
+
     await queryRunner.createForeignKey(
-      'egg_price_qty',
+      'order',
       new TableForeignKey({
-        columnNames: ['egg_id'],
+        columnNames: ['user_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'egg',
+        referencedTableName: 'user',
         onDelete: 'CASCADE',
       }),
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('egg_price_qty');
+    await queryRunner.dropTable('order');
   }
 }

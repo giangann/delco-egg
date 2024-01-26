@@ -1,18 +1,17 @@
-import { NextFunction, Request, Response } from 'express';
+import IController from 'IController';
+import { IDeleteById } from 'common.interface';
+import { IUpdateEgg } from 'egg.interface';
 import httpStatusCodes from 'http-status-codes';
+import constants from '../../constants';
 import eggService from '../../services/egg/egg.service';
 import ApiResponse from '../../utilities/api-response.utility';
-import IController from 'IController';
-import { IUpdateEgg } from 'egg.interface';
-import { IDeleteById } from 'common.interface';
-import constants from '../../constants';
 
 const create: IController = async (req, res) => {
   try {
     const params = req.body;
     const eggCreateResult = await eggService.create(params);
 
-    ApiResponse.result(res, eggCreateResult);
+    ApiResponse.result(res, eggCreateResult, httpStatusCodes.CREATED);
   } catch (e) {
     if ((e.code = constants.ERROR_CODE.DUPLICATED)) {
       return ApiResponse.error(

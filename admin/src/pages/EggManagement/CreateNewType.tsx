@@ -14,14 +14,7 @@ import { toast } from "react-toastify";
 import { TextButton } from "../../styled/styled";
 import { postApi } from "../../lib/utils/fetch/fetchRequest";
 
-function fakeDelay(seconds: number): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      console.log("time out run");
-      resolve();
-    }, seconds * 1000);
-  });
-}
+
 export const CreateNewType = () => {
   const {
     register,
