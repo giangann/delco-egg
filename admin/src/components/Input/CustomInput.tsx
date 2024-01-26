@@ -31,7 +31,7 @@ const grey = {
   900: "#1C2025",
 };
 
-const InputElement = styled("input")(
+export const InputElement = styled("input")(
   ({ theme }) => `
   // text-align:center;
   width:320px;
