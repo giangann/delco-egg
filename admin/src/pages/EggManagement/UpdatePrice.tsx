@@ -17,7 +17,6 @@ import { getApi, postApi } from "../../lib/utils/fetch/fetchRequest";
 import { EggPriceQty } from "../../shared/types/egg-price-qty";
 import { GREEN } from "../../styled/color";
 import { BoxFlexEnd } from "../../styled/styled";
-import { fakeDelay } from "../../shared/helper";
 
 export const UpdatePrice = () => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -35,7 +34,6 @@ export const UpdatePrice = () => {
   const onSubmit = async (data: EggPriceQty[]) => {
     try {
       const res = await postApi("egg-price-qty/update-day-price", data);
-      await fakeDelay(2);
       if (res.success) {
         setRerender(rerender + 1);
         toast.success("Cap nhat thanh cong!");
