@@ -31,6 +31,9 @@ export class EggPriceQty {
   @Column({ nullable: true })
   price_3: number;
 
+  @Column({ nullable: true })
+  quantity: number;
+
   @Column({ nullable: false, default: 'CURRENT_TIMESTAMP' })
   date: string;
 }

@@ -5,6 +5,7 @@ export interface IEggPriceQty {
   price_1?: number;
   price_2?: number;
   price_3?: number;
+  quantity?: number;
   date?: string;
 }
 

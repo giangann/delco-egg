@@ -51,4 +51,26 @@ const updateDayPrice: IController = async (req, res) => {
   }
 };
 
-export default { list, update, updateDayPrice };
+const updateDayQuantity: IController = async (req, res) => {
+  try {
+    console.log(req.body);
+    console.log(Object.keys(req.body));
+
+    const updateObject = req.body;
+    const keys = Object.keys(req.body);
+
+    keys.forEach(async (key, index) => {
+      let params: IUpdateEggPriceQty = {
+        egg_id: updateObject[key].egg_id,
+        quantity: updateObject[key].quantity,
+      };
+      await eggPriceQtyService.update(params);
+    });
+
+    return ApiResponse.result(res, updateObject, httpStatusCodes.OK);
+  } catch (e) {
+    ApiResponse.exception(res, e);
+  }
+};
+
+export default { list, update, updateDayPrice, updateDayQuantity };

@@ -11,4 +11,10 @@ eggPriceQtyRoute.post(
   eggPriceQtyController.updateDayPrice,
 );
 
+eggPriceQtyRoute.post(
+  '/update-day-quantity',
+  isAdmin(),
+  eggPriceQtyController.updateDayQuantity,
+);
+
 export default eggPriceQtyRoute;

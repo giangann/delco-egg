@@ -13,7 +13,7 @@ export const Page = ({ title, children }: PageProps) => {
     <Container>
       <Paper
         elevation={isMobile ? 0 : 1}
-        sx={{ padding: { xs: 0, sm: 2 }, mt: 3 }}
+        sx={{ paddingY: { xs: 0, sm: 2 }, mt: 3 }}
       >
         <PageTitleText mb={2}>{title}</PageTitleText>
 
