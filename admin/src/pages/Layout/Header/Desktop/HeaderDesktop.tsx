@@ -1,19 +1,18 @@
 import {
   Box,
   Container,
-  IconButton,
   Paper,
   Stack,
   Typography,
-  styled,
+  styled
 } from "@mui/material";
+import { useState } from "react";
+import { IcBaselineArrowDropDown } from "../../../../shared/icons/Icon";
 import { BACKGROUND_COLOR, GREEN } from "../../../../styled/color";
 import { LinkCustom } from "../../../../styled/styled";
 import { Item, items } from "../../../Home/Home";
 import { NotificationMenu } from "./NotificationMenu";
 import { UserProfileMenu } from "./UserProfileMenu";
-import { useState } from "react";
-import { IcBaselineArrowDropDown } from "../../../../shared/icons/Icon";
 
 const DEFAULT_POS = -1;
 export const HeaderDesktop = () => {

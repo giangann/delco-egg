@@ -8,6 +8,7 @@ export const PageTitleText = styled(Typography)(({ theme }) => ({
   fontSize: 28,
   fontWeight: 900,
   textAlign: "center",
+  lineHeight: 1.25,
   [theme.breakpoints.up("sm")]: {},
 }));
 

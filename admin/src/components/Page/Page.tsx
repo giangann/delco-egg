@@ -15,7 +15,7 @@ export const Page = ({ title, children }: PageProps) => {
         elevation={isMobile ? 0 : 1}
         sx={{ paddingY: { xs: 0, sm: 2 }, mt: 3 }}
       >
-        <PageTitleText mb={2}>{title}</PageTitleText>
+        <PageTitleText mb={4}>{title}</PageTitleText>
 
         {children}
       </Paper>
