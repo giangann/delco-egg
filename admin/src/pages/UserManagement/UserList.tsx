@@ -1,46 +1,44 @@
-import { useEffect, useState } from "react";
 import { Page } from "../../components/Page/Page";
-import { CustomTable, StrictField } from "../../components/Table/Customtable";
-import { getApi } from "../../lib/utils/fetch/fetchRequest";
+import { CustomTableWithFilter } from "../../components/Table/CustomTableWithFilter";
+import { StrictField } from "../../components/Table/Customtable";
+import SCREEN_PATHS from "../../shared/constants/screenPaths";
 import { IUserList } from "../../shared/types/user";
 
 const fields: StrictField<IUserList>[] = [
   {
     header: "Id",
     fieldKey: "id",
+    width: 50,
   },
   {
-    header: "User name",
+    header: "Tên đăng nhập",
     fieldKey: "username",
+    width: 250,
   },
   {
-    header: "Phone number",
+    header: "Số điện thoại",
     fieldKey: "phone_number",
+    width: 250,
   },
   {
-    header: "Full name",
+    header: "Họ tên",
     fieldKey: "fullname",
+    width: 250,
   },
   {
-    header: "Company",
+    header: "Công ty",
     fieldKey: "company_name",
+    width: 250,
   },
 ];
 export const UserList = () => {
-  const [listUsers, setListUsers] = useState<IUserList[]>([]);
-
-  useEffect(() => {
-    async function fetchUser() {
-      const res = await getApi("user");
-      setListUsers(res.data);
-    }
-    fetchUser();
-  }, []);
   return (
     <Page title="Danh sách người dùng">
-      <CustomTable fields={fields} data={listUsers} />
+      <CustomTableWithFilter
+        createRoute={SCREEN_PATHS.USER.CREATE}
+        fields={fields}
+        apiEndPoint="user"
+      />
     </Page>
   );
 };
-
-// const eggOrderData: EggForm&StrictField = listOrders.map((order)=>{...order,header: })

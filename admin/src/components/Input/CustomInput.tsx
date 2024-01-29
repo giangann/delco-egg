@@ -61,6 +61,11 @@ export const InputElement = styled("input")(
     };
   }
 
+  &:disabled {
+    background-color: #cccccc;
+    color: #1c2025bd
+  }
+
   // firefox
   &:focus-visible {
     outline: 0;

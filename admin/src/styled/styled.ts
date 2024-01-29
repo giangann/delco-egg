@@ -86,5 +86,6 @@ export const ButtonResponsive = styled(Button)(({ theme }) => ({
   textTransform: "none",
   [theme.breakpoints.up("sm")]: {
     fontSize: 16,
+    padding: "6px 16px",
   },
 }));

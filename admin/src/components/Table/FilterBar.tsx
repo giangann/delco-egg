@@ -1,27 +1,38 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Stack } from "@mui/material";
 import { useRef, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { useDevice } from "../../hooks/useDevice";
-import { IcBaselineFilterAlt } from "../../shared/icons/Icon";
+import {
+  IcBaselineFilterAlt,
+  MaterialSymbolsArrowCircleRight,
+} from "../../shared/icons/Icon";
 import { UnknownObj } from "../../shared/types/base";
 import { GREEN } from "../../styled/color";
-import { BoxFlexEnd, ButtonResponsive, InputLabelText } from "../../styled/styled";
+import {
+  BoxFlexEnd,
+  ButtonResponsive,
+  InputLabelText,
+} from "../../styled/styled";
 import { CustomInput } from "../Input/CustomInput";
 import { StrictField } from "./Customtable";
+import { useNavigate } from "react-router-dom";
 
 type FilterBarProps<TData extends UnknownObj> = {
   onResetParams: () => void;
   fields: StrictField<TData>[];
+  createRoute?: string;
 } & UseFormReturn;
 
 export const FilterBar = <TData extends UnknownObj>({
   onResetParams,
   fields,
   register,
+  createRoute,
 }: FilterBarProps<TData>) => {
   const [open, setOpen] = useState(false);
   const filterRef = useRef(null);
   const { isMobile } = useDevice();
+  const navigate = useNavigate();
   const handleOpen = () => {
     if (filterRef.current !== null) {
       if (
@@ -42,26 +53,44 @@ export const FilterBar = <TData extends UnknownObj>({
   };
   return (
     <>
-      <ButtonResponsive
-        sx={{ mb: 2 }}
-        onClick={handleOpen}
-        variant={open ? "contained" : "outlined"}
-        endIcon={
-          <IcBaselineFilterAlt
-            color={open ? "white" : GREEN["500"]}
-            style={{ fontSize: isMobile ? 16 : 24 }}
-          />
-        }
+      <Stack
+        direction="row"
+        justifyContent={"space-between"}
+        alignItems={"center"}
+        mb={2}
       >
-        Lọc
-      </ButtonResponsive>
+        <ButtonResponsive
+          onClick={handleOpen}
+          variant={open ? "contained" : "outlined"}
+          endIcon={
+            <IcBaselineFilterAlt
+              color={open ? "white" : GREEN["500"]}
+              style={{ fontSize: isMobile ? 16 : 24 }}
+            />
+          }
+        >
+          Lọc
+        </ButtonResponsive>
+        {createRoute && (
+          <ButtonResponsive
+            onClick={() => {
+              navigate(createRoute);
+            }}
+            variant="contained"
+            endIcon={
+              <MaterialSymbolsArrowCircleRight
+                color={"white"}
+                style={{ fontSize: isMobile ? 16 : 24 }}
+              />
+            }
+          >
+            Tạo mới
+          </ButtonResponsive>
+        )}
+      </Stack>
 
-      {/* {open && (
-        
-      )} */}
       <Box
         sx={{
-          // backgroundColor: "#cccccc",
           border: `1px solid ${GREEN["500"]}`,
           boxSizing: "border-box",
           transition: "all 0.5s",
