@@ -107,15 +107,28 @@ const list = async (params: IUserQueryParams) => {
     isDeleted: false,
   });
 
-  if (params.keyword) {
-    userRepo = userRepo.andWhere(
-      '(LOWER(user.fullname) LIKE LOWER(:keyword))',
-      { keyword: `%${params.keyword}%` },
+  if (params.username) {
+    userRepo.andWhere('(LOWER(user.username) LIKE LOWER(:username))', {
+      username: `%${params.username}%`,
+    });
+  }
+  if (params.company_name) {
+    userRepo.andWhere(
+      '(LOWER(user.company_name) LIKE LOWER(:company_name))',
+      { company_name: `%${params.company_name}%` },
     );
   }
-
+  if (params.fullname) {
+    userRepo.andWhere('(LOWER(user.fullname) LIKE LOWER(:fullname))', {
+      fullname: `%${params.fullname}%`,
+    });
+  }
+  if (params.phone_number) {
+    userRepo.andWhere('(LOWER(user.phone_number) LIKE LOWER(:phone_number))', {
+      phone_number: `%${params.phone_number}%`,
+    });
+  }
   if (params.isAdmin) {
-    console.log('is admin: ',params.isAdmin)
     userRepo.andWhere('user.isAdmin = :isAdmin', {
       isAdmin: params.isAdmin,
     });

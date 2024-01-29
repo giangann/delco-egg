@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Stack,
   TableCell,
@@ -7,6 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { ChangeEventHandler } from "react";
+import { BoxFlexEnd } from "../../styled/styled";
 
 interface CustomPagiProps {
   totalPage: number;
@@ -31,42 +33,36 @@ export const CustomPagi = ({
 }: CustomPagiProps) => {
   const defaultOptions = [3, 6, 9, 12];
 
-  const handleChange = (
-    event: ChangeEventHandler<HTMLSelectElement>,
-    value: number
-  ) => {
-    onPerPageChange(value);
+  const handleChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
+    const newPerPage = parseInt(event.target.value);
+    onPerPageChange(newPerPage);
   };
   return (
-    <TableFooter>
-      <TableRow>
-        {/* <TablePagination> */}
-        <TableCell>
-          <React.Fragment>
-            <Stack direction={"row"} alignItems={"center"}>
-              <Button disabled={currPage === 1} onClick={onGoToStart}>
-                {"|<"}
-              </Button>
-              <Button disabled={currPage === 1} onClick={onPrevPage}>
-                {"<"}
-              </Button>
-              <Typography>Curr: {`${currPage}/${totalPage}`}</Typography>
-              <Button disabled={currPage === totalPage} onClick={onNextPage}>
-                {">"}
-              </Button>
-              <select defaultValue={perpage} onChange={handleChange}>
-                {defaultOptions.map((option) => (
-                  <option>{option}</option>
-                ))}
-              </select>
-              <Button disabled={currPage === totalPage} onClick={onGoToEnd}>
-                {"|>"}
-              </Button>
-            </Stack>
-          </React.Fragment>
-        </TableCell>
-        {/* </TablePagination> */}
-      </TableRow>
-    </TableFooter>
+    <BoxFlexEnd>
+      <React.Fragment>
+        <Stack direction={"row"} alignItems={"center"} sx={{ py: 2 }}>
+          <Button disabled={currPage === 1} onClick={onGoToStart}>
+            {"|<"}
+          </Button>
+          <Button disabled={currPage === 1} onClick={onPrevPage}>
+            {"<"}
+          </Button>
+          <Typography fontSize={{ xs: 14, sm: 15 }}>
+            Trang: {`${currPage}/${totalPage}`}
+          </Typography>
+          <Button disabled={currPage === totalPage} onClick={onNextPage}>
+            {">"}
+          </Button>
+          <select defaultValue={perpage} onChange={handleChange}>
+            {defaultOptions.map((option) => (
+              <option value={option}>{option}</option>
+            ))}
+          </select>
+          <Button disabled={currPage === totalPage} onClick={onGoToEnd}>
+            {"|>"}
+          </Button>
+        </Stack>
+      </React.Fragment>
+    </BoxFlexEnd>
   );
 };

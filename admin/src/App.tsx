@@ -9,8 +9,8 @@ import "./App.css";
 import { appRouters } from "./route/Route";
 import useAuth from "./hooks/useAuth";
 import { useEffect, useState } from "react";
-import {ToastContainer} from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function App() {
   const { checkUser } = useAuth();
   const [loading, setLoading] = useState(true);
@@ -31,7 +31,7 @@ function App() {
       >
         {loading ? "" : <RouterProvider router={appRouters} />}
       </LocalizationProvider>
-      <ToastContainer/>
+      <ToastContainer />
     </ThemeProvider>
   );
 }
@@ -68,6 +68,11 @@ const newTheme = (theme: ThemeOptions | undefined) =>
         },
         h6: {
           fontFamily: "Oswald",
+        },
+      },
+      palette: {
+        primary: {
+          main: "#05773f",
         },
       },
       // components: {

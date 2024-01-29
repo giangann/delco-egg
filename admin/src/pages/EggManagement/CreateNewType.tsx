@@ -2,18 +2,15 @@ import {
   Box,
   Button,
   CircularProgress,
-  Grid,
-  Typography,
-  styled,
+  Grid
 } from "@mui/material";
-import { Page } from "../../components/Page/Page";
-import { CustomInput } from "../../components/Input/CustomInput";
 import { useForm } from "react-hook-form";
-import { IEggInfo } from "../../shared/types/egg";
 import { toast } from "react-toastify";
-import { TextButton } from "../../styled/styled";
+import { CustomInput } from "../../components/Input/CustomInput";
+import { Page } from "../../components/Page/Page";
 import { postApi } from "../../lib/utils/fetch/fetchRequest";
-
+import { IEggInfo } from "../../shared/types/egg";
+import { InputLabelText, TextButton } from "../../styled/styled";
 
 export const CreateNewType = () => {
   const {
@@ -67,11 +64,3 @@ export const CreateNewType = () => {
     </Page>
   );
 };
-const InputLabelText = styled(Typography)(({ theme }) => ({
-  fontWeight: 500,
-  fontSize: 14,
-  marginBottom: 4,
-  [theme.breakpoints.up("sm")]: {
-    fontSize: 16,
-  },
-}));

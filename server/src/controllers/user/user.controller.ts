@@ -135,10 +135,21 @@ const list: IController = async (req, res) => {
   try {
     const limit = ApiUtility.getQueryParam(req, 'limit');
     const page = ApiUtility.getQueryParam(req, 'page');
-    const keyword = ApiUtility.getQueryParam(req, 'keyword');
     const isAdmin = ApiUtility.getQueryParam(req, 'isAdmin');
+    const username = ApiUtility.getQueryParam(req, 'username');
+    const fullname = ApiUtility.getQueryParam(req, 'fullname');
+    const phone_number = ApiUtility.getQueryParam(req, 'phone_number');
+    const company_name = ApiUtility.getQueryParam(req, 'company_name');
 
-    const params: IUserQueryParams = { limit, page, keyword, isAdmin };
+    const params: IUserQueryParams = {
+      limit,
+      page,
+      isAdmin,
+      username,
+      fullname,
+      phone_number,
+      company_name,
+    };
     const data = await userService.list(params);
     return ApiResponse.result(
       res,

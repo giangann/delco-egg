@@ -1,6 +1,8 @@
 import { Box, Container } from "@mui/material";
-import { CustomTable, StrictField } from "../../components/Table/Customtable";
-import { listOrders } from "../../shared/constants/mockData";
+import { CustomTableWithFilter } from "../../components/Table/CustomTableWithFilter";
+import { StrictField } from "../../components/Table/Customtable";
+import { IUserList } from "../../shared/types/user";
+import { Page } from "../../components/Page/Page";
 
 export interface EggForm {
   formId: string;
@@ -10,37 +12,37 @@ export interface EggForm {
   status: string;
 }
 
+const fields: StrictField<IUserList>[] = [
+  {
+    header: "Id",
+    fieldKey: "id",
+    width: 50,
+  },
+  {
+    header: "Tên đăng nhập",
+    fieldKey: "username",
+    width: 250,
+  },
+  {
+    header: "Số điện thoại",
+    fieldKey: "phone_number",
+    width: 250,
+  },
+  {
+    header: "Họ tên",
+    fieldKey: "fullname",
+    width: 250,
+  },
+  {
+    header: "Công ty",
+    fieldKey: "company_name",
+    width: 250,
+  },
+];
 export const EggOrderList = () => {
-  const fields: StrictField<EggForm>[] = [
-    {
-      header: "Id of form",
-      fieldKey: "formId",
-    },
-    {
-      header: "Id of form",
-      fieldKey: "dateCreated",
-    },
-    {
-      header: "Id of form",
-      fieldKey: "timeCreated",
-    },
-    {
-      header: "Id of form",
-      fieldKey: "totalPrice",
-    },
-    {
-      header: "Id of form",
-      fieldKey: "status",
-    },
-  ];
   return (
-    <Container>
-      <Box>
-        <h1>Danh sách đơn trứng</h1>
-      </Box>
-      <CustomTable fields={fields} data={listOrders} />
-    </Container>
+    <Page title="Danh sách đơn trứng">
+      <CustomTableWithFilter fields={fields} apiEndPoint="user" />
+    </Page>
   );
 };
-
-// const eggOrderData: EggForm&StrictField = listOrders.map((order)=>{...order,header: })

@@ -5,7 +5,7 @@ export const usePagination = ({ rows }: { rows: number }) => {
   const [perpage, setPerpage] = useState(3);
   const [currPage, setCurrPage] = useState(1);
 
-  const totalPage = useMemo(() => Math.floor(rows / perpage) + 1, [rows]);
+  const totalPage = useMemo(() => Math.ceil(rows / perpage), [rows, perpage]);
   const onNextPage = () => {
     setCurrPage(currPage + 1);
   };

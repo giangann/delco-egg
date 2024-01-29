@@ -12,3 +12,7 @@ export interface IUserCreate {
   note?: string;
   isAdmin?: string;
 }
+
+export interface IUserList extends Partial<IUserCreate> {
+  id: number;
+}

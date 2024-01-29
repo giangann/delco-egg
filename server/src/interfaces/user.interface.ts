@@ -21,7 +21,6 @@ export interface ILoginUser {
 
 export interface IUpdateUser extends IOptionalUpdateById<ICreateUser> {}
 
-export interface IUserQueryParams extends IBaseQueryParams {
-  keyword?: string;
-  isAdmin?: boolean;
-}
+export interface IUserQueryParams
+  extends IBaseQueryParams,
+    Partial<ICreateUser> {}
