@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 import { InputElement } from "../../components/Input/CustomInput";
 import { Page } from "../../components/Page/Page";
 import { getApi, postApi } from "../../lib/utils/fetch/fetchRequest";
-import { EggPriceQty } from "../../shared/types/egg-price-qty";
+import { IEggPriceQty } from "../../shared/types/egg-price-qty";
 import { GREEN } from "../../styled/color";
 import { BoxFlexEnd } from "../../styled/styled";
 
@@ -28,9 +28,9 @@ export const UpdatePrice = () => {
     getValues,
     setValue,
     formState: { isSubmitting, isDirty },
-  } = useForm<EggPriceQty[]>();
+  } = useForm<IEggPriceQty[]>();
 
-  const onSubmit = async (data: EggPriceQty[]) => {
+  const onSubmit = async (data: IEggPriceQty[]) => {
     try {
       const res = await postApi("egg-price-qty/update-day-price", data);
       if (res.success) {

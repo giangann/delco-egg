@@ -1,6 +1,6 @@
 import { useAtom } from "jotai";
 import { useCallback } from "react";
-import { userAtom } from "../atom/useAtom";
+import { userAtom } from "../atom/userAtom";
 import { getApi, postApi } from "../lib/utils/fetch/fetchRequest";
 import { IUserLogin } from "../shared/types/user";
 

@@ -34,14 +34,14 @@ const grey = {
 const InputElement = styled("input")(
   ({ theme }) => `
   // text-align:center;
-  width:320px;
+  width:100%;
   max-width: 100%;
   box-sizing:border-box;
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 0.875rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  padding: 8px 12px;
+  padding: 4px 12px;
   border-radius: 8px;
   color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
   background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
@@ -64,6 +64,17 @@ const InputElement = styled("input")(
   // firefox
   &:focus-visible {
     outline: 0;
+  }
+
+  @media only screen and (min-width: 768px){
+    /*Tablets [601px -> 1200px]*/
+  font-size: 1.125rem;
+  padding: 6px 14px;
+  }
+
+  &:disabled {
+    background-color: #cccccc;
+    color: #1c2025bd
   }
 `
 );

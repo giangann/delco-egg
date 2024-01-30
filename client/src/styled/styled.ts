@@ -1,4 +1,4 @@
-import { Box, Typography, styled } from "@mui/material";
+import { Box, Button, Typography, styled } from "@mui/material";
 import { Link } from "react-router-dom";
 import { GREEN } from "./color";
 
@@ -9,6 +9,17 @@ export const PageTitleText = styled(Typography)(({ theme }) => ({
   fontWeight: 900,
   textAlign: "center",
   [theme.breakpoints.up("sm")]: {},
+}));
+export const TextButton = styled(Typography)(({ theme }) => ({
+  textTransform: "none",
+  [theme.breakpoints.up("sm")]: {},
+}));
+export const BoxHeadingText = styled(Typography)(({ theme }) => ({
+  fontWeight: 650,
+  fontSize: 17,
+  [theme.breakpoints.up("sm")]: {
+    fontSize: 18,
+  },
 }));
 
 // BOX
@@ -48,9 +59,14 @@ export const ATagCustom = styled("a")({
 });
 
 // BUTTON
-export const TextButton = styled(Typography)(({ theme }) => ({
+export const ButtonResponsive = styled(Button)(({ theme }) => ({
+  fontSize: 14,
+  padding: "4px 14px",
   textTransform: "none",
-  [theme.breakpoints.up("sm")]: {},
+  [theme.breakpoints.up("sm")]: {
+    fontSize: 16,
+    padding: "6px 16px",
+  },
 }));
 
 // STYLE FOR SX, NOT COMPONENT

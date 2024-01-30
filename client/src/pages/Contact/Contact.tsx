@@ -48,11 +48,15 @@ export const Contact = () => {
         </Grid>
       </Grid>
 
-      <form onSubmit={handleSubmit((value) => console.log(value))}>
-        <BaseSelect items={dealPriceOptions} />
-        {/* <BaseSelect2 {...register("deal_price")} items={dealPriceOptions} /> */}
-        {/* <button type="submit">submit</button> */}
-      </form>
+      <Box mt={10}>
+        <form onSubmit={handleSubmit((value) => console.log(value))}>
+          <button type="submit">submit</button>
+
+          <BaseSelect {...register("price")} items={dealPriceOptions} />
+
+          {/* <BaseSelect2 {...register("deal_price")} items={dealPriceOptions} /> */}
+        </form>
+      </Box>
     </Page>
   );
 };

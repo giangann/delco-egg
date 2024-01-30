@@ -1,3 +1,4 @@
+import UnfoldMoreRoundedIcon from '@mui/icons-material/UnfoldMoreRounded';
 import * as React from "react";
 import {
   Select as BaseSelect,
@@ -60,24 +61,24 @@ const Button = React.forwardRef(function Button<
   return (
     <button type="button" {...other} ref={ref}>
       {other.children}
+      <UnfoldMoreRoundedIcon/>
     </button>
   );
 });
 
 const StyledButton = styled(Button, { shouldForwardProp: () => true })(
   ({ theme }) => `
-  font-weight:900;
-  font-size: 1.25rem;
+  font-weight:600;
 
-  font-family: 'IBM Plex Sans', sans-serif;
-  // font-size: 0.875rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
   box-sizing: border-box;
-  min-width: 150px;
-  max-width:300px;
+  min-width: 120px;
+  max-width:100%;
   width:100%;
-  padding: 3px 12px;
+  padding: 4px 12px;
   border-radius: 8px;
-  text-align: center;
+  text-align: left;
   line-height: 1.5;
   background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
   border: 1px solid ${theme.palette.mode === "dark" ? grey[700] : grey[200]};
@@ -103,6 +104,10 @@ const StyledButton = styled(Button, { shouldForwardProp: () => true })(
       theme.palette.mode === "dark" ? blue[700] : blue[200]
     };
   }
+  &.${optionClasses.disabled} {
+    background-color: #cccccc;
+    color: #1c2025bd  
+  }
 
   & > svg {
     font-size: 1rem;
@@ -111,21 +116,28 @@ const StyledButton = styled(Button, { shouldForwardProp: () => true })(
     top: 0;
     right: 10px;
   }
+
+  @media only screen and (min-width: 768px){
+    /*Tablets [601px -> 1200px]*/
+  font-size: 1.125rem;
+  padding: 6px 14px;
+
+  }
   `
 );
 
 const Listbox = styled("ul")(
   ({ theme }) => `
-  font-weight:900;
-  text-align: center;
-  font-size: 1rem;
+  font-weight:600;
+  // text-align: center;
 
-  font-family: 'IBM Plex Sans', sans-serif;
-  // font-size: 0.875rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
   box-sizing: border-box;
   padding: 6px;
   margin: 2px 0;
-  min-width: 150px;
+  min-width: 120px;
+  max-width:100%;
   width:100%;
   border-radius: 12px;
   overflow: auto;
@@ -176,6 +188,11 @@ export const Option = styled(BaseOption)(
   &:hover:not(.${optionClasses.disabled}) {
     background-color: ${theme.palette.mode === "dark" ? grey[800] : grey[100]};
     color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
+  }
+
+  @media only screen and (min-width: 768px){
+    /*Tablets [601px -> 1200px]*/
+  font-size: 1rem;
   }
   `
 );

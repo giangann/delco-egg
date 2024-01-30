@@ -1,9 +1,11 @@
 // import { CreateFormOpt1 } from "./CreateFormOpt1";
 import { Box, Button, Stack, Typography, styled } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { useForm } from "react-hook-form";
+import { UseFormReturn, useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { getApi } from "../../lib/utils/fetch/fetchRequest";
+import { IEggPriceQty } from "../../shared/types/egg";
 import { IOrder } from "../../shared/types/order";
 import { ChooseTimeOpt1 } from "./ChooseTimeOpt1";
 import { Confirm } from "./Confirm";
@@ -11,44 +13,52 @@ import { CreateFormOpt2 } from "./CreateFormOpt2";
 
 const MAX_STEP = 3;
 
+type FormContextType = {
+  data: IEggPriceQty[];
+  form?: UseFormReturn<IOrder>;
+};
+export const FormContext = createContext<FormContextType>({
+  data: [],
+});
 export const CreateForm = () => {
-  const params = useSearchParams()[0];
-  const currStep = Number(params.get("step"));
-  const navigate = useNavigate();
+  const [listEggPriceQty, setListEggPriceQty] = useState<IEggPriceQty[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currStep = Number(searchParams.get("step"));
 
-  const { register, control, ...useFormReturns } = useForm<IOrder>();
+  const { ...useFormReturns } = useForm<IOrder>();
 
   const Steps: Record<string, React.ReactNode> = {
-    1: (
-      <CreateFormOpt2
-        register={register}
-        control={control}
-        {...useFormReturns}
-      />
-    ),
-    2: (
-      <ChooseTimeOpt1
-        register={register}
-        control={control}
-        {...useFormReturns}
-      />
-    ),
-    3: <Confirm register={register} control={control} {...useFormReturns} />,
+    1: <CreateFormOpt2 />,
+    2: <ChooseTimeOpt1 {...useFormReturns} />,
+    3: <Confirm {...useFormReturns} />,
   };
 
   useEffect(() => {
     if (!currStep) {
-      const searchParams = new URLSearchParams({ step: `${1}` });
-      navigate({ search: searchParams.toString() });
+      setSearchParams({ step: `${1}` });
     }
+  }, [searchParams]);
+
+  useEffect(() => {
+    async function fetchEggPriceQty() {
+      const res = await getApi("egg-price-qty");
+      if (res.success) setListEggPriceQty(res.data);
+    }
+    fetchEggPriceQty();
   }, []);
 
   return (
     <React.Fragment>
-      {Steps[currStep]}
+      {listEggPriceQty.length && (
+        <FormContext.Provider
+          value={{ data: listEggPriceQty, form: useFormReturns }}
+        >
+          {Steps[currStep]}
 
-      {/* Button navbar area */}
-      <CustomNavbar currStep={currStep} />
+          {/* Button navbar area */}
+          <CustomNavbar currStep={currStep} />
+        </FormContext.Provider>
+      )}
     </React.Fragment>
   );
 };

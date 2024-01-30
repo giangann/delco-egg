@@ -1,3 +1,14 @@
 const NotiTitleText = styled(Typography)(({ theme }) => ({
     [theme.breakpoints.down('sm')]:{}
 }));
+
+const TriangleByBorder = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'defectivePosition',
+})<{ defectivePosition: DefectivePositionType }>(({ defectivePosition }) => ({
+  position: 'absolute',
+  borderTop: '1.46rem solid transparent',
+  borderRight: '1.46rem solid transparent',
+  borderBottom: '1.46rem solid transparent',
+  borderLeft: '1.46rem solid transparent',
+  ...generateDefectiveTriangleByPosition(defectivePosition),
+}));

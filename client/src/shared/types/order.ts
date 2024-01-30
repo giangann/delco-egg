@@ -1,7 +1,7 @@
 import { IEgg } from "./egg";
 
 export interface IOrderItem {
-  egg: IEgg;
+  egg_id: number;
   quantity: number;
   deal_price: number;
 }

@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
-import { useRef, useState } from "react";
+import { useState } from "react";
+import { UseFormRegisterReturn } from "react-hook-form";
 import { alignCenterSx } from "../../styled/styled";
 import styles from "./styles.module.css";
 
@@ -10,27 +11,35 @@ type Item = {
 };
 type BaseSelectProps = {
   items: Item[];
-  onChange?: (value: Item) => void;
-};
-export const BaseSelect = ({ items }: BaseSelectProps) => {
-  const btnRef = useRef(null);
+} & UseFormRegisterReturn;
+export const BaseSelect = ({
+  items,
+  ...useFormRegisterReturns
+}: BaseSelectProps) => {
   const [open, setOpen] = useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const { ref, onChange, name } = useFormRegisterReturns;
+
+  console.log(useFormRegisterReturns);
+
   const toogleOpen = () => {
     setOpen(!open);
   };
-  const [value, setValue] = useState();
+  const [value, setValue] = useState(items[0].value);
+  const handleChangeValue = (event: any) => {
+    console.log(event.target.value);
+    onChange(event);
+    setValue(event.target.value);
 
+    event.preventDefault();
+    event.stopPropagation();
+    toogleOpen();
+    // @ts-ignore
+  };
   // render a list, each component has it own value
   return (
-    <Box maxWidth={300} mt={10}>
+    <Box maxWidth={300}>
       <button style={{ width: "100%" }} onClick={toogleOpen}>
-        <Typography>{items[0].value}</Typography>
+        <Typography>{value}</Typography>
       </button>
       <Box position={"relative"} width="100%">
         <ul
@@ -54,19 +63,15 @@ export const BaseSelect = ({ items }: BaseSelectProps) => {
               style={{
                 cursor: "pointer",
                 width: "100%",
+                fontFamily: "Montserrat",
                 ...alignCenterSx,
-                paddingTop: 2,
-                paddingBottom: 2,
+                paddingTop: 8,
+                paddingBottom: 8,
               }}
               value={item.value}
-              onClick={(event) => {
-                event.preventDefault();
-                handleClose();
-                // @ts-ignore
-                console.log(event.target.value);
-              }}
+              onClick={handleChangeValue}
             >
-              <Typography>{item.label}</Typography>
+              {item.label}
             </li>
           ))}
         </ul>

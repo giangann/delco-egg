@@ -9,8 +9,9 @@ import "./App.css";
 import { appRouters } from "./route/Route";
 import useAuth from "./hooks/useAuth";
 import { useEffect, useState } from "react";
-import {ToastContainer} from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { GREEN } from "./styled/color";
 
 function App() {
   const { checkUser } = useAuth();
@@ -32,7 +33,7 @@ function App() {
       >
         {loading ? "" : <RouterProvider router={appRouters} />}
       </LocalizationProvider>
-      <ToastContainer/>
+      <ToastContainer />
     </ThemeProvider>
   );
 }
@@ -85,11 +86,13 @@ const newTheme = (theme: ThemeOptions | undefined) =>
       //     },
       //   },
       // },
-      // palette:{
-        
-      // }
+      palette: {
+        primary: {
+          main: GREEN["600"],
+        },
+      },
     },
-  
+
     viVN,
     coreViVn
   );

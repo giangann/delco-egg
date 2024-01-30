@@ -7,24 +7,26 @@ import {
   Typography,
   styled,
 } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useDevice } from "../../hooks/useDevice";
+import { getApi } from "../../lib/utils/fetch/fetchRequest";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
+import { IcBaselineAddCircleOutline } from "../../shared/icons/Icon";
+import { IEggPriceQty } from "../../shared/types/egg";
 import { GREEN } from "../../styled/color";
 import { LinkCustom, PageTitleText } from "../../styled/styled";
-import { IcBaselineAddCircleOutline } from "../../shared/icons/Icon";
-import { useDevice } from "../../hooks/useDevice";
-import { useEffect } from "react";
-import { getApi } from "../../lib/utils/fetch/fetchRequest";
 
 export const Home = () => {
   const { isMobile } = useDevice();
+  const [listEgg, setListEgg] = useState<IEggPriceQty[]>([]);
 
   useEffect(() => {
-    async function fetchListUser() {
-      const res = await getApi("user/");
-      console.log(res);
+    async function fetchListEgg() {
+      const res = await getApi("egg-price-qty");
+      if (res.success) setListEgg(res.data);
     }
-    fetchListUser();
-  });
+    fetchListEgg();
+  }, []);
   return (
     <Container>
       <Paper elevation={4} sx={{ padding: 2, mt: 3 }}>
@@ -32,9 +34,9 @@ export const Home = () => {
         {/* <UnitText>{"(vnđ/quả)"}</UnitText> */}
 
         <Grid mt={0} container columnSpacing={1} rowSpacing={3}>
-          {eggPrices.map((type) => (
+          {listEgg.map((egg) => (
             <Grid item xs={4}>
-              <PriceBox type={type.type} price={type.price} />
+              <PriceBox {...egg} />
             </Grid>
           ))}
         </Grid>
@@ -73,20 +75,20 @@ export const Home = () => {
   );
 };
 
-const PriceBox = ({ type, price }: { type: string; price: number }) => {
+const PriceBox = ({ egg: { weight, type_name }, price_1 }: IEggPriceQty) => {
   return (
     <Box sx={{ backgroundColor: "whitesmoke", py: 1.5 }}>
       <Stack spacing={1.25}>
         <LineBlockInPriceBox>
-          <TypeText>{type}</TypeText>
+          <TypeText>{type_name}</TypeText>
         </LineBlockInPriceBox>
         <LineBlockInPriceBox>
           <InfoTextKey>{"Khối lượng"}</InfoTextKey>
-          <InfoTextValue>{"10 quả 500g"}</InfoTextValue>
+          <InfoTextValue>{weight}</InfoTextValue>
         </LineBlockInPriceBox>
         <LineBlockInPriceBox>
           <InfoTextKey>{"Giá 1 quả"}</InfoTextKey>
-          <PriceText>{price} đ</PriceText>
+          <PriceText>{price_1} đ</PriceText>
         </LineBlockInPriceBox>
       </Stack>
     </Box>

@@ -1,6 +1,6 @@
 import { IEggInfo } from "./egg";
 
-export interface EggPriceQty {
+export interface IEggPriceQty {
   egg: IEggInfo;
   egg_id: number;
   price_1: number;
