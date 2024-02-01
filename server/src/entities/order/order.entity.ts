@@ -12,7 +12,7 @@ import APP_CONSTANTS from '../../constants/application';
 import { BaseEntity } from '../base/base.entity';
 import { User } from '../user/user.entity';
 import { OrderDetail } from '../order-detail/order-detail.entity';
-@Entity('order', { orderBy: { createdAt: 'ASC' } })
+@Entity('order', { orderBy: { createdAt: 'DESC' } })
 export class Order extends BaseEntity {
   // id, user_id, status, date, time, reason, note
 

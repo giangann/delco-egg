@@ -10,7 +10,7 @@ interface PageProps {
 export const Page = ({ title, children }: PageProps) => {
   const isMobile = useDevice();
   return (
-    <Container>
+    <Container sx={{ paddingX: { xs: 1, sm: "unset" } }}>
       <Paper
         elevation={isMobile ? 0 : 1}
         sx={{ paddingY: { xs: 0, sm: 2 }, mt: 3 }}

@@ -15,6 +15,9 @@ const list = async (params: IOrderQueryParams) => {
   // get items of order
   orderRepo.leftJoinAndSelect('order.items', 'item');
 
+  if (!params.user_id) {
+    orderRepo.leftJoinAndSelect('order.user', 'user');
+  }
   if (params.user_id) {
     orderRepo.andWhere('order.user_id = :user_id', {
       user_id: params.user_id,
@@ -22,7 +25,16 @@ const list = async (params: IOrderQueryParams) => {
   }
 
   const listOrders = await orderRepo.getMany();
-  return listOrders;
+
+  return listOrders.map((order) => {
+    return {
+      ...order,
+      username: order.user.username,
+      fullname: order.user.fullname,
+      phone_number: order.user.phone_number,
+      company_name: order.user.company_name,
+    };
+  });
 };
 const create = async (params: ICreateOrder) => {
   const order = new Order();

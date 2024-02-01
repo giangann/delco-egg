@@ -6,10 +6,6 @@ import { Page } from "../../components/Page/Page";
 import { CustomTable, StrictField } from "../../components/Table/Customtable";
 import { useDevice } from "../../hooks/useDevice";
 import { getApi } from "../../lib/utils/fetch/fetchRequest";
-import {
-  convertDatetimeTZWithoutSecond,
-  formatDateTime,
-} from "../../shared/helpers/function";
 import { IOrderRow } from "../../shared/types/order";
 
 import dayjs from "dayjs";
@@ -17,7 +13,6 @@ import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 dayjs.extend(timezone);
 dayjs.extend(utc);
-
 
 export const List = () => {
   const { isMobile } = useDevice();
@@ -31,17 +26,17 @@ export const List = () => {
     {
       header: "Ngày",
       fieldKey: "date",
-      width: 250,
+      width: 300,
     },
     {
       header: "Giờ",
       fieldKey: "time",
-      width: 250,
+      width: 300,
     },
     {
       header: "Trạng thái",
       fieldKey: "status",
-      width: 250,
+      width: 300,
       render: ({ status }) => <BoxByStatus status={status} />,
     },
     {
@@ -56,10 +51,7 @@ export const List = () => {
               fontSize: { xs: 15, sm: 17 },
             }}
           >
-            {/* {dayjs(createdAt).tz('America/New_York') .format("DD/MM/YYYY HH:mm")} */}
             {dayjs(createdAt).tz("Asia/Ho_Chi_Minh").format("DD/MM/YYYY HH:mm")}
-
-            {/* {convertDatetimeTZWithoutSecond(createdAt,'America/New_York')} */}
           </Typography>
         );
       },

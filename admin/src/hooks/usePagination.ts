@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 
 export const usePagination = ({ rows }: { rows: number }) => {
   // state: per_page and curr_page
-  const [perpage, setPerpage] = useState(3);
+  const [perpage, setPerpage] = useState(5);
   const [currPage, setCurrPage] = useState(1);
 
   const totalPage = useMemo(() => Math.ceil(rows / perpage), [rows, perpage]);

@@ -39,7 +39,7 @@ export const UserCreateForm = () => {
     <Page title="Tạo người dùng mới">
       <Box component={"form"} onSubmit={handleSubmit(onSumbit)}>
         <Grid container spacing={3}>
-          <Grid item xs={6} sm={3}>
+          <Grid item xs={12} sm={3}>
             <InputLabelText>Tên đăng nhập</InputLabelText>
             <CustomInput
               {...register("username")}
@@ -48,7 +48,7 @@ export const UserCreateForm = () => {
             />
           </Grid>
 
-          <Grid item xs={6} sm={3}>
+          <Grid item xs={12} sm={3}>
             <InputLabelText>Mật khẩu</InputLabelText>
             <CustomInput
               disabled={useDefaultPW}
@@ -63,7 +63,7 @@ export const UserCreateForm = () => {
             </Stack>
           </Grid>
 
-          <Grid item xs={6} sm={3}>
+          <Grid item xs={12} sm={3}>
             <InputLabelText>Họ tên</InputLabelText>
             <CustomInput
               required
@@ -71,7 +71,7 @@ export const UserCreateForm = () => {
               placeholder="Họ tên"
             />
           </Grid>
-          <Grid item xs={6} sm={3}>
+          <Grid item xs={12} sm={3}>
             <InputLabelText>Só điện thoại</InputLabelText>
             <CustomInput
               required
@@ -79,19 +79,19 @@ export const UserCreateForm = () => {
               placeholder="Só điện thoại"
             />
           </Grid>
-          <Grid item xs={6} sm={3}>
+          <Grid item xs={12} sm={3}>
             <InputLabelText>Tên công ty</InputLabelText>
             <CustomInput
               {...register("company_name")}
               placeholder="Tên công ty"
             />
           </Grid>
-          <Grid item xs={6} sm={3}>
+          <Grid item xs={12} sm={3}>
             <InputLabelText>Ghi chú</InputLabelText>
             <CustomInput {...register("note")} placeholder="Ghi chú" />
           </Grid>
         </Grid>
-        <BoxFlexEnd>
+        <BoxFlexEnd sx={{ marginTop: { xs: 2, sm: 1 } }}>
           <ButtonResponsive
             onClick={() => {
               navigate(SCREEN_PATHS.USER.LIST);
