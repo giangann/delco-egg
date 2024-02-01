@@ -1,18 +1,16 @@
-// import { CreateFormOpt1 } from "./CreateFormOpt1";
 import React, { createContext, useEffect, useState } from "react";
 import { UseFormReturn, useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { ConfirmDialog } from "../../components/Dialog/ConfirmDialog";
 import { getApi, postApi } from "../../lib/utils/fetch/fetchRequest";
+import SCREEN_PATHS from "../../shared/constants/screenPaths";
 import { IEggPriceQty } from "../../shared/types/egg";
 import { IOrder } from "../../shared/types/order";
 import { ChooseTimeOpt1 } from "./ChooseTimeOpt1";
 import { Confirm } from "./Confirm";
 import { CreateFormOpt2 } from "./CreateFormOpt2";
 import { ProcessBar } from "./ProcessBar";
-import { ConfirmDialog } from "../../components/Dialog/ConfirmDialog";
-import { fakeDelay } from "../Setting/MyProfile";
-import { toast } from "react-toastify";
-import SCREEN_PATHS from "../../shared/constants/screenPaths";
 
 export const MAX_STEP = 3;
 

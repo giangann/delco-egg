@@ -5,3 +5,11 @@ export enum ORDER_STATUS {
   REJECTED = -1,
   CANCELED = -2,
 }
+
+export enum ORDER_STATUS_LABEL {
+  WAITING_APPROVAL = "Đang chờ",
+  ACCEPTED = "Chấp nhận",
+  SUCCESS = "Thành công",
+  REJECTED = "Từ chối",
+  CANCELED = "Đã hủy",
+}

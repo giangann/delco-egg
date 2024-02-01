@@ -1,3 +1,4 @@
+
 export const generateDealPrices = (originPrice: number, step: number) => {
   return [
     originPrice,

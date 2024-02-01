@@ -1,14 +1,12 @@
-// import { CreateFormOpt1 } from "./CreateFormOpt1";
 import { Box, Button, Stack, Typography, styled } from "@mui/material";
-import { useContext } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import {
-    IcRoundKeyboardBackspace,
-    IcSharpScheduleSend,
+  IcRoundKeyboardBackspace,
+  IcSharpScheduleSend,
 } from "../../shared/icons/Icon";
 import { GREEN } from "../../styled/color";
-import { FormContext, MAX_STEP } from "./CreateForm";
+import { MAX_STEP } from "./CreateForm";
 export const ProcessBar = ({
   currStep,
   setOpenConfirm,

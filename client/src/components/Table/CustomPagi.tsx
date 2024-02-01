@@ -1,8 +1,4 @@
-import {
-  Button,
-  Stack,
-  Typography
-} from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import React, { ChangeEventHandler } from "react";
 import { BoxFlexEnd } from "../../styled/styled";
 
@@ -27,7 +23,7 @@ export const CustomPagi = ({
   onGoToEnd,
   onGoToStart,
 }: CustomPagiProps) => {
-  const defaultOptions = [3, 6, 9, 12];
+  const defaultOptions = [5, 10, 15];
 
   const handleChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
     const newPerPage = parseInt(event.target.value);
