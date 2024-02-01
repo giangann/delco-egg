@@ -47,6 +47,9 @@ export const AlignCenterBox = styled(Box)({
 export const FlexDefaultBox = styled(Box)({
   display: "flex",
 });
+export const BoxFlexEnd = styled(FlexDefaultBox)({
+  justifyContent: "flex-end",
+});
 
 // LINK
 export const LinkCustom = styled(Link)({

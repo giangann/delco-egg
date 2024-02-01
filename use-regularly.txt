@@ -1,5 +1,5 @@
 const NotiTitleText = styled(Typography)(({ theme }) => ({
-    [theme.breakpoints.down('sm')]:{}
+    [theme.breakpoints.up('sm')]:{}
 }));
 
 const TriangleByBorder = styled(Box, {

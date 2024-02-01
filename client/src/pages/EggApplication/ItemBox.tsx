@@ -1,5 +1,5 @@
 import { Box, Stack, Typography, styled } from "@mui/material";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CustomInput } from "../../components/Input/CustomInput";
 import { CustomSelect, Option } from "../../components/Select/CustomSelect";
 import { OPACITY_TO_HEX } from "../../shared/constants/common";
@@ -7,13 +7,25 @@ import { generateDealPrices } from "../../shared/helpers/function";
 import { IEggPriceQty } from "../../shared/types/egg";
 import { GREEN, GREY, RED } from "../../styled/color";
 import { BoxHeadingText } from "../../styled/styled";
+import { FormContext } from "./CreateForm";
 
 type ItemBoxProps = {
   item: IEggPriceQty;
 };
 export const ItemBox = ({ item }: ItemBoxProps) => {
-  const [active, setActive] = useState(item.egg_id === 2 ? true : false);
+  const [active, setActive] = useState(false);
   const listDealPrice = generateDealPrices(item.price_1, 25);
+  const form = useContext(FormContext).form;
+
+  useEffect(() => {
+    if (active) {
+      form?.setValue(`orders.${item.egg_id}.deal_price`, item.price_1);
+      form?.setValue(`orders.${item.egg_id}.egg_id`, item.egg_id);
+    } else {
+      form?.unregister(`orders.${item.egg_id}`);
+    }
+  }, [active]);
+
   return (
     <Box
       sx={{
@@ -51,6 +63,14 @@ export const ItemBox = ({ item }: ItemBoxProps) => {
               slotProps={{
                 popper: { disablePortal: true },
               }}
+              onChange={(event) => {
+                // @ts-ignore
+                let newVal = event?.target.value;
+                form?.setValue(
+                  `orders.${item.egg_id}.deal_price`,
+                  parseInt(newVal)
+                );
+              }}
               style={{ width: "100%" }}
               defaultValue={item.price_1}
               disabled={!active}
@@ -71,7 +91,21 @@ export const ItemBox = ({ item }: ItemBoxProps) => {
 
         <Row
           name="Nhập số lượng"
-          value={<CustomInput disabled={!active} style={{ width: "100%" }} />}
+          value={
+            <CustomInput
+              required={active}
+              type="number"
+              onChange={(event) => {
+                let newVal = event.target.value;
+                form?.setValue(
+                  `orders.${item.egg_id}.quantity`,
+                  parseInt(newVal)
+                );
+              }}
+              disabled={!active}
+              style={{ width: "100%" }}
+            />
+          }
         />
       </Box>
     </Box>
@@ -85,7 +119,6 @@ const Row = ({
   name: string;
   value: string | number | React.ReactNode;
 }) => {
-  console.log("type of value", typeof value);
   return (
     <Stack
       mt={1}
@@ -115,10 +148,6 @@ const ChooseButton = styled("div", {
   backgroundColor: active
     ? `${RED["200"]}${OPACITY_TO_HEX["90"]}`
     : `${GREEN["600"]}${OPACITY_TO_HEX["20"]}`,
-  // border: `1px solid ${active ? GREEN["600"] : GREEN["600"]}`,
-
-  // borderRight: `1px solid ${active ? GREEN["600"] : GREEN["600"]}`,
-  // borderBottom: `1px solid ${active ? GREEN["600"] : GREEN["600"]}`,
   fontFamily: "Montserrat",
   fontSize: 15,
   color: !active ? GREEN["600"] : "white",

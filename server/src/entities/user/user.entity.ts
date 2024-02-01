@@ -4,10 +4,13 @@ import {
   PrimaryGeneratedColumn,
   Unique,
   OneToMany,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 
 // Entities
 import { BaseEntity } from '../base/base.entity';
+import { Order } from '../order/order.entity';
 
 @Entity('user', { orderBy: { id: 'DESC' } })
 export class User extends BaseEntity {
@@ -40,6 +43,9 @@ export class User extends BaseEntity {
 
   @Column({ default: false })
   isDeleted: boolean;
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
 
   toJSON() {
     delete this.isDeleted;

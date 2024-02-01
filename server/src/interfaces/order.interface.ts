@@ -1,11 +1,23 @@
+import { IOptionalUpdateById } from 'generics.type';
+import { IOrderDetail } from 'order-detail.interface';
+import { OrderDetail } from '../entities/order-detail/order-detail.entity';
+import { IBaseQueryParams } from 'common.interface';
+
 export interface ICreateOrder {
-  id: number;
   status: number;
   user_id: number;
   date: string;
   time: string;
   reason?: string;
   note?: string;
+  items: OrderDetail[];
 }
 
-export type IUpdateStatusOrder = Pick<ICreateOrder, 'status' | 'id'>;
+export type IUpdateOrder = IOptionalUpdateById<ICreateOrder>;
+
+export type IUpdateStatusOrder = {
+  id: number;
+} & Pick<ICreateOrder, 'status' | 'reason'>;
+
+
+export interface IOrderQueryParams extends IBaseQueryParams,Partial<ICreateOrder>{}

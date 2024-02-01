@@ -15,8 +15,8 @@ export class EggPriceQty {
   @PrimaryGeneratedColumn({ type: 'int' })
   id: number;
 
-  @OneToOne(() => Egg)
   @JoinColumn({ name: 'egg_id', referencedColumnName: 'id' })
+  @OneToOne(() => Egg)
   egg: Egg;
 
   @Column({ type: 'int', nullable: false, unique: true })

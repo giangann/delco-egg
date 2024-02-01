@@ -17,7 +17,7 @@ import { Page } from "../../components/Page/Page";
 import { IUserProfile } from "../../shared/types/user";
 import { TextButton } from "../../styled/styled";
 
-function fakeDelay(seconds: number): Promise<void> {
+export function fakeDelay(seconds: number): Promise<void> {
   return new Promise((resolve) => {
     setTimeout(() => {
       console.log("time out run");

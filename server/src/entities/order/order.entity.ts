@@ -1,13 +1,17 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
-  PrimaryGeneratedColumn
+  OneToMany,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 // Entities
 import APP_CONSTANTS from '../../constants/application';
 import { BaseEntity } from '../base/base.entity';
+import { User } from '../user/user.entity';
+import { OrderDetail } from '../order-detail/order-detail.entity';
 @Entity('order', { orderBy: { createdAt: 'ASC' } })
 export class Order extends BaseEntity {
   // id, user_id, status, date, time, reason, note
@@ -16,7 +20,6 @@ export class Order extends BaseEntity {
   id: number;
 
   @Column({ type: 'int', nullable: false })
-  @ManyToOne('user', { primary: true })
   user_id: number;
 
   @Column({
@@ -24,7 +27,7 @@ export class Order extends BaseEntity {
     nullable: false,
     default: APP_CONSTANTS.status.WAITING_APPROVAL,
   })
-  status: string;
+  status: number;
 
   @Column({ type: 'date', nullable: false })
   date: string;
@@ -37,4 +40,12 @@ export class Order extends BaseEntity {
 
   @Column({ length: 255, nullable: true })
   note: string;
+
+  @ManyToOne(() => User, (user) => user.orders)
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
+  user: User;
+
+  @OneToMany(() => OrderDetail, (orderDetail) => orderDetail.order)
+  @JoinColumn({ name: 'id', referencedColumnName: 'order_id' })
+  items: OrderDetail[];
 }

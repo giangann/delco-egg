@@ -15,6 +15,7 @@ const connect = async () => {
     app.listen(PORT, () => {
       logger.info(`Server running at ${PORT}`);
     });
+
   } catch (e) {
     logger.info(`The connection to database was failed with error: ${e}`);
   }

@@ -1,13 +1,15 @@
 import {
-    Column,
-    Entity,
-    ManyToOne,
-    PrimaryGeneratedColumn,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 // Entities
 import { BaseEntity } from '../base/base.entity';
-@Entity('order-detail', { orderBy: { createdAt: 'ASC' } })
+import { Order } from '../order/order.entity';
+@Entity('order_detail', { orderBy: { createdAt: 'ASC' } })
 export class OrderDetail extends BaseEntity {
   // id, order_id, egg_id, deal_price, quantity
 
@@ -15,11 +17,9 @@ export class OrderDetail extends BaseEntity {
   id: number;
 
   @Column({ type: 'int', nullable: false })
-  @ManyToOne('order', { primary: true })
   order_id: number;
 
   @Column({ type: 'int', nullable: false })
-  @ManyToOne('egg', { primary: true })
   egg_id: number;
 
   @Column({ nullable: false })
@@ -27,4 +27,8 @@ export class OrderDetail extends BaseEntity {
 
   @Column({ nullable: false })
   quantity: number;
+
+  @ManyToOne(() => Order, (order) => order.items)
+  @JoinColumn({ name: 'order_id', referencedColumnName: 'id' })
+  order: Order;
 }

@@ -38,7 +38,7 @@ export const ChooseTimeOpt1 = ({ setValue, getValues }: Step2Props) => {
                 value={day}
                 onChange={(newValue) => {
                   setDay(newValue);
-                  setValue("date", newValue.format(""));
+                  setValue("date", newValue.format("YYYY-MM-DD"));
                 }}
               />
             </Box>
@@ -51,7 +51,7 @@ export const ChooseTimeOpt1 = ({ setValue, getValues }: Step2Props) => {
                 sx={{ justifyContent: "center" }}
                 value={time}
                 onChange={(newValue) => {
-                  setTime(newValue), setValue("time", newValue.format(""));
+                  setTime(newValue), setValue("time", newValue.format("HH:mm:ss"));
                 }}
                 defaultValue={dayjs(today)}
                 ampm={false}

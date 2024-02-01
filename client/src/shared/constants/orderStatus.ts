@@ -1,0 +1,7 @@
+export enum ORDER_STATUS {
+  WAITING_APPROVAL = 0,
+  ACCEPTED = 1,
+  SUCCESS = 2,
+  REJECTED = -1,
+  CANCELED = -2,
+}

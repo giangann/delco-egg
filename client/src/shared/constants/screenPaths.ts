@@ -9,7 +9,6 @@ const SCREEN_PATHS = {
   FORGOT_PASSWORD: "/forgot-password",
   RESET_PASSWORD: "/reset-password",
   ACCOUNT_USER: "/account-user",
-  MY_PROFILE: "/my-profile",
   GROUP_USER: "/group-user",
   NOTIFICATION: "/notification",
   MANAGEMENT_PERMISSIONS: "/management-permission",
@@ -32,6 +31,7 @@ const SCREEN_PATHS = {
   CREATE: `${SLUG.APPLICATION}/tao-moi`,
   LIST: `${SLUG.APPLICATION}/danh-sach`,
   DETAIL: `${SLUG.APPLICATION}/chi-tiet/:id`,
+  MY_PROFILE: "/my-profile",
 };
 
 export default SCREEN_PATHS;

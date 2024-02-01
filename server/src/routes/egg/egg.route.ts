@@ -9,5 +9,4 @@ eggRouter.post('/',isAdmin(),eggControlelr.create)
 eggRouter.put('/:id',isAdmin(),eggControlelr.update)
 eggRouter.delete('/:id',isAdmin(),eggControlelr.remove)
 
-
 export default eggRouter
