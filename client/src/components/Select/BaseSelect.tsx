@@ -17,7 +17,7 @@ export const BaseSelect = ({
   ...useFormRegisterReturns
 }: BaseSelectProps) => {
   const [open, setOpen] = useState(false);
-  const { ref, onChange, name } = useFormRegisterReturns;
+  const { onChange } = useFormRegisterReturns;
 
   console.log(useFormRegisterReturns);
 

@@ -21,6 +21,14 @@ export const BoxHeadingText = styled(Typography)(({ theme }) => ({
     fontSize: 18,
   },
 }));
+export const InputLabelText = styled(Typography)(({ theme }) => ({
+  fontWeight: 500,
+  fontSize: 14,
+  marginBottom: 4,
+  [theme.breakpoints.up("sm")]: {
+    fontSize: 16,
+  },
+}));
 
 // BOX
 export const BoxAbsoluteFull = styled(Box)({

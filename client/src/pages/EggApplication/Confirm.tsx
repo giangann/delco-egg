@@ -8,8 +8,6 @@ import {
   styled,
 } from "@mui/material";
 import { Page } from "../../components/Page/Page";
-import { UseFormReturn } from "react-hook-form";
-import { IOrder } from "../../shared/types/order";
 
 interface Row {
   type: string;
@@ -17,9 +15,8 @@ interface Row {
   quantity: number;
   price?: number;
 }
-type Step3Props = UseFormReturn<IOrder>;
 
-export const Confirm = ({getValues}:Step3Props) => {
+export const Confirm = () => {
   return (
     <Page title="Xác nhận">
       {/* table */}

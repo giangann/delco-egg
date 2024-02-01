@@ -161,9 +161,6 @@ const SubHeadingText = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.up("sm")]: {},
 }));
 
-const EditButton = styled(Button)({
-  // borderColor: "black",
-});
 const TextButton = styled(Typography)(({ theme }) => ({
   textTransform: "none",
   [theme.breakpoints.up("sm")]: {},

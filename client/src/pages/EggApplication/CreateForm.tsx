@@ -54,7 +54,7 @@ export const CreateForm = () => {
   const Steps: Record<string, React.ReactNode> = {
     1: <CreateFormOpt2 />,
     2: <ChooseTimeOpt1 {...useFormReturns} />,
-    3: <Confirm {...useFormReturns} />,
+    3: <Confirm />,
   };
 
   useEffect(() => {

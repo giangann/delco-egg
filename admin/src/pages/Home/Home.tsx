@@ -56,13 +56,13 @@ const TitleText = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.up("sm")]: {},
 }));
 
-const UnitText = styled(Typography)(({ theme }) => ({
-  color: "green",
-  fontSize: 16,
-  fontWeight: 500,
-  textAlign: "center",
-  [theme.breakpoints.up("sm")]: {},
-}));
+// const UnitText = styled(Typography)(({ theme }) => ({
+//   color: "green",
+//   fontSize: 16,
+//   fontWeight: 500,
+//   textAlign: "center",
+//   [theme.breakpoints.up("sm")]: {},
+// }));
 
 const TypeText = styled(Typography)(({ theme }) => ({
   fontSize: 18,
@@ -71,12 +71,12 @@ const TypeText = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.up("sm")]: {},
 }));
 
-const PriceText = styled(Typography)(({ theme }) => ({
-  fontSize: 20,
-  fontWeight: 800,
-  textAlign: "center",
-  [theme.breakpoints.up("sm")]: {},
-}));
+// const PriceText = styled(Typography)(({ theme }) => ({
+//   fontSize: 20,
+//   fontWeight: 800,
+//   textAlign: "center",
+//   [theme.breakpoints.up("sm")]: {},
+// }));
 export type Item = {
   path: string;
   text: string;

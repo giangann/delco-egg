@@ -59,7 +59,7 @@ const ItemsBlock = ({ spacing, items, onClose }: ItemsBlockProps) => {
     <Box pl={2}>
       <Stack spacing={spacing}>
         {items.map((item, index) => {
-          return <ItemRow item={item} onClose={onClose} />;
+          return <ItemRow key={index} item={item} onClose={onClose} />;
         })}
       </Stack>
     </Box>

@@ -51,7 +51,8 @@ export const ChooseTimeOpt1 = ({ setValue, getValues }: Step2Props) => {
                 sx={{ justifyContent: "center" }}
                 value={time}
                 onChange={(newValue) => {
-                  setTime(newValue), setValue("time", newValue.format("HH:mm:ss"));
+                  setTime(newValue),
+                    setValue("time", newValue.format("HH:mm:ss"));
                 }}
                 defaultValue={dayjs(today)}
                 ampm={false}
@@ -77,22 +78,6 @@ export const ChooseTimeOpt1 = ({ setValue, getValues }: Step2Props) => {
     </Page>
   );
 };
-
-function toReadableDate(date: Dayjs | null) {
-  let dd = date?.get("date");
-  let mm = (date?.get("month") as number) + 1;
-  let yy = date?.get("year");
-
-  let readableDate = `${dd}/${mm}/${yy}`;
-  return readableDate;
-}
-// function toReadableTime(time: Dayjs | null) {
-//   let hour = time?.get("hour");
-//   let minute = time?.get("minute");
-
-//   let readableTime = `${hour}:${minute}`;
-//   return readableTime;
-// }
 
 const LabelText = styled(Typography)(({ theme }) => ({
   textAlign: "left",
