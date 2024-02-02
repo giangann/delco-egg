@@ -22,3 +22,5 @@ const connect = async () => {
 }
 
 connect();
+
+export default app;
