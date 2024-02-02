@@ -13,6 +13,9 @@ import orderDetailService from '../../services/order-detail/order-detail.service
 import orderService from '../../services/order/order.service';
 import ApiResponse from '../../utilities/api-response.utility';
 import ApiUtility from '../../utilities/api.utility';
+import { IDetailById } from 'common.interface';
+import { IOrderDetail } from 'order-detail.interface';
+import { IOrderDetailParams } from 'order.interface';
 
 const list: IController = async (req, res) => {
   try {
@@ -29,6 +32,22 @@ const list: IController = async (req, res) => {
 
     const listOrder = await orderService.list(params);
     return ApiResponse.result(res, listOrder, httpStatusCodes.OK, null);
+  } catch (e) {
+    ApiResponse.exception(res, e);
+  }
+};
+
+const detail: IController = async (req, res) => {
+  try {
+    const user = req.user;
+
+    let params: IOrderDetailParams = {
+      id: parseInt(req.params.id),
+    };
+    if (!user.isAdmin) params.user_id = user.id;
+
+    const order = await orderService.detail(params);
+    return ApiResponse.result(res, order, httpStatusCodes.OK, null);
   } catch (e) {
     ApiResponse.exception(res, e);
   }
@@ -118,4 +137,4 @@ const update: IController = async (req, res) => {
   }
 };
 
-export default { list, create, updateStatus, update };
+export default { list, detail, create, updateStatus, update };

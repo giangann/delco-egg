@@ -7,3 +7,7 @@ export const SLUG = {
   USER: "/user",
   EGG: "/trung",
 };
+
+export const SUFFIX = {
+  ID: "/:id",
+};

@@ -9,6 +9,17 @@ const create = async (params: IOrderDetail) => {
   return createData;
 };
 
+const getByOrderId = async (orderId: number) => {
+  const orderDetailRepo = getRepository(OrderDetail)
+    .createQueryBuilder('order_detail')
+    .where('order_id = :orderId', { orderId: orderId })
+    .leftJoinAndSelect('order_detail.egg', 'egg');
+
+  const orderDetailDataById = await orderDetailRepo.getMany();
+  return orderDetailDataById;
+};
+
 export default {
-    create
-}
+  create,
+  getByOrderId,
+};

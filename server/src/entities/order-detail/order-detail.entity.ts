@@ -9,6 +9,7 @@ import {
 // Entities
 import { BaseEntity } from '../base/base.entity';
 import { Order } from '../order/order.entity';
+import { Egg } from '../egg/egg.entity';
 @Entity('order_detail', { orderBy: { createdAt: 'ASC' } })
 export class OrderDetail extends BaseEntity {
   // id, order_id, egg_id, deal_price, quantity
@@ -31,4 +32,8 @@ export class OrderDetail extends BaseEntity {
   @ManyToOne(() => Order, (order) => order.items)
   @JoinColumn({ name: 'order_id', referencedColumnName: 'id' })
   order: Order;
+
+  @ManyToOne(() => Egg)
+  @JoinColumn({ name: 'egg_id', referencedColumnName: 'id' })
+  egg: Egg;
 }

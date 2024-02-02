@@ -42,6 +42,8 @@ const remove = async (params: IDeleteById) => {
   return await getRepository(Egg).delete({ ...query });
 };
 
+
+
 export default {
   create,
   update,

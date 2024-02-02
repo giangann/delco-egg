@@ -1,10 +1,13 @@
-import { Box, Typography, styled } from "@mui/material";
+import { Box, BoxProps, Typography, styled } from "@mui/material";
 import { ORDER_STATUS } from "../../shared/constants/orderStatus";
 import { GREEN } from "../../styled/color";
 import { OPACITY_TO_HEX } from "../../shared/constants/common";
 import { ORDER_STATUS_LABEL } from "../../shared/constants/orderStatus";
 
-export const BoxByStatus = ({ status }: { status: number }) => {
+export const BoxByStatus = ({
+  status,
+  ...boxProps
+}: { status: number } & BoxProps) => {
   let bgColor;
   let textColor;
   let statusLabel;
@@ -44,6 +47,7 @@ export const BoxByStatus = ({ status }: { status: number }) => {
 
   return (
     <Box
+      {...boxProps}
       sx={{
         margin: "0 auto",
         paddingX: 1,

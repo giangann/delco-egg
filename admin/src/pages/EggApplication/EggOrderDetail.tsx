@@ -11,24 +11,52 @@ import {
   Typography,
   styled,
 } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDevice } from "../../hooks/useDevice";
-import { IcRoundKeyboardBackspace } from "../../shared/icons/Icon";
-import { useNavigate } from "react-router-dom";
+import { getApi } from "../../lib/utils/fetch/fetchRequest";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
-interface Row {
-  type: string;
-  unitPrice: number;
-  quantity: number;
-  price?: number;
-}
+import {
+  numberWithComma,
+  timeWithoutSecond,
+  toDayOrTomorrowOrYesterday,
+} from "../../shared/helper";
+import { IcRoundKeyboardBackspace } from "../../shared/icons/Icon";
+import { IOrder, IOrderItem } from "../../shared/types/order";
+import dayjs from "dayjs";
+import { ORDER_STATUS } from "../../shared/constants/orderStatus";
+import { BoxByStatus } from "../../components/Table/BoxByStatus";
+import { OrderActionByStatus } from "./OrderActionByStatus";
 
 export const EggOrderDetail = () => {
+  const [refetch, setRefetch] = useState(0);
+  const [order, setOrder] = useState<IOrder>({
+    id: 0,
+    status: ORDER_STATUS.WAITING_APPROVAL,
+    time: "",
+    date: "",
+    items: [],
+  });
   const { isMobile } = useDevice();
   const navigate = useNavigate();
   const goBackList = () => {
     navigate(SCREEN_PATHS.APPLICATION.LIST);
     // window.location.reload()
   };
+
+  const triggerRefetch = () => {
+    setRefetch(refetch + 1);
+  };
+  const params = useParams();
+  console.log(params);
+
+  useEffect(() => {
+    async function fetchOrderById() {
+      const res = await getApi(`order/${params.id}`);
+      setOrder(res.data);
+    }
+    fetchOrderById();
+  }, [refetch]);
 
   return (
     <Container>
@@ -53,7 +81,10 @@ export const EggOrderDetail = () => {
 
         {/* table */}
         <Box mt={2}>
+          <BoxByStatus margin={"unset !important"} status={order.status} />
+
           <Stack
+            mt={4}
             alignItems={"center"}
             direction={"row"}
             justifyContent={"space-between"}
@@ -64,18 +95,20 @@ export const EggOrderDetail = () => {
             <TableHead>
               <TableRow>
                 <TableCell>Loại</TableCell>
-                <TableCell>{"Đơn giá (vnđ / 10 quả)"}</TableCell>
+                <TableCell>{"Đơn giá"}</TableCell>
                 <TableCell>Số lượng</TableCell>
                 <TableCell> Thành tiền </TableCell>
               </TableRow>
             </TableHead>
 
-            {orderItems.map((row) => (
-              <TableRow key={row.type}>
-                <TableCell>{row.type}</TableCell>
-                <TableCell>{row.unitPrice}</TableCell>
+            {order.items.map((row: IOrderItem) => (
+              <TableRow key={row.egg_id}>
+                <TableCell>{row.egg?.type_name}</TableCell>
+                <TableCell>{row.deal_price}</TableCell>
                 <TableCell>{row.quantity}</TableCell>
-                <TableCell>{row.unitPrice * row.quantity}</TableCell>
+                <TableCell>
+                  {numberWithComma(row.deal_price * row.quantity)}
+                </TableCell>
               </TableRow>
             ))}
             <TableRow sx={{ float: "right" }}>
@@ -83,7 +116,9 @@ export const EggOrderDetail = () => {
                 <TotalText fontWeight={900}>Tổng</TotalText>
               </TableCell>
               <TableCell align="right">
-                <TotalText>{subtotal(orderItems)}</TotalText>
+                <TotalText>
+                  {numberWithComma(subtotal(order.items))} đ
+                </TotalText>
               </TableCell>
             </TableRow>
           </TableContainer>
@@ -92,52 +127,43 @@ export const EggOrderDetail = () => {
         {/* time */}
         <Box mt={2}>
           <HeadingText> 2. Thời gian </HeadingText>
-          <SubHeadingText> - Ngày: 20/01/2024</SubHeadingText>
-          <SubHeadingText> - Giờ: 16:25</SubHeadingText>
+          <SubHeadingText>
+            - Ngày: {dayjs(order.date).format("DD/MM/YYYY")}{" "}
+            {`<${toDayOrTomorrowOrYesterday(order.date)}>`}
+          </SubHeadingText>
+          <SubHeadingText>
+            - Giờ: {timeWithoutSecond(order.time)}
+          </SubHeadingText>
         </Box>
 
+        {/*  */}
         <Box mt={2}>
-          <Stack direction="row" justifyContent={"flex-end"} spacing={2}>
-            <Button variant="outlined" color="error">
-              <TextButton>Từ chối</TextButton>
-            </Button>
-            <Button variant="contained" color="success">
-              <TextButton>Chấp nhận</TextButton>
-            </Button>
-          </Stack>
+          <HeadingText> 3. Thông tin người đặt</HeadingText>
+          <SubHeadingText>
+            - Tên tài khoản: {order.user?.username}
+          </SubHeadingText>
+          <SubHeadingText>- Họ tên: {order.user?.fullname}</SubHeadingText>
+          <SubHeadingText>
+            - Công ty: {order.user?.company_name || "KXĐ"}
+          </SubHeadingText>
         </Box>
+
+        <OrderActionByStatus
+          triggerRefetch={triggerRefetch}
+          status={order.status}
+          orderId={order.id}
+        />
       </Paper>
     </Container>
   );
 };
 
-function subtotal(items: readonly Row[]) {
+function subtotal(items: IOrderItem[]) {
   return items
-    .map(({ unitPrice, quantity }) => unitPrice * quantity)
+    .map(({ deal_price, quantity }) => deal_price * quantity)
     .reduce((sum, i) => sum + i, 0);
 }
-const orderItems = [
-  {
-    type: "Mix 1",
-    unitPrice: 3000,
-    quantity: 10000,
-  },
-  {
-    type: "Mix 2",
-    unitPrice: 2900,
-    quantity: 60000,
-  },
-  {
-    type: "Mix 3",
-    unitPrice: 2125,
-    quantity: 50000,
-  },
-  {
-    type: "Mix 4",
-    unitPrice: 2750,
-    quantity: 200000,
-  },
-];
+
 const TitleText = styled(Typography)(({ theme }) => ({
   color: "green",
   fontSize: 24,
@@ -156,7 +182,7 @@ const HeadingText = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.up("sm")]: {},
 }));
 const SubHeadingText = styled(Typography)(({ theme }) => ({
-  fontWeight: 700,
+  fontWeight: 600,
   fontSize: 16,
   [theme.breakpoints.up("sm")]: {},
 }));

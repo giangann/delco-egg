@@ -1,5 +1,6 @@
 import {
   ICreateOrder,
+  IOrderDetailParams,
   IOrderQueryParams,
   IUpdateOrder,
   IUpdateStatusOrder,
@@ -8,16 +9,19 @@ import { getRepository } from 'typeorm';
 import { Order } from '../../entities/order/order.entity';
 import { StringError } from '../../errors/string.error';
 import ApiUtility from '../../utilities/api.utility';
+import orderDetailService from '../order-detail/order-detail.service';
 
 const list = async (params: IOrderQueryParams) => {
   const orderRepo = getRepository(Order).createQueryBuilder('order');
 
-  // get items of order
   orderRepo.leftJoinAndSelect('order.items', 'item');
 
+  // if is admin, can get all
   if (!params.user_id) {
     orderRepo.leftJoinAndSelect('order.user', 'user');
   }
+
+  // if is user, just get order of that user
   if (params.user_id) {
     orderRepo.andWhere('order.user_id = :user_id', {
       user_id: params.user_id,
@@ -36,6 +40,36 @@ const list = async (params: IOrderQueryParams) => {
     };
   });
 };
+
+const detail = async (params: IOrderDetailParams) => {
+  const { id, user_id } = params;
+
+  const orderRepo = getRepository(Order)
+    .createQueryBuilder('order')
+    .where('order.id = :id', { id: id });
+
+  // orderRepo.leftJoinAndSelect('order.items', 'item');
+
+  // if is admin, can get all
+  if (!user_id) {
+    orderRepo.leftJoinAndSelect('order.user', 'user');
+  }
+
+  // if is user, just get order of that user
+  if (user_id) {
+    orderRepo.andWhere('order.user_id = :user_id', {
+      user_id: user_id,
+    });
+  }
+
+  const order = await orderRepo.getOne();
+  const itemsByOrderId = await orderDetailService.getByOrderId(id);
+
+  order.items = itemsByOrderId;
+
+  return order;
+};
+
 const create = async (params: ICreateOrder) => {
   const order = new Order();
   order.date = params.date;
@@ -93,4 +127,5 @@ export default {
   updateStatus,
   update,
   rejectOrCancelOrder,
+  detail,
 };

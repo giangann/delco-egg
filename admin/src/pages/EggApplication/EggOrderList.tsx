@@ -14,6 +14,7 @@ import { CONFIG } from "../../shared/constants/common";
 import { IOrderRow } from "../../shared/types/order";
 import { useNavigate } from "react-router-dom";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
+import { toDayOrTomorrowOrYesterday } from "../../shared/helper";
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
@@ -39,20 +40,10 @@ export const EggOrderList = () => {
       fieldKey: "date",
       width: 350,
       render: ({ date }) => {
-        const today = dayjs();
-        const isTomorrow = dayjs(date).isSame(
-          today.add(1, "day").format(CONFIG.MY_SQL_DATE_FORMAT)
-        );
-        const isToday = dayjs(date).isSame(
-          today.format(CONFIG.MY_SQL_DATE_FORMAT)
-        );
-
         return (
           <DefaultBodyText>
-            {isTomorrow && "Ngày mai"}
-            {isToday && "Hôm nay"}
-
-            {!isToday && !isTomorrow && dayjs(date).format("DD/MM/YYYY")}
+            {toDayOrTomorrowOrYesterday(date) ||
+              dayjs(date).format("DD/MM/YYYY")}
           </DefaultBodyText>
         );
       },
@@ -82,6 +73,15 @@ export const EggOrderList = () => {
     },
   ];
 
+  const onViewDetail = ({ id }: IOrderRow) => {
+    let path = SCREEN_PATHS.APPLICATION.DETAIL;
+    let arrPathBySlash = path.split("/");
+    arrPathBySlash.pop();
+
+    let newPathWithoutSlug = arrPathBySlash.join("/");
+    navigate(`${newPathWithoutSlug}/${id}`);
+  };
+
   useEffect(() => {
     async function fetchMyListOrder() {
       const res = await getApi("order");
@@ -95,9 +95,7 @@ export const EggOrderList = () => {
       <CustomTable
         fields={fields}
         data={myOrderList}
-        onActionViewDetail={({ id }) =>
-          navigate(`${SCREEN_PATHS.APPLICATION.DETAIL}:${id}`)
-        }
+        onActionViewDetail={onViewDetail}
       />
     </Page>
   );
