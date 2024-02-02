@@ -10,7 +10,6 @@ import {
   StrictField,
 } from "../../components/Table/Customtable";
 import { getApi } from "../../lib/utils/fetch/fetchRequest";
-import { CONFIG } from "../../shared/constants/common";
 import { IOrderRow } from "../../shared/types/order";
 import { useNavigate } from "react-router-dom";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";

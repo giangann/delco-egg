@@ -186,8 +186,3 @@ const SubHeadingText = styled(Typography)(({ theme }) => ({
   fontSize: 16,
   [theme.breakpoints.up("sm")]: {},
 }));
-
-const TextButton = styled(Typography)(({ theme }) => ({
-  textTransform: "none",
-  [theme.breakpoints.up("sm")]: {},
-}));

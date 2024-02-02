@@ -36,7 +36,6 @@ export function numberWithComma(number: number) {
 }
 // day is msql date column type with format YYYY-MM-DD
 export function toDayOrTomorrowOrYesterday(day: Date | string) {
-  let labelReturn;
   const today = dayjs();
   const isTomorrow = dayjs(day).isSame(
     today.add(1, "day").format(CONFIG.MY_SQL_DATE_FORMAT)
@@ -45,8 +44,8 @@ export function toDayOrTomorrowOrYesterday(day: Date | string) {
   const isYesterday = dayjs(day).isSame(
     today.subtract(1, "day").format(CONFIG.MY_SQL_DATE_FORMAT)
   );
-  if (isToday) return (labelReturn = "Hôm nay");
-  if (isTomorrow) return (labelReturn = "Ngày mai");
-  if (isYesterday) return (labelReturn = "Hôm qua");
+  if (isToday) return "Hôm nay";
+  if (isTomorrow) return "Ngày mai";
+  if (isYesterday) return "Hôm qua";
   return false;
 }

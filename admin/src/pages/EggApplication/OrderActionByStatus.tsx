@@ -89,10 +89,10 @@ export const OrderActionByStatus = ({
 
   const onChangeStatus = async () => {
     setIsSubmiting(true);
-    console.log("status", newStatus);
+    console.log("status", newStatus, orderId);
     await fakeDelay(1.5);
 
-    toast.success('Cập nhật thành công')
+    toast.success("Cập nhật thành công");
 
     setIsSubmiting(false);
     setOpenCFDialog(false);
