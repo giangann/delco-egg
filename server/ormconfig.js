@@ -10,12 +10,21 @@ module.exports = {
   charset: 'utf8',
   driver: 'mysql',
   synchronize: false,
-  entities: process.env.NODE_ENV !== 'production' ? ['**/**.entity.ts'] : ['dist/**/*.entity.js'],
+  entities:
+    process.env.NODE_ENV !== 'production'
+      ? ['**/**.entity.ts']
+      : ['dist/**/*.entity.js'],
   logging: process.env.NODE_ENV !== 'production' ? 'all' : 'error',
-  migrations: ['src/migrations/*.ts'],
+  migrations:
+    process.env.NODE_ENV !== 'production'
+      ? ['src/migrations/*.ts']
+      : ['dist/migrations/*.js'],
   cli: {
-    migrationsDir: 'src/migrations'
+    migrationsDir:
+      process.env.NODE_ENV !== 'production'
+        ? 'src/migrations'
+        : 'dist/migrations',
   },
   connectTimeout: 30000,
-  acquireTimeout: 30000
+  acquireTimeout: 30000,
 };
