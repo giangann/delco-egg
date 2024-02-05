@@ -3,24 +3,15 @@ import { IDeleteById } from 'common.interface';
 import { IUpdateEgg } from 'egg.interface';
 import httpStatusCodes from 'http-status-codes';
 import constants from '../../constants';
-import eggService from '../../services/egg/egg.service';
+import eggService from '../../services/admin/egg.service';
 import ApiResponse from '../../utilities/api-response.utility';
-import eggPriceQtyService from '../../services/egg-price-qty/egg-price-qty.service';
 
 const create: IController = async (req, res) => {
   try {
     const params = req.body;
     const eggCreateResult = await eggService.create(params);
 
-    const eggPriceQtyCreateResult = await eggPriceQtyService.create({
-      egg_id: eggCreateResult.id,
-    });
-
-    ApiResponse.result(
-      res,
-      { ...eggCreateResult, ...eggPriceQtyCreateResult },
-      httpStatusCodes.CREATED,
-    );
+    ApiResponse.result(res, eggCreateResult, httpStatusCodes.CREATED);
   } catch (e) {
     if ((e.code = constants.ERROR_CODE.DUPLICATED)) {
       return ApiResponse.error(

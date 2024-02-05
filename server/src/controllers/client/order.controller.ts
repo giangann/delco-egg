@@ -9,8 +9,8 @@ import {
 import constants from '../../constants';
 import application from '../../constants/application';
 import { OrderDetail } from '../../entities/order-detail/order-detail.entity';
-import orderDetailService from '../../services/order-detail/order-detail.service';
-import orderService from '../../services/order/order.service';
+import orderDetailService from '../../services/client/order-detail.service';
+import orderService from '../../services/client/order.service';
 import ApiResponse from '../../utilities/api-response.utility';
 import ApiUtility from '../../utilities/api.utility';
 import { IDetailById } from 'common.interface';
@@ -28,7 +28,7 @@ const list: IController = async (req, res) => {
       limit,
       page,
     };
-    if (!user.isAdmin) params.user_id = user.id;
+    params.user_id = user.id;
 
     const listOrder = await orderService.list(params);
     return ApiResponse.result(res, listOrder, httpStatusCodes.OK, null);

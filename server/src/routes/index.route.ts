@@ -1,21 +1,15 @@
 import * as express from 'express';
 
+import adminRouter from './admin';
+import clientRouter from './client';
 import defaultRouter from './default/default.route';
-import authRouter from './auth/auth.route';
-import meRouter from './me/me.route';
-import userRouter from './user/user.route';
-import eggRouter from './egg/egg.route';
-import eggPriceQtyRoute from './egg-price-qty/egg-price-qty.route';
-import orderRouter from './order/order.route';
+
+import { isAdmin } from '../middlewares/permission-handler.middleware';
 
 const router = express.Router();
 
+router.use('/admin', isAdmin(), adminRouter);
+router.use('/client', clientRouter);
 router.use('/', defaultRouter);
-router.use('/auth', authRouter);
-router.use('/me', meRouter);
-router.use('/user', userRouter);
-router.use('/egg', eggRouter);
-router.use('/egg-price-qty', eggPriceQtyRoute);
-router.use('/order', orderRouter);
 
 export default router;

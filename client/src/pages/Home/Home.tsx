@@ -15,6 +15,7 @@ import { IcBaselineAddCircleOutline } from "../../shared/icons/Icon";
 import { IEggPriceQty } from "../../shared/types/egg";
 import { GREEN } from "../../styled/color";
 import { LinkCustom, PageTitleText } from "../../styled/styled";
+import { WaitingUpdatePrice } from "./WaitingUpdatePrice";
 
 export const Home = () => {
   const { isMobile } = useDevice();
@@ -33,13 +34,17 @@ export const Home = () => {
         <PageTitleText>Giá trứng hôm nay</PageTitleText>
         {/* <UnitText>{"(vnđ/quả)"}</UnitText> */}
 
-        <Grid mt={0} container columnSpacing={1} rowSpacing={3}>
-          {listEgg.map((egg) => (
-            <Grid item xs={4}>
-              <PriceBox {...egg} />
-            </Grid>
-          ))}
-        </Grid>
+        {listEgg.length ? (
+          <Grid mt={0} container columnSpacing={1} rowSpacing={3}>
+            {listEgg.map((egg) => (
+              <Grid item xs={4}>
+                <PriceBox {...egg} />
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <WaitingUpdatePrice />
+        )}
       </Paper>
       <Paper elevation={0} sx={{ padding: 2, mt: 4 }}>
         <Box>

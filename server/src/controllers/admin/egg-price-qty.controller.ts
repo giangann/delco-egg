@@ -1,6 +1,6 @@
 import IController from 'IController';
 import { IUpdateEggPriceQty } from 'egg-price-qty.interface';
-import eggPriceQtyService from '../../services/egg-price-qty/egg-price-qty.service';
+import eggPriceQtyService from '../../services/admin/egg-price-qty.service';
 import ApiResponse from '../../utilities/api-response.utility';
 
 import httpStatusCodes from 'http-status-codes';

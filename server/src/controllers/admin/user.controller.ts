@@ -17,7 +17,7 @@ import {
 import { StringError } from '../../errors/string.error';
 
 // Services
-import userService from '../../services/user/user.service';
+import userService from '../../services/admin/user.service';
 
 // Utilities
 import ApiResponse from '../../utilities/api-response.utility';
