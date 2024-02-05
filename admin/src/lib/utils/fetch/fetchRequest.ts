@@ -46,3 +46,16 @@ export const putApi = async (endpoint: string, data: any) => {
 
   return respond.json();
 };
+
+export const deleteApi = async (endpoint: string) => {
+  const fullUrl = baseURL + "/" + endpoint;
+  const respond = await fetch(fullUrl, {
+    method: "DELETE", // or 'PUT'
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include", // if don't have this, token can't be set to cookies
+  });
+
+  return respond.json();
+};

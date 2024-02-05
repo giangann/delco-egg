@@ -1,31 +1,29 @@
 import {
   Box,
-  Button,
   Container,
-  Paper,
   Stack,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
   Typography,
-  styled,
+  styled
 } from "@mui/material";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Page } from "../../components/Page/Page";
+import { BoxByStatus } from "../../components/Table/BoxByStatus";
 import { useDevice } from "../../hooks/useDevice";
 import { getApi } from "../../lib/utils/fetch/fetchRequest";
+import { ORDER_STATUS } from "../../shared/constants/orderStatus";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
 import {
   numberWithComma,
   timeWithoutSecond,
   toDayOrTomorrowOrYesterday,
 } from "../../shared/helper";
-import { IcRoundKeyboardBackspace } from "../../shared/icons/Icon";
 import { IOrder, IOrderItem } from "../../shared/types/order";
-import dayjs from "dayjs";
-import { ORDER_STATUS } from "../../shared/constants/orderStatus";
-import { BoxByStatus } from "../../components/Table/BoxByStatus";
 import { OrderActionByStatus } from "./OrderActionByStatus";
 
 export const EggOrderDetail = () => {
@@ -60,25 +58,7 @@ export const EggOrderDetail = () => {
 
   return (
     <Container>
-      <Paper elevation={isMobile ? 0 : 1} sx={{ padding: { xs: 0, sm: 2 } }}>
-        <Box position="relative">
-          <Box
-            sx={{
-              height: "100%",
-              position: "absolute",
-              left: 0,
-              top: 0,
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <Button onClick={goBackList} sx={{ padding: 0 }} variant="outlined">
-              <IcRoundKeyboardBackspace fontSize={28} />
-            </Button>
-          </Box>
-          <TitleText mt={4}>Chi tiết đơn</TitleText>
-        </Box>
-
+      <Page title="Chi tiết đơn" onGoBack={goBackList}>
         {/* table */}
         <Box mt={2}>
           <BoxByStatus margin={"unset !important"} status={order.status} />
@@ -153,7 +133,7 @@ export const EggOrderDetail = () => {
           status={order.status}
           orderId={order.id}
         />
-      </Paper>
+      </Page>
     </Container>
   );
 };

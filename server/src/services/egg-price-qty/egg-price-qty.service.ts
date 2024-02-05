@@ -12,6 +12,13 @@ const list = async () => {
   return data;
 };
 
+const create = async (params: IUpdateEggPriceQty) => {
+  const createdData = await getRepository(EggPriceQty).save({
+    ...params,
+  });
+  return createdData;
+};
+
 const update = async (params: IUpdateEggPriceQty) => {
   const query = { egg_id: params.egg_id };
   const eggPriceQtyItem = await getRepository(EggPriceQty).findOne({
@@ -27,4 +34,4 @@ const update = async (params: IUpdateEggPriceQty) => {
   return updatedData;
 };
 
-export default { list, update };
+export default { list, create, update };

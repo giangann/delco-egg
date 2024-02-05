@@ -1,21 +1,66 @@
-import { Container, Paper } from "@mui/material";
+import { Box, Button, Container, Paper } from "@mui/material";
 import React from "react";
 import { useDevice } from "../../hooks/useDevice";
-import { PageTitleText } from "../../styled/styled";
+import {
+  AlignCenterBox,
+  ButtonResponsive,
+  PageTitleText,
+} from "../../styled/styled";
+import {
+  IcRoundKeyboardBackspace,
+  MaterialSymbolsArrowCircleRight,
+} from "../../shared/icons/Icon";
+import { FlexDefaultBox } from "../../styled/styled";
 
 interface PageProps {
   title: string;
   children: React.ReactNode;
+  onGoBack?: () => void;
+  onCreate?: () => void;
 }
-export const Page = ({ title, children }: PageProps) => {
+export const Page = ({ title, children, onGoBack, onCreate }: PageProps) => {
   const isMobile = useDevice();
   return (
-    <Container sx={{ paddingX: { xs: 1, sm: "unset" } }}>
+    <Container sx={{ paddingX: { xs: 1, sm: 3 } }}>
       <Paper
         elevation={isMobile ? 0 : 1}
         sx={{ paddingY: { xs: 0, sm: 2 }, mt: 3 }}
       >
-        <PageTitleText mb={4}>{title}</PageTitleText>
+        <Box position="relative">
+          <Box
+            sx={{
+              height: "100%",
+              position: "absolute",
+              left: 0,
+              top: 0,
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            {onGoBack && (
+              <Button onClick={onGoBack} sx={{ padding: 0 }} variant="outlined">
+                <IcRoundKeyboardBackspace fontSize={28} />
+              </Button>
+            )}
+          </Box>
+          <PageTitleText mb={4}>{title}</PageTitleText>
+          {onCreate && (
+            <FlexDefaultBox my={3} justifyContent={"center"}>
+              <ButtonResponsive
+                onClick={onCreate}
+                variant="contained"
+                endIcon={
+                  <MaterialSymbolsArrowCircleRight
+                    color={"white"}
+                    style={{ fontSize: isMobile ? 16 : 24 }}
+                  />
+                }
+              >
+                Tạo mới
+              </ButtonResponsive>
+            </FlexDefaultBox>
+          )}
+        </Box>
 
         {children}
       </Paper>

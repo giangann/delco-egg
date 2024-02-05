@@ -1,16 +1,20 @@
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Grid
-} from "@mui/material";
+import { Box, Button, CircularProgress, Grid } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { CustomInput } from "../../components/Input/CustomInput";
 import { Page } from "../../components/Page/Page";
 import { postApi } from "../../lib/utils/fetch/fetchRequest";
 import { IEggInfo } from "../../shared/types/egg";
-import { InputLabelText, TextButton } from "../../styled/styled";
+import {
+  BoxFlexEnd,
+  ButtonResponsive,
+  InputLabelText,
+  TextButton,
+} from "../../styled/styled";
+import { useNavigate } from "react-router-dom";
+import SCREEN_PATHS from "../../shared/constants/screenPaths";
+import { MaterialSymbolsArrowCircleLeftOutline } from "../../shared/icons/Icon";
+import { useDevice } from "../../hooks/useDevice";
 
 export const CreateNewType = () => {
   const {
@@ -19,15 +23,18 @@ export const CreateNewType = () => {
     reset,
     formState: { isSubmitting },
   } = useForm<IEggInfo>();
+  const navigate = useNavigate();
+  const { isMobile } = useDevice();
 
   const onSubmit = async (data: IEggInfo) => {
     const res = await postApi("egg", data);
-
-    console.log(res);
-    toast.success("created success");
-
+    if (res.success) toast.success("created success");
     // reset form
     reset();
+  };
+
+  const onGoBack = () => {
+    navigate(SCREEN_PATHS.EGG.LIST_TYPE);
   };
   return (
     <Page title="Tạo loại trứng mới">
@@ -49,17 +56,31 @@ export const CreateNewType = () => {
             />
           </Grid>
         </Grid>
-        <Button
-          sx={{ mt: 2 }}
-          type="submit"
-          variant="contained"
-          disabled={isSubmitting}
-          endIcon={
-            isSubmitting && <CircularProgress color="inherit" size={14} />
-          }
-        >
-          <TextButton>Tạo</TextButton>
-        </Button>{" "}
+
+        <BoxFlexEnd sx={{ marginTop: { xs: 2, sm: 1 } }}>
+          <ButtonResponsive
+            onClick={onGoBack}
+            variant="outlined"
+            startIcon={
+              <MaterialSymbolsArrowCircleLeftOutline
+                style={{ fontSize: isMobile ? 16 : 24 }}
+              />
+            }
+          >
+            Quay lại
+          </ButtonResponsive>
+          <ButtonResponsive
+            sx={{ ml: { xs: 1, sm: 2 } }}
+            type="submit"
+            variant="contained"
+            disabled={isSubmitting}
+            endIcon={
+              isSubmitting && <CircularProgress color="inherit" size={14} />
+            }
+          >
+            Tạo
+          </ButtonResponsive>
+        </BoxFlexEnd>
       </Box>
     </Page>
   );

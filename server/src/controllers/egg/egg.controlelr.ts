@@ -5,13 +5,22 @@ import httpStatusCodes from 'http-status-codes';
 import constants from '../../constants';
 import eggService from '../../services/egg/egg.service';
 import ApiResponse from '../../utilities/api-response.utility';
+import eggPriceQtyService from '../../services/egg-price-qty/egg-price-qty.service';
 
 const create: IController = async (req, res) => {
   try {
     const params = req.body;
     const eggCreateResult = await eggService.create(params);
 
-    ApiResponse.result(res, eggCreateResult, httpStatusCodes.CREATED);
+    const eggPriceQtyCreateResult = await eggPriceQtyService.create({
+      egg_id: eggCreateResult.id,
+    });
+
+    ApiResponse.result(
+      res,
+      { ...eggCreateResult, ...eggPriceQtyCreateResult },
+      httpStatusCodes.CREATED,
+    );
   } catch (e) {
     if ((e.code = constants.ERROR_CODE.DUPLICATED)) {
       return ApiResponse.error(

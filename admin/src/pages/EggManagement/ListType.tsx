@@ -11,25 +11,52 @@ import {
   styled,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Page } from "../../components/Page/Page";
-import { getApi, putApi } from "../../lib/utils/fetch/fetchRequest";
-import { IEggUpdate } from "../../shared/types/egg";
 import { useForm } from "react-hook-form";
-import { CustomInput } from "../../components/Input/CustomInput";
-import { BoxFlexEnd, TextButton } from "../../styled/styled";
 import { toast } from "react-toastify";
+import { ConfirmDialog } from "../../components/Dialog/ConfirmDialog";
+import { CustomInput } from "../../components/Input/CustomInput";
+import { Page } from "../../components/Page/Page";
+import { deleteApi, getApi, putApi } from "../../lib/utils/fetch/fetchRequest";
+import { IEggUpdate } from "../../shared/types/egg";
+import { BoxFlexEnd, TextButton } from "../../styled/styled";
+import { useNavigate } from "react-router-dom";
+import SCREEN_PATHS from "../../shared/constants/screenPaths";
 
 const DEFAULT_ID = -1;
 export const ListType = () => {
   const [count, setCount] = useState(0);
   const [itemId, setItemId] = useState(DEFAULT_ID);
+  const [delItemId, setDelItemId] = useState(DEFAULT_ID);
+
   const [listEggType, setListEggType] = useState<IEggUpdate[]>();
-  const handleOpenDialog = (itemId: number) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const navigate = useNavigate();
+  const handleOpenEditDialog = (itemId: number) => {
     setItemId(itemId);
   };
-
-  const handleCloseDialog = () => {
+  const handleCloseEditDialog = () => {
     setItemId(DEFAULT_ID);
+  };
+
+  const handleOpenDeleteDialog = (itemId: number) => {
+    setDelItemId(itemId);
+  };
+  const handleCloseDeleteDialog = () => {
+    setDelItemId(DEFAULT_ID);
+  };
+
+  const onDeleteType = async () => {
+    setIsSubmitting(true);
+    const eggId = listEggType![delItemId].id;
+    console.log(eggId);
+
+    const res = await deleteApi(`egg/${eggId}`);
+
+    if (res.success) toast.success("Xóa thanh cong");
+    setIsSubmitting(false);
+    handleCloseDeleteDialog();
+    setCount(count + 1);
   };
   useEffect(() => {
     async function getListEggType() {
@@ -39,14 +66,18 @@ export const ListType = () => {
     getListEggType();
   }, [count]);
   return (
-    <Page title="Danh sách các loại trứng">
+    <Page
+      title="Danh sách các loại trứng"
+      onCreate={() => navigate(SCREEN_PATHS.EGG.CREATE_TYPE)}
+    >
       {listEggType?.length && (
         <>
           <Grid container rowSpacing={2} columnSpacing={3}>
             {listEggType?.map((eggInfo, index) => (
               <Grid item xs={12} sm={4}>
                 <EggTypeItem
-                  handleOpenDialog={handleOpenDialog}
+                  handleOpenDeleteDialog={handleOpenDeleteDialog}
+                  handleOpenEditDialog={handleOpenEditDialog}
                   itemIndex={index}
                   {...eggInfo}
                 />
@@ -57,9 +88,21 @@ export const ListType = () => {
             // @ts-ignore
             <EditDialog
               open={itemId >= 0}
-              onClose={handleCloseDialog}
+              onClose={handleCloseEditDialog}
               refetch={() => setCount(count + 1)}
               {...listEggType[itemId]}
+            />
+          )}
+
+          {delItemId >= 0 && (
+            // @ts-ignore
+            <ConfirmDialog
+              title="Xác nhận thao tác"
+              content={`Bạn có muốn xóa "${listEggType![delItemId].type_name}"`}
+              open={delItemId >= 0}
+              onClose={handleCloseDeleteDialog}
+              onAccept={onDeleteType}
+              isSubmitting={isSubmitting}
             />
           )}
         </>
@@ -72,13 +115,15 @@ type EggItemProps = {
   type_name: string;
   weight: string;
   itemIndex: number;
-  handleOpenDialog: (itemId: number) => void;
+  handleOpenEditDialog: (itemId: number) => void;
+  handleOpenDeleteDialog: (itemId: number) => void;
 };
 const EggTypeItem = ({
   type_name,
   weight,
   itemIndex,
-  handleOpenDialog,
+  handleOpenEditDialog,
+  handleOpenDeleteDialog,
 }: EggItemProps) => {
   return (
     <Paper elevation={4} sx={{ p: 4, position: "relative" }}>
@@ -106,12 +151,21 @@ const EggTypeItem = ({
         </Stack>
 
         <Box sx={{ position: "absolute", top: 0, right: 0 }}>
-          <EditButton
-            onClick={() => handleOpenDialog(itemIndex)}
-            variant="outlined"
-          >
-            Sửa
-          </EditButton>
+          <Stack spacing={0.5}>
+            <ActionButton
+              onClick={() => handleOpenEditDialog(itemIndex)}
+              variant="outlined"
+            >
+              Sửa
+            </ActionButton>
+            <ActionButton
+              color="error"
+              onClick={() => handleOpenDeleteDialog(itemIndex)}
+              variant="contained"
+            >
+              Xóa
+            </ActionButton>
+          </Stack>
         </Box>
       </Box>
     </Paper>
@@ -202,8 +256,8 @@ const BoxFieldValue = styled(Typography)(({ theme }) => ({
 
   [theme.breakpoints.up("sm")]: {},
 }));
-const EditButton = styled(Button)(({ theme }) => ({
-  // color:grey['300'],
+const ActionButton = styled(Button)(({ theme }) => ({
+  padding: "3px 8px",
   textTransform: "none",
   [theme.breakpoints.up("sm")]: {},
 }));
