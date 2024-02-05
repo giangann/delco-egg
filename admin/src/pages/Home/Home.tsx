@@ -15,7 +15,6 @@ export const Home = () => {
   useEffect(() => {
     async function fetchListUser() {
       const res = await getApi("user/", { isAdmin: "0" });
-      console.log(res);
     }
     fetchListUser();
   });

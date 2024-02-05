@@ -50,7 +50,6 @@ export const UpdatePrice = () => {
       const res = await getApi("egg-price-qty");
 
       for (let i = 0; i < res.data.length; i++) {
-        console.log(res.data[i].egg_id, res.data[i]);
         setValue(res.data[i].egg_id.toString(), res.data[i]);
       }
 

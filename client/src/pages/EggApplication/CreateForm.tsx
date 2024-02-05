@@ -45,7 +45,6 @@ export const CreateForm = () => {
 
     const res = await postApi("order", orderData);
 
-    console.log(res);
     if (res.success) {
       toast.success("Tạo yêu cầu thành công, đang đợi Admin phê duyệt");
       navigate(SCREEN_PATHS.LIST);

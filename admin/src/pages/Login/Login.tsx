@@ -12,7 +12,6 @@ export const Login = () => {
   const navigate = useNavigate();
   const handleLogin = async (credentials: IUserLogin) => {
     const res = await login(credentials);
-    console.log(res)
     navigate("/");
   };
 

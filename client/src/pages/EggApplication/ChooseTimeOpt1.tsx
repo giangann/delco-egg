@@ -20,7 +20,6 @@ export const ChooseTimeOpt1 = ({ setValue, getValues }: Step2Props) => {
   const [day, setDay] = React.useState<Dayjs | null>(dayjs(today));
   const [time, setTime] = React.useState<Dayjs | null>(dayjs(today));
 
-  console.log(getValues());
   return (
     <Page title="Chọn thời gian lấy">
       <Box mt={3}>

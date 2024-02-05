@@ -1,7 +1,6 @@
 import Axios from "axios";
 
 export const baseURL = import.meta.env.VITE_BASE_URL_API;
-console.log("base", baseURL);
 // const refetchTokenURL = ${baseURL}/${V1}/user/refresh-token
 async function authRequestInterceptor(config: any) {
   const _token = await localStorage.getItem("user-token");

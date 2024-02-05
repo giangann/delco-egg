@@ -49,7 +49,6 @@ export const ListType = () => {
   const onDeleteType = async () => {
     setIsSubmitting(true);
     const eggId = listEggType![delItemId].id;
-    console.log(eggId);
 
     const res = await deleteApi(`egg/${eggId}`);
 

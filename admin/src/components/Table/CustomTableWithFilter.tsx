@@ -26,7 +26,6 @@ export const CustomTableWithFilter = <TData extends UnknownObj>({
   function editPrams() {
     let params = {};
     searchParams.forEach((value, key) => {
-      console.log(key, value);
       //   @ts-ignore
       params[key] = value;
     });

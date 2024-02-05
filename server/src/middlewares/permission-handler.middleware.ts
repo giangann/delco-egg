@@ -13,7 +13,6 @@ export const isAdmin = () => {
     res: express.Response,
     next: express.NextFunction,
   ) => {
-    console.log(req.originalUrl);
     if (!req.originalUrl.includes('login')) {
       if (!req.user.isAdmin) {
         return ApiResponse.error(res, httpStatusCodes.UNAUTHORIZED);

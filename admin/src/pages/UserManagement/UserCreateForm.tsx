@@ -29,7 +29,6 @@ export const UserCreateForm = () => {
   const onSumbit = async (value: IUserCreate) => {
     const res = await postApi("user/create", value);
     toast.success("sucess");
-    console.log(res);
   };
   const onDefaultPWChange = () => {
     setUseDefaultPW(!useDefaultPW);

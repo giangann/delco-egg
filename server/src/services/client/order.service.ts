@@ -8,12 +8,13 @@ import {
 import { getRepository } from 'typeorm';
 import { Order } from '../../entities/order/order.entity';
 import { StringError } from '../../errors/string.error';
-import orderDetailService from '../client/order-detail.service';
+import orderDetailService from './order-detail.service';
 
 const list = async (params: IOrderQueryParams) => {
   const listOrders = await getRepository(Order)
     .createQueryBuilder('order')
     .leftJoinAndSelect('order.items', 'item')
+    .leftJoinAndSelect('order.user', 'user')
     .andWhere('order.user_id = :user_id', {
       user_id: params.user_id,
     })
