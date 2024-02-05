@@ -2,6 +2,7 @@ import IController from 'IController';
 import httpStatusCodes from 'http-status-codes';
 import {
   ICreateOrder,
+  IOrderDetailParams,
   IOrderQueryParams,
   IUpdateOrder,
   IUpdateStatusOrder,
@@ -13,9 +14,6 @@ import orderDetailService from '../../services/client/order-detail.service';
 import orderService from '../../services/client/order.service';
 import ApiResponse from '../../utilities/api-response.utility';
 import ApiUtility from '../../utilities/api.utility';
-import { IDetailById } from 'common.interface';
-import { IOrderDetail } from 'order-detail.interface';
-import { IOrderDetailParams } from 'order.interface';
 
 const list: IController = async (req, res) => {
   try {

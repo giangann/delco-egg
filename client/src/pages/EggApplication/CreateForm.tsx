@@ -11,6 +11,9 @@ import { ChooseTimeOpt1 } from "./ChooseTimeOpt1";
 import { Confirm } from "./Confirm";
 import { CreateFormOpt2 } from "./CreateFormOpt2";
 import { ProcessBar } from "./ProcessBar";
+import { WaitingUpdatePrice } from "../Home/WaitingUpdatePrice";
+import { Box, Container, Typography } from "@mui/material";
+import { LinkCustom } from "../../styled/styled";
 
 export const MAX_STEP = 3;
 
@@ -73,7 +76,7 @@ export const CreateForm = () => {
 
   return (
     <React.Fragment>
-      {listEggPriceQty.length && (
+      {listEggPriceQty.length ? (
         <FormContext.Provider
           value={{ data: listEggPriceQty, form: useFormReturns }}
         >
@@ -82,6 +85,13 @@ export const CreateForm = () => {
           {/* Button navbar area */}
           <ProcessBar setOpenConfirm={setOpenConfirm} currStep={currStep} />
         </FormContext.Provider>
+      ) : (
+        <Container>
+          <WaitingUpdatePrice />
+          <LinkCustom to={"/"}>
+            <Typography textAlign={'center'}>{'<<< Về trang chủ'}</Typography>
+          </LinkCustom>
+        </Container>
       )}
       <ConfirmDialog
         open={openConfirm}

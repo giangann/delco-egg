@@ -4,21 +4,18 @@ import { getRepository } from 'typeorm';
 import { User } from '../../entities/user/user.entity';
 
 // Utilities
-import Encryption from '../../utilities/encryption.utility';
 import ApiUtility from '../../utilities/api.utility';
 import DateTimeUtility from '../../utilities/date-time.utility';
+import Encryption from '../../utilities/encryption.utility';
 
 // Interfaces
 import {
-  ICreateUser,
-  ILoginUser,
-  IUpdateUser,
-  IUserQueryParams,
-} from '../../interfaces/user.interface';
-import {
-  IDeleteById,
-  IDetailById,
+  IDetailById
 } from '../../interfaces/common.interface';
+import {
+  ILoginUser,
+  IUpdateUser
+} from '../../interfaces/user.interface';
 
 // Errors
 import { StringError } from '../../errors/string.error';

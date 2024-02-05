@@ -10,7 +10,13 @@ export default {
   env: {
     authSecret: process.env.TOKEN_SECRET_KEY || 'test',
   },
-  authorizationIgnorePath: ['/', '/auth/login', '/auth/register'],
+  authorizationIgnorePath: [
+    '/',
+    '/client/auth/login',
+    '/client/auth/register',
+    '/admin/auth/login',
+    '/admin/auth/register',
+  ],
   status: {
     WAITING_APPROVAL: 0,
     ACCEPTED: 1,

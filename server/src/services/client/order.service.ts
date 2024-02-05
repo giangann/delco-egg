@@ -11,23 +11,13 @@ import { StringError } from '../../errors/string.error';
 import orderDetailService from '../client/order-detail.service';
 
 const list = async (params: IOrderQueryParams) => {
-  const orderRepo = getRepository(Order).createQueryBuilder('order');
-
-  orderRepo.leftJoinAndSelect('order.items', 'item');
-
-  // if is admin, can get all
-  if (!params.user_id) {
-    orderRepo.leftJoinAndSelect('order.user', 'user');
-  }
-
-  // if is user, just get order of that user
-  if (params.user_id) {
-    orderRepo.andWhere('order.user_id = :user_id', {
+  const listOrders = await getRepository(Order)
+    .createQueryBuilder('order')
+    .leftJoinAndSelect('order.items', 'item')
+    .andWhere('order.user_id = :user_id', {
       user_id: params.user_id,
-    });
-  }
-
-  const listOrders = await orderRepo.getMany();
+    })
+    .getMany();
 
   return listOrders.map((order) => {
     return {
@@ -43,25 +33,14 @@ const list = async (params: IOrderQueryParams) => {
 const detail = async (params: IOrderDetailParams) => {
   const { id, user_id } = params;
 
-  const orderRepo = getRepository(Order)
+  const order = await getRepository(Order)
     .createQueryBuilder('order')
-    .where('order.id = :id', { id: id });
-
-  // orderRepo.leftJoinAndSelect('order.items', 'item');
-
-  // if is admin, can get all
-  if (!user_id) {
-    orderRepo.leftJoinAndSelect('order.user', 'user');
-  }
-
-  // if is user, just get order of that user
-  if (user_id) {
-    orderRepo.andWhere('order.user_id = :user_id', {
+    .where('order.id = :id', { id: id })
+    .andWhere('order.user_id = :user_id', {
       user_id: user_id,
-    });
-  }
+    })
+    .getOne();
 
-  const order = await orderRepo.getOne();
   const itemsByOrderId = await orderDetailService.getByOrderId(id);
 
   order.items = itemsByOrderId;
