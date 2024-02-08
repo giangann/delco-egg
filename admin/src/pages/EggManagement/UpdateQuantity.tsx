@@ -2,151 +2,158 @@ import {
   Box,
   Button,
   CircularProgress,
-  Dialog,
   Grid,
+  IconButton,
   Typography,
   styled,
 } from "@mui/material";
+import { red } from "@mui/material/colors";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { ConfirmDialog } from "../../components/Dialog/ConfirmDialog";
 import { InputElement } from "../../components/Input/CustomInput";
 import { Page } from "../../components/Page/Page";
+import { CustomSelect, Option } from "../../components/Select/CustomSelect";
 import { getApi, postApi } from "../../lib/utils/fetch/fetchRequest";
-import { IEggPriceQty } from "../../shared/types/egg-price-qty";
+import { IcBaselineDeleteForever } from "../../shared/icons/Icon";
+import { IEgg } from "../../shared/types/egg";
+import { IEggQty } from "../../shared/types/egg-price-qty";
 import { GREEN } from "../../styled/color";
-import { BoxFlexEnd, alignCenterSx } from "../../styled/styled";
+import {
+  BoxFlexEnd,
+  alignCenterSx
+} from "../../styled/styled";
 
+const actionGrid = {
+  xs: 2,
+};
+const grid = {
+  xs: (12 - actionGrid.xs) / 2,
+};
 export const UpdateQuantity = () => {
-  const [openDialog, setOpenDialog] = useState(false);
-  const [focusRow, setFocusRow] = useState(-1);
   const [count, setCount] = useState(-1);
   const [rerender, setRerender] = useState(0);
+  const [listEgg, setListEgg] = useState<IEgg[]>([]);
+  const [openConfirmUpdateDialog, setOpenConfirmUpdateDialog] = useState(false);
+
   const {
-    register,
+    setValue,
+    control,
     handleSubmit,
     getValues,
-    setValue,
-    formState: { isSubmitting, isDirty },
-  } = useForm<IEggPriceQty[]>();
+    register,
+    formState: { isSubmitting },
+  } = useForm<{
+    quantities: IEggQty[];
+  }>();
+  const { fields, append, remove } = useFieldArray({
+    control: control,
+    name: "quantities",
+  });
 
-  const onSubmit = async (data: IEggPriceQty[]) => {
-    try {
-      const res = await postApi("egg-price-qty/update-day-quantity", data);
-      if (res.success) {
-        setRerender(rerender + 1);
-        toast.success("Cap nhat thanh cong!");
-        setOpenDialog(false);
-      } else {
-        throw res.error;
-      }
-    } catch (e: any) {
-      toast.error(e.message);
+  const onSubmit = async (value: { quantities: IEggQty[] }) => {
+    const data = value.quantities
+      .filter((el) => el.egg_id)
+      .map((el) => {
+        return {
+          ...el,
+          quantity: parseInt(el.quantity as unknown as string),
+        };
+      });
+    const res = await postApi("egg-price-qty/update-day-quantity", data);
+    if (res.success) {
+      setRerender(rerender + 1);
+      toast.success("Cập nhật thành công!");
     }
+    setOpenConfirmUpdateDialog(false);
+  };
+
+  const onNewRow = async () => {
+    const res = await getApi("egg");
+    const currList = getValues().quantities;
+    const ableListEgg = res.data.filter((egg: IEgg) =>
+      currList.every((field) => field.egg_id !== egg.id)
+    );
+    setListEgg(ableListEgg);
   };
 
   useEffect(() => {
     async function fetchEggPriceQty() {
       const res = await getApi("egg-price-qty");
+      setValue("quantities", res.data);
 
-      for (let i = 0; i < res.data.length; i++) {
-        console.log(res.data[i].egg_id, res.data[i]);
-        setValue(res.data[i].egg_id.toString(), res.data[i]);
-      }
-
+      // force rerender because use useForm to render value
       setCount(count + 1);
     }
     fetchEggPriceQty();
   }, [rerender]);
+
   return (
     <Page title="Cập nhật số lượng trứng">
       <Grid container spacing={{ xs: 5 }}>
         <Grid item xs={12} sm={4}>
-          <GridContainerCustom container sx={{ backgroundColor: "#777" }}>
-            <GridCustom item xs={6}></GridCustom>
-            <GridCustom item xs={6}>
-              <TypeNameText>Số lượng</TypeNameText>
-            </GridCustom>
-          </GridContainerCustom>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Box
-              sx={{
-                borderBottom: `1px solid ${GREEN["500"]}`,
-              }}
-            >
-              {Object.keys(getValues()).map((key, index) => {
-                let rowKey = Number(key);
-                let isFocus = index === focusRow;
-                return (
-                  <GridContainerCustom container>
-                    <GridCustom item xs={6}>
-                      <TypeNameText
-                        fontSize={isFocus ? "20px !important" : "unset"}
-                        fontWeight={isFocus ? "900 !important" : "unset"}
-                        color={isFocus ? "red" : "black"}
-                        sx={{ transition: "all 0.25s" }}
-                      >
-                        {getValues(`${rowKey}`).egg.type_name}
-                      </TypeNameText>
-                    </GridCustom>
-                    <GridCustom item xs={6}>
-                      <InputElement
-                        onFocus={() => setFocusRow(index)}
-                        sx={{ textAlign: "center" }}
-                        {...register(`${rowKey}.quantity`)}
-                      />
-                    </GridCustom>
-                  </GridContainerCustom>
-                );
-              })}
-            </Box>
-
-            <BoxFlexEnd mt={2}>
+          <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
+            <Grid container sx={{ backgroundColor: GREEN["500"] }}>
+              <GridHeaderCustom item xs={grid.xs}>
+                <HeaderText>Loại</HeaderText>
+              </GridHeaderCustom>
+              <GridHeaderCustom item xs={grid.xs}>
+                <HeaderText>Số lượng</HeaderText>
+              </GridHeaderCustom>
+            </Grid>
+            {fields.map((field, index) => (
+              <QuantityRow
+                field={field}
+                index={index}
+                listEgg={listEgg}
+                getValues={getValues}
+                setValue={setValue}
+                register={register}
+                key={field.egg_id}
+                remove={remove}
+              />
+            ))}
+            <LastBox justifyContent={"center"}>
               <Button
-                disabled={!isDirty || isSubmitting}
-                endIcon={
-                  isSubmitting && <CircularProgress color="inherit" size={14} />
-                }
-                variant="contained"
-                onClick={() => setOpenDialog(true)}
+                onClick={() => {
+                  onNewRow();
+                  append({
+                    egg: { id: 0, type_name: "" },
+                    quantity: 0,
+                    egg_id: 0,
+                    date: "",
+                  });
+                }}
+                sx={{ padding: 0.25, marginY: 1 }}
+                variant="outlined"
               >
-                Cập nhật
+                +
+              </Button>
+            </LastBox>
+
+            <BoxFlexEnd>
+              <Button
+                sx={{ marginTop: 2 }}
+                disabled={isSubmitting}
+                endIcon={isSubmitting && <CircularProgress size={14} />}
+                variant="contained"
+                onClick={() => setOpenConfirmUpdateDialog(true)}
+              >
+                Update
               </Button>
             </BoxFlexEnd>
-
-            <Dialog
-              disablePortal={true}
-              open={openDialog}
-              onClose={() => setOpenDialog(false)}
-            >
-              <Box p={3}>
-                <TitleText mb={2}> Xác nhận </TitleText>
-                <Typography>
-                  Xác nhận cập nhật số lượng trứng cho ngày hôm nay
-                </Typography>
-                <BoxFlexEnd mt={4}>
-                  <Button
-                    onClick={() => setOpenDialog(false)}
-                    variant="outlined"
-                  >
-                    Hủy
-                  </Button>
-                  <Button
-                    sx={{ marginLeft: 2 }}
-                    disabled={!isDirty || isSubmitting}
-                    endIcon={
-                      isSubmitting && (
-                        <CircularProgress color="inherit" size={14} />
-                      )
-                    }
-                    variant="contained"
-                    type="submit"
-                  >
-                    Cập nhật
-                  </Button>
-                </BoxFlexEnd>
-              </Box>
-            </Dialog>
+            {openConfirmUpdateDialog && (
+              <ConfirmDialog
+                disablePortal
+                isSubmitting={isSubmitting}
+                title="Xác nhận cập nhật"
+                content="Đã kiểm tra và cập nhật đúng số lượng trứng ?"
+                open={openConfirmUpdateDialog}
+                onClose={() => setOpenConfirmUpdateDialog(false)}
+                insideFormEl={true}
+              />
+            )}
           </form>
         </Grid>
 
@@ -168,27 +175,127 @@ export const UpdateQuantity = () => {
   );
 };
 
+type QuantityRowProps = {
+  field: IEggQty;
+  setValue: any;
+  index: string | number;
+  listEgg: IEgg[];
+  register: any;
+  remove: any;
+  getValues: any;
+};
+const QuantityRow = ({
+  field,
+  setValue,
+  index,
+  listEgg,
+  register,
+  remove,
+  getValues,
+}: QuantityRowProps) => {
+  const [openDelDialog, setOpenDelDialog] = useState(false);
+  return (
+    <GridContainerCustom container>
+      <GridCustom item xs={grid.xs}>
+        {field.egg_id ? (
+          <TypeNameText>{field.egg.type_name}</TypeNameText>
+        ) : (
+          <CustomSelect
+            onChange={(event) => {
+              // @ts-ignore
+              let newVal = event?.target.value;
+              setValue(`quantities.${index}.egg_id`, parseInt(newVal));
+              setValue(
+                `quantities.${index}.egg`,
+                listEgg.filter((egg) => egg.id === parseInt(newVal))[0]
+              );
+            }}
+          >
+            {listEgg.map((egg, index) => (
+              <Option
+                key={index}
+                value={egg.id}
+                slotProps={{
+                  root: { value: egg.id },
+                }}
+              >
+                {egg.type_name}
+              </Option>
+            ))}
+          </CustomSelect>
+        )}
+      </GridCustom>
+
+      <GridCustom item xs={grid.xs}>
+        <InputElement
+          type="number"
+          {...register(`quantities.${index}.quantity`)}
+        />
+      </GridCustom>
+      <GridCustom item xs={actionGrid.xs}>
+        <Box sx={{ ...alignCenterSx, height: "100%" }}>
+          <IconButton
+            sx={{
+              padding: 0.2,
+            }}
+            onClick={() => setOpenDelDialog(true)}
+          >
+            <IcBaselineDeleteForever color={red["700"]} />
+          </IconButton>
+        </Box>
+      </GridCustom>
+
+      {openDelDialog && (
+        <ConfirmDialog
+          open={openDelDialog}
+          title="Xác nhận xóa ?"
+          content={`Xóa ${field.egg.type_name} khỏi danh sách`}
+          onAccept={() => remove(index)}
+          onClose={() => setOpenDelDialog(false)}
+        />
+      )}
+    </GridContainerCustom>
+  );
+};
+
+const LastBox = styled(Box)(({ theme }) => ({
+  ...alignCenterSx,
+  border: `1px solid ${GREEN["500"]}`,
+  [theme.breakpoints.up("sm")]: {},
+}));
+
 const TypeNameText = styled(Typography)(({ theme }) => ({
   fontWeight: 600,
   fontSize: 18,
   textAlign: "center",
-  [theme.breakpoints.down("sm")]: {},
-}));
-const TitleText = styled(Typography)(({ theme }) => ({
-  fontSize: 20,
-  fontWeight: 700,
-  textAlign: "center",
-  [theme.breakpoints.down("sm")]: {},
+  [theme.breakpoints.up("sm")]: {},
 }));
 
-const GridCustom = styled(Grid)(({ theme }) => ({
+const HeaderText = styled(Typography)(({ theme }) => ({
+  fontWeight: 600,
+  fontSize: 16,
+  textAlign: "center",
+  color: "white",
+  [theme.breakpoints.up("sm")]: {
+    fontSize: 18,
+  },
+}));
+const GridHeaderCustom = styled(Grid)(({ theme }) => ({
+  ...alignCenterSx,
   padding: 8,
   borderRight: `1px solid ${GREEN["500"]}`,
   borderTop: `1px solid ${GREEN["500"]}`,
-  [theme.breakpoints.down("sm")]: {},
+  [theme.breakpoints.up("sm")]: {},
+}));
+const GridCustom = styled(Grid)(({ theme }) => ({
+  padding: 8,
+  ...alignCenterSx,
+  borderRight: `1px solid ${GREEN["500"]}`,
+  borderTop: `1px solid ${GREEN["500"]}`,
+  [theme.breakpoints.up("sm")]: {},
 }));
 
 const GridContainerCustom = styled(Grid)(({ theme }) => ({
   borderLeft: `1px solid ${GREEN["500"]}`,
-  [theme.breakpoints.down("sm")]: {},
+  [theme.breakpoints.up("sm")]: {},
 }));

@@ -1,4 +1,7 @@
-import { IUpdateEggPriceQty } from 'egg-price-qty.interface';
+import {
+  IEggPriceQty,
+  IUpdateEggPriceQty,
+} from 'egg-price-qty.interface';
 import { getRepository } from 'typeorm';
 import { EggPriceQty } from '../../entities/egg-price-qty/egg-price-qty.entity';
 import { StringError } from '../../errors/string.error';
@@ -25,13 +28,27 @@ const update = async (params: IUpdateEggPriceQty) => {
     ...query,
   });
 
-  if (!eggPriceQtyItem) throw new StringError('item not existed');
+  let updatedOrCreatedData;
+  if (!eggPriceQtyItem) {
+    updatedOrCreatedData = await getRepository(EggPriceQty).save({
+      ...params,
+    });
+  }
+  updatedOrCreatedData = await getRepository(EggPriceQty).update(
+    query,
+    {
+      ...params,
+    },
+  );
 
-  const updatedData = await getRepository(EggPriceQty).update(query, {
-    ...params,
-  });
-
-  return updatedData;
+  return updatedOrCreatedData;
 };
 
-export default { list, create, update };
+const remove = async (params: Pick<IEggPriceQty, 'egg_id'>) => {
+  const deletedRow = await getRepository(EggPriceQty).delete({
+    ...params,
+  });
+  return deletedRow;
+};
+
+export default { list, create, update, remove };
