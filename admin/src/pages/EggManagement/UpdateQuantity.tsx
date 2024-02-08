@@ -20,10 +20,7 @@ import { IcBaselineDeleteForever } from "../../shared/icons/Icon";
 import { IEgg } from "../../shared/types/egg";
 import { IEggQty } from "../../shared/types/egg-price-qty";
 import { GREEN } from "../../styled/color";
-import {
-  BoxFlexEnd,
-  alignCenterSx
-} from "../../styled/styled";
+import { BoxFlexEnd, alignCenterSx } from "../../styled/styled";
 
 const actionGrid = {
   xs: 2,
@@ -229,6 +226,7 @@ const QuantityRow = ({
       <GridCustom item xs={grid.xs}>
         <InputElement
           type="number"
+          min={0}
           {...register(`quantities.${index}.quantity`)}
         />
       </GridCustom>

@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { CONFIG } from "../constants/common";
+import { EggPrice } from "../types/egg-price-qty";
 
 export function fakeDelay(seconds: number): Promise<void> {
   return new Promise((resolve) => {
@@ -47,4 +48,13 @@ export function toDayOrTomorrowOrYesterday(day: Date | string) {
   if (isTomorrow) return "Ngày mai";
   if (isYesterday) return "Hôm qua";
   return false;
+}
+
+//
+export function eggPriceInputToNumber(eggPrice: EggPrice) {
+  if (Number.isNaN(parseInt(eggPrice as string))) {
+    return null;
+  } else {
+    return parseInt(eggPrice as string);
+  }
 }

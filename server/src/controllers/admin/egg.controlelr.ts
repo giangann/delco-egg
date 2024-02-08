@@ -9,9 +9,9 @@ import ApiResponse from '../../utilities/api-response.utility';
 const create: IController = async (req, res) => {
   try {
     const params = req.body;
-    const eggCreateResult = await eggService.create(params);
+    const newEgg = await eggService.create(params);
 
-    ApiResponse.result(res, eggCreateResult, httpStatusCodes.CREATED);
+    ApiResponse.result(res, newEgg, httpStatusCodes.CREATED);
   } catch (e) {
     if ((e.code = constants.ERROR_CODE.DUPLICATED)) {
       return ApiResponse.error(

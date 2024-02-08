@@ -4,19 +4,17 @@ import {
   CircularProgress,
   Dialog,
   Grid,
-  IconButton,
   Typography,
   styled,
 } from "@mui/material";
-import { red } from "@mui/material/colors";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { InputElement } from "../../components/Input/CustomInput";
 import { Page } from "../../components/Page/Page";
 import { getApi, postApi } from "../../lib/utils/fetch/fetchRequest";
-import { IcBaselineDeleteForever } from "../../shared/icons/Icon";
-import { IEggPriceQty } from "../../shared/types/egg-price-qty";
+import { eggPriceInputToNumber } from "../../shared/helper";
+import { IEggPrice } from "../../shared/types/egg-price-qty";
 import { GREEN } from "../../styled/color";
 import { BoxFlexEnd, alignCenterSx } from "../../styled/styled";
 
@@ -29,19 +27,31 @@ export const UpdatePrice = () => {
     register,
     handleSubmit,
     getValues,
+    control,
     setValue,
     formState: { isSubmitting, isDirty },
-  } = useForm<IEggPriceQty[]>();
+  } = useForm<{ prices: IEggPrice[] }>();
 
+  const { fields } = useFieldArray({
+    control: control,
+    name: "prices",
+  });
   const actionGrid = {
-    xs: 1.5,
+    xs: 0,
   };
   const grid = {
     xs: (12 - actionGrid.xs) / 4,
   };
-
-  const onSubmit = async (data: IEggPriceQty[]) => {
+  const onSubmit = async (value: { prices: IEggPrice[] }) => {
     try {
+      let data = value.prices.map((price) => {
+        return {
+          ...price,
+          price_1: eggPriceInputToNumber(price.price_1),
+          price_2: eggPriceInputToNumber(price.price_2),
+          price_3: eggPriceInputToNumber(price.price_3),
+        };
+      });
       const res = await postApi("egg-price-qty/update-day-price", data);
       if (res.success) {
         setRerender(rerender + 1);
@@ -59,9 +69,7 @@ export const UpdatePrice = () => {
     async function fetchEggPriceQty() {
       const res = await getApi("egg-price-qty");
 
-      for (let i = 0; i < res.data.length; i++) {
-        setValue(res.data[i].egg_id.toString(), res.data[i]);
-      }
+      setValue("prices", res.data);
 
       setCount(count + 1);
     }
@@ -82,15 +90,13 @@ export const UpdatePrice = () => {
         <GridHeaderCustom item xs={grid.xs}>
           <HeaderText>Giá Thị trường</HeaderText>
         </GridHeaderCustom>
-        <GridHeaderCustom item xs={actionGrid.xs} />
+        {/* <GridHeaderCustom item xs={actionGrid.xs} /> */}
       </GridContainerCustom>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        {Object.keys(getValues()).map((key, index) => {
-          let rowKey = Number(key);
+        {fields.map((field, index) => {
           let isFocus = index === focusRow;
           return (
-            // <>{JSON.stringify(priceQtyItem)}</>
             <GridContainerCustom container>
               <GridCustom item xs={grid.xs}>
                 <TypeNameText
@@ -99,31 +105,31 @@ export const UpdatePrice = () => {
                   color={isFocus ? "red" : "black"}
                   sx={{ transition: "all 0.25s" }}
                 >
-                  {getValues(`${rowKey}`).egg.type_name}
+                  {field.egg.type_name}
                 </TypeNameText>
               </GridCustom>
               <GridCustom item xs={grid.xs}>
                 <InputElement
                   onFocus={() => setFocusRow(index)}
                   sx={{ textAlign: "center" }}
-                  {...register(`${rowKey}.price_1`)}
+                  {...register(`prices.${index}.price_1`)}
                 />
               </GridCustom>
               <GridCustom item xs={grid.xs}>
                 <InputElement
                   onFocus={() => setFocusRow(index)}
                   sx={{ textAlign: "center" }}
-                  {...register(`${rowKey}.price_2`)}
+                  {...register(`prices.${index}.price_2`)}
                 />
               </GridCustom>
               <GridCustom item xs={grid.xs}>
                 <InputElement
                   onFocus={() => setFocusRow(index)}
                   sx={{ textAlign: "center" }}
-                  {...register(`${rowKey}.price_3`)}
+                  {...register(`prices.${index}.price_3`)}
                 />
               </GridCustom>
-              <GridCustom item xs={actionGrid.xs}>
+              {/* <GridCustom item xs={actionGrid.xs}>
                 <Box sx={{ ...alignCenterSx, height: "100%" }}>
                   <IconButton
                     sx={{
@@ -133,12 +139,12 @@ export const UpdatePrice = () => {
                     <IcBaselineDeleteForever color={red["700"]} />
                   </IconButton>
                 </Box>
-              </GridCustom>
+              </GridCustom> */}
             </GridContainerCustom>
           );
         })}
         <LastBox>
-          <Button
+          {/* <Button
             onClick={() => {}}
             sx={{
               padding: 0.25,
@@ -147,7 +153,7 @@ export const UpdatePrice = () => {
             variant="outlined"
           >
             +
-          </Button>
+          </Button> */}
         </LastBox>
 
         <BoxFlexEnd mt={2}>

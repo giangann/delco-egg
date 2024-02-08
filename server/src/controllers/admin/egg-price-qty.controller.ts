@@ -29,23 +29,20 @@ const update: IController = async (req, res) => {
 
 const updateDayPrice: IController = async (req, res) => {
   try {
-    console.log(req.body);
-    console.log(Object.keys(req.body));
+    const newPrices: IUpdateEggPriceQty[] = req.body;
 
-    const updateObject = req.body;
-    const keys = Object.keys(req.body);
-
-    keys.forEach(async (key, index) => {
+    newPrices.forEach(async (price) => {
       let params: IUpdateEggPriceQty = {
-        egg_id: updateObject[key].egg_id,
-        price_1: updateObject[key].price_1,
-        price_2: updateObject[key].price_2,
-        price_3: updateObject[key].price_3,
+        egg_id: price.egg_id,
+        price_1: price.price_1,
+        price_2: price.price_2,
+        price_3: price.price_3,
       };
+
       await eggPriceQtyService.update(params);
     });
 
-    return ApiResponse.result(res, updateObject, httpStatusCodes.OK);
+    return ApiResponse.result(res, newPrices, httpStatusCodes.OK);
   } catch (e) {
     ApiResponse.exception(res, e);
   }
@@ -59,10 +56,6 @@ const updateDayQuantity: IController = async (req, res) => {
     const addQtys = findExcludeElements(currQtys, newQtys);
     const removeQtys = findExcludeElements(newQtys, currQtys);
     const updateQtys = findSameElements(newQtys, currQtys);
-
-    console.log('addQtys', addQtys);
-    console.log('removeQtys', removeQtys);
-    console.log('updateQtys', updateQtys);
 
     // update egg_id that haved before
     if (updateQtys.length) {
