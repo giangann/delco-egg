@@ -57,6 +57,15 @@ export const List = () => {
       },
     },
   ];
+
+  const onViewDetail = ({ id }: IOrderRow) => {
+    let path = SCREEN_PATHS.APPLICATION.DETAIL;
+    let arrPathBySlash = path.split("/");
+    arrPathBySlash.pop();
+
+    let newPathWithoutSlug = arrPathBySlash.join("/");
+    navigate(`${newPathWithoutSlug}/${id}`);
+  };
   useEffect(() => {
     async function fetchMyListOrder() {
       const res = await getApi("order");
@@ -71,6 +80,7 @@ export const List = () => {
         fields={fields}
         data={myOrderList}
         rows={myOrderList.length}
+        onActionViewDetail={onViewDetail}
       />
     </Page>
   );
