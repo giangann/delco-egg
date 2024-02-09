@@ -55,7 +55,7 @@ const updateDayQuantity: IController = async (req, res) => {
 
     const addQtys = findExcludeElements(currQtys, newQtys);
     const removeQtys = findExcludeElements(newQtys, currQtys);
-    const updateQtys = findSameElements(newQtys, currQtys);
+    const updateQtys = findSameElements(currQtys, newQtys);
 
     // update egg_id that haved before
     if (updateQtys.length) {
@@ -122,10 +122,15 @@ const findSameElements = (
   let result: IUpdateEggPriceQty[] = [];
 
   array2.forEach((row2) => {
-    const inArray2ButNotInArray1 = array1.every(
-      (row1) => row1.egg_id === row2.egg_id,
+    // if second .every method return true, it means
+    // every row in array 1 don't have the egg_id same row2.egg_id
+    // so in opposite, negative of this statement has meaning that
+    // have at least 1 row in array 1 have the egg_id same row2.egg_id
+    const inBothArray = !array1.every(
+      (row1) => row1.egg_id !== row2.egg_id,
     );
-    if (inArray2ButNotInArray1) result.push(row2);
+
+    if (inBothArray) result.push(row2);
   });
 
   return result;

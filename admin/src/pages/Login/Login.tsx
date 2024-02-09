@@ -1,16 +1,15 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, Paper, Stack, Typography } from "@mui/material";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { object, string } from "yup";
-import { CustomInput } from "../../components/Input/CustomInput";
+import { BaseInput } from "../../components/Input/BaseInput";
 import useAuth from "../../hooks/useAuth";
 import { useDevice } from "../../hooks/useDevice";
 import { IUserLogin } from "../../shared/types/user";
-import { BaseInput } from "../../components/Input/BaseInput";
-import { useState } from "react";
 import { InputErrorText, alignCenterSx } from "../../styled/styled";
-import { toast } from "react-toastify";
 const loginSchema = object({
   username: string().required("Tên đăng nhập không được bỏ trống"),
   password: string().required("Mật khẩu không được bỏ trống"),
