@@ -55,14 +55,14 @@ const login = async (params: ILoginUser) => {
     .getOne();
 
   if (!user) {
-    throw new StringError('Your username has not been registered');
+    throw new StringError('Tên đăng nhập chưa được đăng ký');
   }
 
   if (await Encryption.verifyHash(params.password, user.password)) {
     return ApiUtility.sanitizeUser(user);
   }
 
-  throw new StringError('Your password is not correct');
+  throw new StringError('Mật khẩu bạn đã nhập không đúng');
 };
 
 const getById = async (params: IDetailById) => {
@@ -124,9 +124,12 @@ const list = async (params: IUserQueryParams) => {
     });
   }
   if (params.phone_number) {
-    userRepo.andWhere('(LOWER(user.phone_number) LIKE LOWER(:phone_number))', {
-      phone_number: `%${params.phone_number}%`,
-    });
+    userRepo.andWhere(
+      '(LOWER(user.phone_number) LIKE LOWER(:phone_number))',
+      {
+        phone_number: `%${params.phone_number}%`,
+      },
+    );
   }
   if (params.isAdmin) {
     userRepo.andWhere('user.isAdmin = :isAdmin', {

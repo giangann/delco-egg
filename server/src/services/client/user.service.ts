@@ -9,12 +9,10 @@ import DateTimeUtility from '../../utilities/date-time.utility';
 import Encryption from '../../utilities/encryption.utility';
 
 // Interfaces
-import {
-  IDetailById
-} from '../../interfaces/common.interface';
+import { IDetailById } from '../../interfaces/common.interface';
 import {
   ILoginUser,
-  IUpdateUser
+  IUpdateUser,
 } from '../../interfaces/user.interface';
 
 // Errors
@@ -41,14 +39,14 @@ const login = async (params: ILoginUser) => {
     .getOne();
 
   if (!user) {
-    throw new StringError('Your username has not been registered');
+    throw new StringError('Tên đăng nhập chưa được đăng ký');
   }
 
   if (await Encryption.verifyHash(params.password, user.password)) {
     return ApiUtility.sanitizeUser(user);
   }
 
-  throw new StringError('Your password is not correct');
+  throw new StringError('Mật khẩu bạn đã nhập không đúng');
 };
 
 const getById = async (params: IDetailById) => {

@@ -19,6 +19,7 @@ const useAuth = () => {
     if (result.success) {
       setUserAtom(result.data);
     }
+    return result
   };
   return {
     user,

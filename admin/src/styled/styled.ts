@@ -23,6 +23,17 @@ export const InputLabelText = styled(Typography)(({ theme }) => ({
     fontSize: 16,
   },
 }));
+export const InputErrorText = styled(Typography)(({ theme }) => ({
+  fontWeight: 400,
+  fontSize: 13,
+  marginTop:4,
+  marginLeft:4,
+  color: "red",
+  [theme.breakpoints.up("sm")]: {
+    fontSize: 15,
+  },
+}));
+
 
 // Box
 export const BoxAbsoluteFull = styled(Box)({
