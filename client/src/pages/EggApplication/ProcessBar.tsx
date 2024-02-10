@@ -32,6 +32,8 @@ export const ProcessBar = ({
     let acceptNext: boolean = false;
     let message = "";
 
+    const orders = form?.getValues().orders;
+    console.log(orders, orders?.length);
     if (currStep < MAX_STEP) {
       if (currStep === 1) {
         const step1ok = await form?.trigger("orders");

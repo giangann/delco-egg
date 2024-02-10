@@ -11,9 +11,9 @@ import { commonDateWithMySqlFormat } from "../../shared/helpers/function";
 import { IEggPriceQty } from "../../shared/types/egg";
 import { IOrder } from "../../shared/types/order";
 import { WaitingUpdatePrice } from "../Home/WaitingUpdatePrice";
-import { ChooseTimeOpt1 } from "./ChooseTimeOpt1";
-import { Confirm } from "./Confirm";
-import { CreateFormOpt2 } from "./CreateFormOpt2";
+import { Step2 } from "./Step2";
+import { Step3 } from "./Step3";
+import { Step1 } from "./Step1";
 import { ProcessBar } from "./ProcessBar";
 
 export const MAX_STEP = 3;
@@ -76,13 +76,12 @@ export const CreateForm = () => {
   };
 
   const Steps: Record<string, React.ReactNode> = {
-    1: <CreateFormOpt2 />,
-    2: <ChooseTimeOpt1 />,
-    3: <Confirm />,
+    1: <Step1 />,
+    2: <Step2 />,
+    3: <Step3 />,
   };
 
   useEffect(() => {
-    console.log('search params',searchParams)
     if (!currStep) {
       setSearchParams({ step: `${1}` });
     }

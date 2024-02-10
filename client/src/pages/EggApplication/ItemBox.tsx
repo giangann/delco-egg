@@ -1,34 +1,71 @@
 import { Box, Stack, Typography, styled } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { BaseInput } from "../../components/Input/BaseInput";
 import { CustomSelect, Option } from "../../components/Select/CustomSelect";
 import { OPACITY_TO_HEX } from "../../shared/constants/common";
 import { generateDealPrices } from "../../shared/helpers/function";
 import { IEggPriceQty } from "../../shared/types/egg";
+import { IOrderItem } from "../../shared/types/order";
 import { GREEN, GREY, RED } from "../../styled/color";
 import { BoxHeadingText } from "../../styled/styled";
 import { FormContext } from "./CreateForm";
 
 type ItemBoxProps = {
   item: IEggPriceQty;
+  index: number;
 };
-export const ItemBox = ({ item }: ItemBoxProps) => {
+export const ItemBox = ({ item, index }: ItemBoxProps) => {
   const [active, setActive] = useState(false);
   const listDealPrice = generateDealPrices(item.price_1, 25);
   const form = useContext(FormContext).form;
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const onActive = (index: number) => {
+    form?.setValue(`orders.${index}.egg_id`, item.egg_id);
+    setActive(true);
+  };
+
+  const deActive = (index: number) => {
+    form?.unregister(`orders.${index}`);
+    updateOrdersParams();
+
+    setActive(false);
+  };
+
+  const updateOrdersParams = () => {
+    const getOrdersForm: IOrderItem[] | undefined = form?.getValues("orders");
+
+    if (getOrdersForm && getOrdersForm?.length) {
+      const orders = getOrdersForm.filter((order) => Boolean(order));
+      if (orders) searchParams.set("orders", JSON.stringify(orders));
+    } else {
+      searchParams.set("orders", JSON.stringify([]));
+    }
+    setSearchParams(searchParams);
+  };
 
   useEffect(() => {
-    if (active) {
-      form?.setValue(`orders.${item.egg_id}.deal_price`, item.price_1);
-      form?.setValue(`orders.${item.egg_id}.egg_id`, item.egg_id);
-    } else {
-      form?.unregister(`orders.${item.egg_id}`);
+    const orders: IOrderItem[] | undefined = JSON.parse(
+      searchParams.get("orders") as string
+    );
+
+    if (orders?.length) {
+      const order = orders.filter((order) => order.egg_id === item.egg_id)[0];
+
+      if (order) {
+        form?.setValue(`orders.${index}`, order);
+        setActive(true);
+      }
     }
-  }, [active]);
+  }, []);
 
   return (
     <BoxWrapper active={active}>
-      <ChooseButton onClick={() => setActive(!active)} active={active}>
+      <ChooseButton
+        onClick={active ? () => deActive(index) : () => onActive(index)}
+        active={active}
+      >
         {active ? "Hủy" : "Chọn"}
       </ChooseButton>
       <Box
@@ -54,13 +91,13 @@ export const ItemBox = ({ item }: ItemBoxProps) => {
               onChange={(event) => {
                 // @ts-ignore
                 let newVal = event?.target.value;
-                form?.setValue(
-                  `orders.${item.egg_id}.deal_price`,
-                  parseInt(newVal)
-                );
+                form?.setValue(`orders.${index}.deal_price`, parseInt(newVal));
+                updateOrdersParams();
               }}
               style={{ width: "100%" }}
-              defaultValue={item.price_1}
+              defaultValue={
+                form?.getValues(`orders.${index}.quantity`) || item.price_1
+              }
               disabled={!active}
             >
               {listDealPrice.map((price, index) => (
@@ -85,16 +122,13 @@ export const ItemBox = ({ item }: ItemBoxProps) => {
               type="number"
               onChange={(event) => {
                 let newVal = event.target.value;
-                form?.setValue(
-                  `orders.${item.egg_id}.quantity`,
-                  parseInt(newVal)
-                );
+                form?.setValue(`orders.${index}.quantity`, parseInt(newVal));
               }}
+              onBlur={updateOrdersParams}
               disabled={!active}
               style={{ width: "100%" }}
-              err={
-                form?.formState.errors.orders?.[item.egg_id]?.quantity?.message
-              }
+              err={form?.formState.errors.orders?.[index]?.quantity?.message}
+              defaultValue={form?.getValues(`orders.${index}.quantity`)}
             />
           }
         />

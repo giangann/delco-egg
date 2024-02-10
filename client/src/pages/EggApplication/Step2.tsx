@@ -7,7 +7,7 @@ import { FormContext } from "./CreateForm";
 import { DateOptions } from "./DateOptions";
 import { InputErrorText } from "../../styled/styled";
 
-export const ChooseTimeOpt1 = () => {
+export const Step2 = () => {
   const form = useContext(FormContext).form;
   const startTime = dayjs().set("hour", 10).startOf("hour");
   const currTime = dayjs().startOf("hour");

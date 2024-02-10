@@ -4,14 +4,14 @@ import { Page } from "../../components/Page/Page";
 import { FormContext } from "./CreateForm";
 import { ItemBox } from "./ItemBox";
 
-export const CreateFormOpt2 = () => {
+export const Step1 = () => {
   const listEggPriceQty = useContext(FormContext).data;
   return (
     <Page title="Chọn loại, nhập số lượng">
       <Grid container spacing={2}>
         {listEggPriceQty.map((item, index) => (
           <Grid key={index} item xs={6} sm={4}>
-            <ItemBox item={item} />
+            <ItemBox item={item} index={index} />
           </Grid>
         ))}
       </Grid>

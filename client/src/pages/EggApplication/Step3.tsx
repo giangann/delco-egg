@@ -19,7 +19,7 @@ interface Row {
   price?: number;
 }
 
-export const Confirm = () => {
+export const Step3 = () => {
   const form = useContext(FormContext).form;
   const listEggPriceQty = useContext(FormContext).data;
   const orderItems = form?.getValues().orders || [];
