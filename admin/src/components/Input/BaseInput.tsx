@@ -1,7 +1,7 @@
 import { Theme, Typography, styled } from "@mui/material";
 import { InputHTMLAttributes, LegacyRef, forwardRef } from "react";
 import { MUIStyledCommonProps } from "@mui/system";
-import { blue, grey } from "@mui/material/colors";
+import { blue, grey, red } from "@mui/material/colors";
 
 interface BaseInputProps
   extends InputHTMLAttributes<HTMLInputElement>,
@@ -21,7 +21,7 @@ export const BaseInput = forwardRef(
           {label && required && (
             <span style={{ color: "red", marginLeft: 6 }}>*</span>
           )}
-          <StyledBaseInput {...otherProps} ref={ref} />
+          <StyledBaseInput err={Boolean(err)} {...otherProps} ref={ref} />
           {err && <InputErrorText>{err}</InputErrorText>}
         </label>
       </div>
@@ -42,15 +42,17 @@ const InputLabelText = styled(Typography)(({ theme }) => ({
 const InputErrorText = styled(Typography)(({ theme }) => ({
   fontWeight: 400,
   fontSize: 13,
-  marginTop:4,
-  marginLeft:4,
+  marginTop: 4,
+  marginLeft: 4,
   color: "red",
   [theme.breakpoints.up("sm")]: {
     fontSize: 15,
   },
 }));
 
-const StyledBaseInput = styled("input")(({ theme }) => ({
+const StyledBaseInput = styled("input", {
+  shouldForwardProp: (prop) => prop !== "err",
+})<{ err?: boolean }>(({ theme, err }) => ({
   fontFamily: "Montserrat",
   padding: "8px 12px",
   width: "100%",
@@ -59,7 +61,7 @@ const StyledBaseInput = styled("input")(({ theme }) => ({
   fontSize: 14,
   borderRadius: 8,
   lineHeight: 1.25,
-  border: `1px solid ${theme.palette.mode === "dark" ? grey[700] : grey[200]}`,
+  border: `1px solid ${err ? red["700"] : grey[200]}`,
   boxShadow: `0px 2px 4px ${"rgba(0,0,0, 0.05)"}`,
 
   "&:hover": {

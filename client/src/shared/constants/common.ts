@@ -101,3 +101,8 @@ export const OPACITY_TO_HEX = {
   99: "FC",
   100: "FF",
 };
+
+export const CONFIG = {
+  MY_SQL_DATE_FORMAT: "YYYY-MM-DD",
+  MY_SQL_TIME_FORMAT: "HH:mm:ss",
+};

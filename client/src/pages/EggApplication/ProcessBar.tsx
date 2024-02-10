@@ -1,4 +1,5 @@
 import { Box, Button, Stack, Typography, styled } from "@mui/material";
+import { useContext } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import {
@@ -6,7 +7,8 @@ import {
   IcSharpScheduleSend,
 } from "../../shared/icons/Icon";
 import { GREEN } from "../../styled/color";
-import { MAX_STEP } from "./CreateForm";
+import { FormContext, MAX_STEP } from "./CreateForm";
+import { toast } from "react-toastify";
 export const ProcessBar = ({
   currStep,
   setOpenConfirm,
@@ -14,6 +16,7 @@ export const ProcessBar = ({
   currStep: number;
   setOpenConfirm: any;
 }) => {
+  const form = useContext(FormContext).form;
   const navigate = useNavigate();
   const handlePrev = () => {
     if (currStep > 1) {
@@ -23,11 +26,30 @@ export const ProcessBar = ({
     }
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    let nextStep = currStep + 1;
+    const searchParams = new URLSearchParams({ step: `${nextStep}` });
+    let acceptNext: boolean = false;
+    let message = "";
+
     if (currStep < MAX_STEP) {
-      let nextStep = currStep + 1;
-      const searchParams = new URLSearchParams({ step: `${nextStep}` });
+      if (currStep === 1) {
+        const step1ok = await form?.trigger("orders");
+        if (step1ok && form?.getValues("orders")) acceptNext = true;
+        else message = "Hãy chọn loại trứng, chọn đủ số lượng và mức giá";
+      }
+
+      if (currStep === 2) {
+        const step2ok = await form?.trigger("time");
+        if (step2ok) acceptNext = true;
+        else message = "Hãy chọn đủ ngày và giờ lấy";
+      }
+    }
+
+    if (acceptNext) {
       navigate({ search: searchParams.toString() });
+    } else {
+      toast.error(message);
     }
   };
 

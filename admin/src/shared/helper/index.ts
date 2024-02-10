@@ -50,6 +50,13 @@ export function toDayOrTomorrowOrYesterday(day: Date | string) {
   return false;
 }
 
+export function commonDate() {
+  const today = dayjs().format("DD/MM/YYYY");
+  const tomorrow = dayjs().add(1, "day").format("DD/MM/YYYY");
+  const twoDaysAgo = dayjs().add(2, "day").format("DD/MM/YYYY");
+  return { today, tomorrow, twoDaysAgo };
+}
+
 //
 export function eggPriceInputToNumber(eggPrice: EggPrice) {
   if (Number.isNaN(parseInt(eggPrice as string))) {

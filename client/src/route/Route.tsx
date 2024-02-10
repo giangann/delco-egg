@@ -13,6 +13,7 @@ import { Login } from "../pages/Login/Login";
 import SCREEN_PATHS from "../shared/constants/screenPaths";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { MyProfile } from "../pages/Setting/MyProfile";
+import { Test } from "../pages/Test";
 
 const routes: RouteObject[] = [
   {
@@ -56,6 +57,10 @@ const routes: RouteObject[] = [
         path: SCREEN_PATHS.MY_PROFILE,
         element: <MyProfile />,
       },
+      {
+        path:'/test',
+        element:<Test/>
+      }
     ],
   },
   {

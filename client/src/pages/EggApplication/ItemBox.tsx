@@ -8,6 +8,7 @@ import { IEggPriceQty } from "../../shared/types/egg";
 import { GREEN, GREY, RED } from "../../styled/color";
 import { BoxHeadingText } from "../../styled/styled";
 import { FormContext } from "./CreateForm";
+import { BaseInput } from "../../components/Input/BaseInput";
 
 type ItemBoxProps = {
   item: IEggPriceQty;
@@ -92,7 +93,7 @@ export const ItemBox = ({ item }: ItemBoxProps) => {
         <Row
           name="Nhập số lượng"
           value={
-            <CustomInput
+            <BaseInput
               required={active}
               type="number"
               onChange={(event) => {
@@ -104,6 +105,9 @@ export const ItemBox = ({ item }: ItemBoxProps) => {
               }}
               disabled={!active}
               style={{ width: "100%" }}
+              err={
+                form?.formState.errors.orders?.[item.egg_id]?.quantity?.message
+              }
             />
           }
         />

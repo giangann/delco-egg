@@ -7,7 +7,10 @@ import {
   Typography,
   styled,
 } from "@mui/material";
+import { useContext } from "react";
 import { Page } from "../../components/Page/Page";
+import { IOrderItem } from "../../shared/types/order";
+import { FormContext } from "./CreateForm";
 
 interface Row {
   type: string;
@@ -17,6 +20,16 @@ interface Row {
 }
 
 export const Confirm = () => {
+  const form = useContext(FormContext).form;
+  const listEggPriceQty = useContext(FormContext).data;
+  const orderItems = form?.getValues().orders || [];
+  const date = form?.getValues().date;
+  const time = form?.getValues().time;
+
+  const eggByEggId = (egg_id: number) => {
+    return listEggPriceQty.filter((item) => item.egg_id == egg_id)[0];
+  };
+
   return (
     <Page title="Xác nhận">
       {/* table */}
@@ -26,26 +39,26 @@ export const Confirm = () => {
           <TableHead>
             <TableRow>
               <TableCell>Loại</TableCell>
-              <TableCell>{"Đơn giá (vnđ / 10 quả)"}</TableCell>
+              <TableCell>{"Đơn giá "}</TableCell>
               <TableCell>Số lượng</TableCell>
               <TableCell> Thành tiền </TableCell>
             </TableRow>
           </TableHead>
 
           {orderItems.map((row) => (
-            <TableRow key={row.type}>
-              <TableCell>{row.type}</TableCell>
-              <TableCell>{row.unitPrice}</TableCell>
+            <TableRow key={row.egg_id}>
+              <TableCell>{eggByEggId(row.egg_id).egg.type_name}</TableCell>
+              <TableCell>{row.deal_price}</TableCell>
               <TableCell>{row.quantity}</TableCell>
-              <TableCell>{row.unitPrice * row.quantity}</TableCell>
+              <TableCell>{row.deal_price * row.quantity}</TableCell>
             </TableRow>
           ))}
-          <TableRow sx={{ float: "right" }}>
+          <TableRow sx={{ float: { xs: "right", sm: "left" } }}>
             <TableCell>
               <TotalText fontWeight={900}>Tổng</TotalText>
             </TableCell>
-            <TableCell align="right">
-              <TotalText>{subtotal(orderItems)}</TotalText>
+            <TableCell>
+              <TotalText>{subtotal(orderItems as IOrderItem[])}</TotalText>
             </TableCell>
           </TableRow>
         </TableContainer>
@@ -54,40 +67,18 @@ export const Confirm = () => {
       {/* time */}
       <Box mt={4} mb={2}>
         <HeadingText mb={1}> 2. Thời gian </HeadingText>
-        <SubHeadingText mb={0.5}> - Ngày:{"  "}20 / 01 / 2024</SubHeadingText>
-        <SubHeadingText> - Giờ:{"  "}16 giờ 25 phút</SubHeadingText>
+        <SubHeadingText mb={0.5}> - Ngày: {date}</SubHeadingText>
+        <SubHeadingText> - Giờ: {time}</SubHeadingText>
       </Box>
     </Page>
   );
 };
 
-function subtotal(items: readonly Row[]) {
+function subtotal(items: IOrderItem[]) {
   return items
-    .map(({ unitPrice, quantity }) => unitPrice * quantity)
+    .map(({ deal_price, quantity }) => deal_price * quantity)
     .reduce((sum, i) => sum + i, 0);
 }
-const orderItems = [
-  {
-    type: "Mix 1",
-    unitPrice: 3000,
-    quantity: 10000,
-  },
-  {
-    type: "Mix 2",
-    unitPrice: 2900,
-    quantity: 60000,
-  },
-  {
-    type: "Mix 3",
-    unitPrice: 2125,
-    quantity: 50000,
-  },
-  {
-    type: "Mix 4",
-    unitPrice: 2750,
-    quantity: 200000,
-  },
-];
 const TotalText = styled(Typography)(({ theme }) => ({
   fontWeight: 900,
   [theme.breakpoints.up("sm")]: {},
