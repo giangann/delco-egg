@@ -1,6 +1,6 @@
 import { Box, Stack, Typography, styled } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
-import { CustomInput } from "../../components/Input/CustomInput";
+import { BaseInput } from "../../components/Input/BaseInput";
 import { CustomSelect, Option } from "../../components/Select/CustomSelect";
 import { OPACITY_TO_HEX } from "../../shared/constants/common";
 import { generateDealPrices } from "../../shared/helpers/function";
@@ -8,7 +8,6 @@ import { IEggPriceQty } from "../../shared/types/egg";
 import { GREEN, GREY, RED } from "../../styled/color";
 import { BoxHeadingText } from "../../styled/styled";
 import { FormContext } from "./CreateForm";
-import { BaseInput } from "../../components/Input/BaseInput";
 
 type ItemBoxProps = {
   item: IEggPriceQty;
@@ -28,14 +27,7 @@ export const ItemBox = ({ item }: ItemBoxProps) => {
   }, [active]);
 
   return (
-    <Box
-      sx={{
-        border: `1px solid ${active ? GREEN["600"] : GREY["100"]}`,
-        backgroundColor: active
-          ? `${GREEN["500"]}${OPACITY_TO_HEX["20"]}`
-          : "none",
-      }}
-    >
+    <BoxWrapper active={active}>
       <ChooseButton onClick={() => setActive(!active)} active={active}>
         {active ? "Hủy" : "Chọn"}
       </ChooseButton>
@@ -45,16 +37,11 @@ export const ItemBox = ({ item }: ItemBoxProps) => {
           opacity: active ? 1 : 0.5,
         }}
       >
-        <BoxHeadingText
-          sx={{
-            backgroundColor: active ? GREEN["500"] : "#cccccc",
-            color: active ? "white" : "black",
-            p: 1,
-          }}
-          textAlign={"center"}
-        >
-          {item.egg.type_name.toLocaleUpperCase()}
-        </BoxHeadingText>
+        <BoxHeading active={active}>
+          <BoxHeadingText textAlign={"center"}>
+            {item.egg.type_name.toLocaleUpperCase()}
+          </BoxHeadingText>
+        </BoxHeading>
         <Row name="Giá đề xuất" value={`${item.price_1} đ`} />
         <Row name="Còn lại" value={`${item.quantity} quả`} />
         <Row
@@ -112,7 +99,7 @@ export const ItemBox = ({ item }: ItemBoxProps) => {
           }
         />
       </Box>
-    </Box>
+    </BoxWrapper>
   );
 };
 
@@ -164,6 +151,23 @@ const ChooseButton = styled("div", {
     padding: "8px 16px",
     fontSize: 17,
   },
+}));
+const BoxWrapper = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "active",
+})<{ active: boolean }>(({ active, theme }) => ({
+  border: `1px solid ${active ? GREEN["600"] : GREY["100"]}`,
+  backgroundColor: active ? `${GREEN["500"]}${OPACITY_TO_HEX["20"]}` : "none",
+
+  [theme.breakpoints.up("sm")]: {},
+}));
+
+const BoxHeading = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "active",
+})<{ active: boolean }>(({ active, theme }) => ({
+  backgroundColor: active ? GREEN["500"] : "#cccccc",
+  color: active ? "white" : "black",
+  padding: 8,
+  [theme.breakpoints.up("sm")]: {},
 }));
 const BoxFieldName = styled(Typography)(({ theme }) => ({
   fontSize: 16,

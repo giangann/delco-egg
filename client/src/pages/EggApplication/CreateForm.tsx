@@ -1,22 +1,20 @@
-import { Container, Typography } from "@mui/material";
+import { yupResolver } from "@hookform/resolvers/yup";
 import React, { createContext, useEffect, useState } from "react";
 import { Resolver, UseFormReturn, useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { array, number, object, string } from "yup";
 import { ConfirmDialog } from "../../components/Dialog/ConfirmDialog";
 import { getApi, postApi } from "../../lib/utils/fetch/fetchRequest";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
+import { commonDateWithMySqlFormat } from "../../shared/helpers/function";
 import { IEggPriceQty } from "../../shared/types/egg";
 import { IOrder } from "../../shared/types/order";
-import { LinkCustom } from "../../styled/styled";
 import { WaitingUpdatePrice } from "../Home/WaitingUpdatePrice";
 import { ChooseTimeOpt1 } from "./ChooseTimeOpt1";
 import { Confirm } from "./Confirm";
 import { CreateFormOpt2 } from "./CreateFormOpt2";
 import { ProcessBar } from "./ProcessBar";
-import { array, number, object, string } from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { commonDateWithMySqlFormat } from "../../shared/helpers/function";
 
 export const MAX_STEP = 3;
 
@@ -84,6 +82,7 @@ export const CreateForm = () => {
   };
 
   useEffect(() => {
+    console.log('search params',searchParams)
     if (!currStep) {
       setSearchParams({ step: `${1}` });
     }
