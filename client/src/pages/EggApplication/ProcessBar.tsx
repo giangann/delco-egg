@@ -22,18 +22,16 @@ export const ProcessBar = ({
     if (currStep > 1) {
       let prevStep = currStep - 1;
       searchParams.set("step", JSON.stringify(prevStep));
-      setSearchParams(searchParams)
+      setSearchParams(searchParams);
     }
   };
 
   const handleNext = async () => {
     let nextStep = currStep + 1;
     searchParams.set("step", JSON.stringify(nextStep));
-    
+
     let acceptNext: boolean = false;
     let message = "";
-
-    console.log(form?.getValues());
 
     if (currStep < MAX_STEP) {
       if (currStep === 1) {
@@ -50,7 +48,7 @@ export const ProcessBar = ({
     }
 
     if (acceptNext) {
-      setSearchParams(searchParams)
+      setSearchParams(searchParams);
     } else {
       toast.error(message);
     }

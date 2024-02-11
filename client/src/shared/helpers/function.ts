@@ -58,15 +58,11 @@ export function commonDateWithMySqlFormat() {
 export function timeToHHMMNN(time: string | null | undefined) {
   if (!time) return null;
   let timeArr = time.split(":");
-  console.log("timearr", timeArr);
-
   let hhmmss = {
     hour: Number(timeArr[0]),
     minute: Number(timeArr?.[1]),
     second: Number(timeArr?.[2]),
   };
-  console.log(hhmmss);
-
   return hhmmss;
 }
 

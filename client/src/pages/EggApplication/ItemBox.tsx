@@ -78,7 +78,6 @@ export const ItemBox = ({ item, saveOrderItem }: ItemBoxProps) => {
                 popper: { disablePortal: true },
               }}
               onChange={(event) => {
-                console.log("onChange select");
                 // @ts-ignore
                 let newVal = event?.target.value;
                 form?.setValue(
@@ -119,7 +118,6 @@ export const ItemBox = ({ item, saveOrderItem }: ItemBoxProps) => {
                   `items.${item.egg_id}.quantity`,
                   parseInt(newVal)
                 );
-                console.log(form?.watch("items"));
               }}
               onBlur={updateOrdersParams}
               disabled={!active}
