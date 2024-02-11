@@ -33,6 +33,9 @@ export const Test = () => {
     setParams(params);
   };
 
+  const nothing = params.get("nothing")
+  console.log(JSON.parse(nothing as string))
+
   useEffect(() => {
     const school = JSON.parse(params.get("school") as string);
     const fullname = params.get("fullname");

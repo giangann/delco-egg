@@ -22,7 +22,7 @@ interface Row {
 export const Step3 = () => {
   const form = useContext(FormContext).form;
   const listEggPriceQty = useContext(FormContext).data;
-  const orderItems = form?.getValues().orders || [];
+  const orderItems = form?.getValues().items || [];
   const date = form?.getValues().date;
   const time = form?.getValues().time;
 

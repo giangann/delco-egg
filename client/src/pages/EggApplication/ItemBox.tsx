@@ -1,5 +1,5 @@
 import { Box, Stack, Typography, styled } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { BaseInput } from "../../components/Input/BaseInput";
 import { CustomSelect, Option } from "../../components/Select/CustomSelect";
@@ -13,57 +13,46 @@ import { FormContext } from "./CreateForm";
 
 type ItemBoxProps = {
   item: IEggPriceQty;
-  index: number;
+  saveOrderItem?: IOrderItem;
 };
-export const ItemBox = ({ item, index }: ItemBoxProps) => {
-  const [active, setActive] = useState(false);
+export const ItemBox = ({ item, saveOrderItem }: ItemBoxProps) => {
+  const [active, setActive] = useState(Boolean(saveOrderItem));
   const listDealPrice = generateDealPrices(item.price_1, 25);
   const form = useContext(FormContext).form;
   const [searchParams, setSearchParams] = useSearchParams();
 
   const onActive = (index: number) => {
-    form?.setValue(`orders.${index}.egg_id`, item.egg_id);
+    // set egg_id, auto set deal_price for each item
+    form?.setValue(`items.${index}.deal_price`, item.price_1);
+    form?.setValue(`items.${index}.egg_id`, item.egg_id);
+    // change layout for choose item
     setActive(true);
   };
 
   const deActive = (index: number) => {
-    form?.unregister(`orders.${index}`);
+    form?.unregister(`items.${index}`);
     updateOrdersParams();
-
     setActive(false);
   };
 
   const updateOrdersParams = () => {
-    const getOrdersForm: IOrderItem[] | undefined = form?.getValues("orders");
+    const getOrdersForm: IOrderItem[] | undefined = form?.getValues("items");
 
     if (getOrdersForm && getOrdersForm?.length) {
       const orders = getOrdersForm.filter((order) => Boolean(order));
-      if (orders) searchParams.set("orders", JSON.stringify(orders));
+      if (orders) searchParams.set("items", JSON.stringify(orders));
     } else {
-      searchParams.set("orders", JSON.stringify([]));
+      searchParams.set("items", JSON.stringify([]));
     }
     setSearchParams(searchParams);
   };
 
-  useEffect(() => {
-    const orders: IOrderItem[] | undefined = JSON.parse(
-      searchParams.get("orders") as string
-    );
-
-    if (orders?.length) {
-      const order = orders.filter((order) => order.egg_id === item.egg_id)[0];
-
-      if (order) {
-        form?.setValue(`orders.${index}`, order);
-        setActive(true);
-      }
-    }
-  }, []);
-
   return (
     <BoxWrapper active={active}>
       <ChooseButton
-        onClick={active ? () => deActive(index) : () => onActive(index)}
+        onClick={
+          active ? () => deActive(item.egg_id) : () => onActive(item.egg_id)
+        }
         active={active}
       >
         {active ? "Hủy" : "Chọn"}
@@ -89,14 +78,18 @@ export const ItemBox = ({ item, index }: ItemBoxProps) => {
                 popper: { disablePortal: true },
               }}
               onChange={(event) => {
+                console.log("onChange select");
                 // @ts-ignore
                 let newVal = event?.target.value;
-                form?.setValue(`orders.${index}.deal_price`, parseInt(newVal));
+                form?.setValue(
+                  `items.${item.egg_id}.deal_price`,
+                  parseInt(newVal)
+                );
                 updateOrdersParams();
               }}
               style={{ width: "100%" }}
               defaultValue={
-                form?.getValues(`orders.${index}.quantity`) || item.price_1
+                saveOrderItem ? saveOrderItem.deal_price : item.price_1
               }
               disabled={!active}
             >
@@ -122,13 +115,19 @@ export const ItemBox = ({ item, index }: ItemBoxProps) => {
               type="number"
               onChange={(event) => {
                 let newVal = event.target.value;
-                form?.setValue(`orders.${index}.quantity`, parseInt(newVal));
+                form?.setValue(
+                  `items.${item.egg_id}.quantity`,
+                  parseInt(newVal)
+                );
+                console.log(form?.watch("items"));
               }}
               onBlur={updateOrdersParams}
               disabled={!active}
               style={{ width: "100%" }}
-              err={form?.formState.errors.orders?.[index]?.quantity?.message}
-              defaultValue={form?.getValues(`orders.${index}.quantity`)}
+              err={
+                form?.formState.errors.items?.[item.egg_id]?.quantity?.message
+              }
+              defaultValue={saveOrderItem?.quantity}
             />
           }
         />

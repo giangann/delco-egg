@@ -9,41 +9,47 @@ import { getApi, postApi } from "../../lib/utils/fetch/fetchRequest";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
 import { commonDateWithMySqlFormat } from "../../shared/helpers/function";
 import { IEggPriceQty } from "../../shared/types/egg";
-import { IOrder } from "../../shared/types/order";
+import { IOrder, IOrderItem, ISaveOrder } from "../../shared/types/order";
 import { WaitingUpdatePrice } from "../Home/WaitingUpdatePrice";
+import { ProcessBar } from "./ProcessBar";
+import { Step1 } from "./Step1";
 import { Step2 } from "./Step2";
 import { Step3 } from "./Step3";
-import { Step1 } from "./Step1";
-import { ProcessBar } from "./ProcessBar";
 
 export const MAX_STEP = 3;
 
 type FormContextType = {
   data: IEggPriceQty[];
-  form?: UseFormReturn<IOrder>;
+  form: UseFormReturn<IOrder> | null;
+  saveOrder: ISaveOrder | null;
 };
 
-const orderItemsSchema = object({
+const orderItemSchema = object({
   egg_id: number().required("Chọn loại trứng"),
-  quantity: number().required("Số lượng không được bỏ trống"),
-  deal_price: number().required("Giá không được bỏ trống"),
+  quantity: number()
+    .required("Số lượng không được bỏ trống")
+    .typeError("Hãy nhập số"),
+  deal_price: number()
+    .required("Giá không được bỏ trống")
+    .typeError("Hãy nhập số"),
 });
-const ordersSchema = array(orderItemsSchema);
+const orderItemsSchema = array(orderItemSchema);
 const formSchema = object({
   date: string().required("Ngày không được bỏ trống"),
   time: string().required("Giờ k đc bỏ tróng"),
-  orders: ordersSchema,
+  items: orderItemsSchema,
 });
 
 export const FormContext = createContext<FormContextType>({
   data: [],
+  form: null,
+  saveOrder: null,
 });
 export const CreateForm = () => {
   const [listEggPriceQty, setListEggPriceQty] = useState<IEggPriceQty[]>([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [openConfirm, setOpenConfirm] = useState(false);
   const navigate = useNavigate();
-  const currStep = Number(searchParams.get("step"));
 
   const useFormReturns = useForm<IOrder>({
     resolver: yupResolver(formSchema) as Resolver<IOrder, any>,
@@ -52,19 +58,20 @@ export const CreateForm = () => {
     },
   });
   const {
+    setValue,
     getValues,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = useFormReturns;
 
   const onSubmit = async () => {
-    console.log("submit", errors);
     const formData = getValues();
     const orderData: IOrder = {
       ...formData,
-      orders: formData.orders.filter((order) => order != null),
+      items: formData.items.filter((order) => Boolean(order)),
     };
 
+    console.log("orderData", orderData);
     const res = await postApi("order", orderData);
 
     if (res.success) {
@@ -81,11 +88,15 @@ export const CreateForm = () => {
     3: <Step3 />,
   };
 
-  useEffect(() => {
-    if (!currStep) {
-      setSearchParams({ step: `${1}` });
-    }
-  }, [searchParams]);
+  // caculate statistic from urlsearchparams
+  const currStep = Number(searchParams.get("step"));
+  const items: IOrderItem[] | null = JSON.parse(
+    searchParams.get("items") as string
+  );
+  const date: string | null =
+    searchParams.get("date") || commonDateWithMySqlFormat().today;
+  const time: string | null = searchParams.get("time");
+  //
 
   useEffect(() => {
     async function fetchEggPriceQty() {
@@ -95,12 +106,36 @@ export const CreateForm = () => {
     fetchEggPriceQty();
   }, []);
 
+  // write saved order information to form
+  useEffect(() => {
+    if (currStep < 1 || currStep > MAX_STEP) {
+      setSearchParams({ step: `${1}` });
+    }
+    items?.forEach((item) => {
+      setValue(`items.${item.egg_id}`, item);
+    });
+    if (date) {
+      setValue("date", date as string);
+    } else {
+      setValue("date", commonDateWithMySqlFormat().today);
+    }
+    setValue("time", time as string);
+  }, []);
+
   return (
     <React.Fragment>
       <form onSubmit={handleSubmit(onSubmit)}>
         {listEggPriceQty.length ? (
           <FormContext.Provider
-            value={{ data: listEggPriceQty, form: useFormReturns }}
+            value={{
+              data: listEggPriceQty,
+              form: useFormReturns,
+              saveOrder: {
+                items: items,
+                date: date,
+                time: time,
+              },
+            }}
           >
             {Steps[currStep]}
 

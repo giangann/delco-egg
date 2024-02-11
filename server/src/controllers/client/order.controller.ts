@@ -56,11 +56,11 @@ const create: IController = async (req, res) => {
     const user_id = req.user.id;
 
     const params: ICreateOrder = {
-      user_id: user_id,
+      user_id: user_id, 
       date: req.body.date,
       time: req.body.time,
       status: constants.APPLICATION.status.WAITING_APPROVAL,
-      items: req.body.orders,
+      items: req.body.items,
     };
     let newOrder = await orderService.create(params);
 

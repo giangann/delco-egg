@@ -1,14 +1,14 @@
 import { Box, Button, Stack, Typography, styled } from "@mui/material";
 import { useContext } from "react";
 import { createPortal } from "react-dom";
-import { useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import {
   IcRoundKeyboardBackspace,
   IcSharpScheduleSend,
 } from "../../shared/icons/Icon";
 import { GREEN } from "../../styled/color";
 import { FormContext, MAX_STEP } from "./CreateForm";
-import { toast } from "react-toastify";
 export const ProcessBar = ({
   currStep,
   setOpenConfirm,
@@ -17,27 +17,28 @@ export const ProcessBar = ({
   setOpenConfirm: any;
 }) => {
   const form = useContext(FormContext).form;
-  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const handlePrev = () => {
     if (currStep > 1) {
       let prevStep = currStep - 1;
-      const searchParams = new URLSearchParams({ step: `${prevStep}` });
-      navigate({ search: searchParams.toString() });
+      searchParams.set("step", JSON.stringify(prevStep));
+      setSearchParams(searchParams)
     }
   };
 
   const handleNext = async () => {
     let nextStep = currStep + 1;
-    const searchParams = new URLSearchParams({ step: `${nextStep}` });
+    searchParams.set("step", JSON.stringify(nextStep));
+    
     let acceptNext: boolean = false;
     let message = "";
 
-    const orders = form?.getValues().orders;
-    console.log(orders, orders?.length);
+    console.log(form?.getValues());
+
     if (currStep < MAX_STEP) {
       if (currStep === 1) {
-        const step1ok = await form?.trigger("orders");
-        if (step1ok && form?.getValues("orders")) acceptNext = true;
+        const step1ok = await form?.trigger("items");
+        if (step1ok && form?.getValues("items")) acceptNext = true;
         else message = "Hãy chọn loại trứng, chọn đủ số lượng và mức giá";
       }
 
@@ -49,7 +50,7 @@ export const ProcessBar = ({
     }
 
     if (acceptNext) {
-      navigate({ search: searchParams.toString() });
+      setSearchParams(searchParams)
     } else {
       toast.error(message);
     }

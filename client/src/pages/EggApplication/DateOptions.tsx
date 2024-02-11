@@ -1,20 +1,37 @@
 import { Box, Grid, Typography, styled } from "@mui/material";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useState } from "react";
+import { BaseInput } from "../../components/Input/BaseInput";
 import { useDevice } from "../../hooks/useDevice";
+import {
+  commonDate,
+  commonDateWithMySqlFormat
+} from "../../shared/helpers/function";
 import { GREEN } from "../../styled/color";
 import { alignCenterSx } from "../../styled/styled";
 import { FormContext } from "./CreateForm";
-import { BaseInput } from "../../components/Input/BaseInput";
-import {
-  commonDate,
-  commonDateWithMySqlFormat,
-} from "../../shared/helpers/function";
-import dayjs from "dayjs";
 
-export const DateOptions = () => {
+export const DateOptions = ({
+  updateDateTimeParams,
+}: {
+  updateDateTimeParams: () => void;
+}) => {
   const form = useContext(FormContext).form;
+  const orderDate = useContext(FormContext).saveOrder?.date;
+
+  let defaultId;
+  switch (orderDate) {
+    case commonDateWithMySqlFormat().today:
+      defaultId = 1;
+      break;
+    case commonDateWithMySqlFormat().tomorrow:
+      defaultId = 2;
+      break;
+    default:
+      defaultId = 3;
+      break;
+  }
   const { isMobile } = useDevice();
-  const [id, setId] = useState(1);
+  const [id, setId] = useState(defaultId);
 
   return (
     <Box>
@@ -22,8 +39,9 @@ export const DateOptions = () => {
         <Grid item xs={4}>
           <DateBox
             onClick={() => {
-              form?.setValue("date", commonDateWithMySqlFormat().today);
               setId(1);
+              form?.setValue("date", commonDateWithMySqlFormat().today);
+              updateDateTimeParams();
             }}
             active={id === 1}
           >
@@ -39,8 +57,8 @@ export const DateOptions = () => {
           <DateBox
             onClick={() => {
               setId(2);
-
               form?.setValue("date", commonDateWithMySqlFormat().tomorrow);
+              updateDateTimeParams();
             }}
             active={id === 2}
           >
@@ -58,6 +76,7 @@ export const DateOptions = () => {
             onClick={() => {
               setId(3);
               form?.setValue("date", commonDateWithMySqlFormat().twoDaysAgo);
+              updateDateTimeParams();
             }}
             active={id === 3}
           >
@@ -74,7 +93,9 @@ export const DateOptions = () => {
               <DateBox sx={{ padding: 3 }} active={true}>
                 <BaseInput
                   type="date"
-                  defaultValue={commonDateWithMySqlFormat().twoDaysAgo}
+                  defaultValue={
+                    orderDate || commonDateWithMySqlFormat().twoDaysAgo
+                  }
                   min={commonDateWithMySqlFormat().twoDaysAgo}
                   onChange={(event) =>
                     form?.setValue("date", event.target.value)

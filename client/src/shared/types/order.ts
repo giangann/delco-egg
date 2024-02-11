@@ -7,7 +7,13 @@ export interface IOrderItem {
 export interface IOrder {
   date: string;
   time: string;
-  orders: IOrderItem[];
+  items: IOrderItem[];
+}
+
+export interface ISaveOrder {
+  date: string | null;
+  time: string | null;
+  items: IOrderItem[] | null;
 }
 
 export interface IOrderRow {
