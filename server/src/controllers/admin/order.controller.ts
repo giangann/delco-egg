@@ -107,8 +107,14 @@ const updateStatus: IController = async (req, res) => {
     // 1. get all item inside order {egg_id and quantity}[]
     // 2. each item, get corresponding currentQtys
     // 3. update qty
-    const orderItems:IOrderDetail[] = await orderDetailService.getByOrderId(id);
-    const orderEggQtys: IUpdateEggPriceQty[] = getEggQtyInOrder(orderItems);
+    if (newStatus === application.status.ACCEPTED) {
+      const orderItems: IOrderDetail[] = await orderDetailService.getByOrderId(
+        id,
+      );
+      console.log('order items', orderItems);
+      const decreseRes = await decreseEggQtys(orderItems);
+      console.log('res ', decreseRes);
+    }
 
     ApiResponse.result(res, updateData, httpStatusCodes.OK);
   } catch (e) {
@@ -116,23 +122,21 @@ const updateStatus: IController = async (req, res) => {
   }
 };
 
-// return format:
-// [
-//   { egg_id: 3, quantity: 40000 },
-//   { egg_id: 6, quantity: 50000 },
-// ];
-const getEggQtyInOrder = (orderItems: IOrderDetail[]) => {
-  let eggQtys = orderItems.map((item) => {
-    let egg_id = item.egg_id;
-    let quantity = item.quantity;
-    return { egg_id, quantity };
-  });
-  return eggQtys
+const decreseEggQtys = async (orderEggQtys: IOrderDetail[]) => {
+  const res = await Promise.all(
+    orderEggQtys.map(async (eggQty) => {
+      const currEggQty = await eggPriceQtyService.byEggId(
+        eggQty.egg_id,
+      );
+      const newEggQty: IUpdateEggPriceQty = {
+        egg_id: currEggQty.egg_id,
+        quantity: currEggQty.quantity - eggQty.quantity,
+      };
+      await eggPriceQtyService.update(newEggQty);
+    }),
+  );
+  return res;
 };
-
-const decreseEggQtys = (orderEggQtys: IOrderDetail[] )=>{
-
-}
 
 const update: IController = async (req, res) => {
   try {
