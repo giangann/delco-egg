@@ -14,6 +14,9 @@ import orderService from '../../services/admin/order.service';
 import orderDetailService from '../../services/client/order-detail.service';
 import ApiResponse from '../../utilities/api-response.utility';
 import ApiUtility from '../../utilities/api.utility';
+import eggPriceQtyService from '../../services/admin/egg-price-qty.service';
+import { IUpdateEggPriceQty } from 'egg-price-qty.interface';
+import { IOrderDetail } from 'order-detail.interface';
 
 const list: IController = async (req, res) => {
   try {
@@ -90,30 +93,46 @@ const updateStatus: IController = async (req, res) => {
       status: newStatus,
     };
 
-    // ACCEPTED OR SUCCESS NOT REQUIRE "REASON"
-    if (
-      newStatus in
-      [application.status.ACCEPTED, application.status.SUCCESS]
-    ) {
-      updateData = await orderService.updateStatus(params);
-    }
-
     // REJECT OR CANCEL REQUIRE "REASON"
     if (
-      newStatus in
-      [application.status.REJECTED, application.status.CANCELED]
+      newStatus === application.status.REJECTED ||
+      newStatus === application.status.CANCELED
     ) {
-      updateData = await orderService.rejectOrCancelOrder({
-        ...params,
-        reason: req.body.reason,
-      });
+      params.reason = req.body?.reason;
     }
+    // update status
+    updateData = await orderService.updateStatus(params);
+
+    // IF NEWSTATUS IS ACCEPTED => DECREASE CORRESPONDING EGGQTYS
+    // 1. get all item inside order {egg_id and quantity}[]
+    // 2. each item, get corresponding currentQtys
+    // 3. update qty
+    const orderItems:IOrderDetail[] = await orderDetailService.getByOrderId(id);
+    const orderEggQtys: IUpdateEggPriceQty[] = getEggQtyInOrder(orderItems);
 
     ApiResponse.result(res, updateData, httpStatusCodes.OK);
   } catch (e) {
     ApiResponse.error(res, httpStatusCodes.BAD_REQUEST, e);
   }
 };
+
+// return format:
+// [
+//   { egg_id: 3, quantity: 40000 },
+//   { egg_id: 6, quantity: 50000 },
+// ];
+const getEggQtyInOrder = (orderItems: IOrderDetail[]) => {
+  let eggQtys = orderItems.map((item) => {
+    let egg_id = item.egg_id;
+    let quantity = item.quantity;
+    return { egg_id, quantity };
+  });
+  return eggQtys
+};
+
+const decreseEggQtys = (orderEggQtys: IOrderDetail[] )=>{
+
+}
 
 const update: IController = async (req, res) => {
   try {

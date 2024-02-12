@@ -53,6 +53,7 @@ const create: IController = async (req, res) => {
 };
 
 const login: IController = async (req, res) => {
+  console.log('login')
   try {
     const params: ILoginUser = {
       username: req.body.username,

@@ -54,6 +54,7 @@ const login = async (params: ILoginUser) => {
     ])
     .getOne();
 
+  console.log(user);
   if (!user) {
     throw new StringError('Tên đăng nhập chưa được đăng ký');
   }
