@@ -1,3 +1,4 @@
+import { Response } from 'express';
 import IController from 'IController';
 import httpStatusCodes from 'http-status-codes';
 import {
@@ -111,10 +112,11 @@ const updateStatus: IController = async (req, res) => {
       const orderItems: IOrderDetail[] = await orderDetailService.getByOrderId(
         id,
       );
-      console.log('order items', orderItems);
-      const decreseRes = await decreseEggQtys(orderItems);
-      console.log('res ', decreseRes);
+      const decreseRes = await decreseEggQtys(orderItems, res);
     }
+
+    // NOTIFICATION SERVICE
+    
 
     ApiResponse.result(res, updateData, httpStatusCodes.OK);
   } catch (e) {
@@ -122,12 +124,23 @@ const updateStatus: IController = async (req, res) => {
   }
 };
 
-const decreseEggQtys = async (orderEggQtys: IOrderDetail[]) => {
-  const res = await Promise.all(
+const decreseEggQtys = async (
+  orderEggQtys: IOrderDetail[],
+  res: Response,
+) => {
+  const decreseRes = await Promise.all(
     orderEggQtys.map(async (eggQty) => {
       const currEggQty = await eggPriceQtyService.byEggId(
         eggQty.egg_id,
       );
+      // if current quantity is less than newEggQty then throw message for admin
+      if (currEggQty.quantity < eggQty.quantity) {
+        ApiResponse.error(
+          res,
+          httpStatusCodes.BAD_REQUEST,
+          `${eggQty.egg_id} hết hàng`,
+        );
+      }
       const newEggQty: IUpdateEggPriceQty = {
         egg_id: currEggQty.egg_id,
         quantity: currEggQty.quantity - eggQty.quantity,
@@ -135,7 +148,7 @@ const decreseEggQtys = async (orderEggQtys: IOrderDetail[]) => {
       await eggPriceQtyService.update(newEggQty);
     }),
   );
-  return res;
+  return decreseRes;
 };
 
 const update: IController = async (req, res) => {

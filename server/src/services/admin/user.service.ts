@@ -54,7 +54,6 @@ const login = async (params: ILoginUser) => {
     ])
     .getOne();
 
-  console.log(user);
   if (!user) {
     throw new StringError('Tên đăng nhập chưa được đăng ký');
   }
@@ -161,6 +160,10 @@ const list = async (params: IUserQueryParams) => {
   return { response, pagination: pagRes.pagination };
 };
 
+const listAdmin = async () => {
+  const listAdmin = await getRepository(User).find({ isAdmin: true });
+  return listAdmin;
+};
 const remove = async (params: IDeleteById) => {
   const query = { ...where, id: params.id };
 
@@ -183,4 +186,5 @@ export default {
   update,
   list,
   remove,
+  listAdmin,
 };
