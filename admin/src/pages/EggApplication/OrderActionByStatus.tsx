@@ -6,6 +6,7 @@ import { useState } from "react";
 import { fakeDelay } from "../../shared/helper";
 import { ConfirmDialog } from "../../components/Dialog/ConfirmDialog";
 import { toast } from "react-toastify";
+import { putApi } from "../../lib/utils/fetch/fetchRequest";
 
 type OrderActionByStatusProps = {
   orderId: number;
@@ -89,10 +90,16 @@ export const OrderActionByStatus = ({
 
   const onChangeStatus = async () => {
     setIsSubmiting(true);
-    console.log("status", newStatus, orderId);
-    await fakeDelay(1.5);
+    const changeStatusRes = await putApi(`order/${orderId}/update-status`, {
+      status: newStatus,
+    });
+    console.log(changeStatusRes);
 
-    toast.success("Cập nhật thành công");
+    if (changeStatusRes.success) {
+      toast.success("Cập nhật thành công");
+    } else {
+      toast.error(changeStatusRes.error.message);
+    }
 
     setIsSubmiting(false);
     setOpenCFDialog(false);

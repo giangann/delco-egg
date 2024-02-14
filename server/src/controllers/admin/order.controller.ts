@@ -1,3 +1,4 @@
+import { Response } from 'express';
 import IController from 'IController';
 import httpStatusCodes from 'http-status-codes';
 import {
@@ -14,6 +15,9 @@ import orderService from '../../services/admin/order.service';
 import orderDetailService from '../../services/client/order-detail.service';
 import ApiResponse from '../../utilities/api-response.utility';
 import ApiUtility from '../../utilities/api.utility';
+import eggPriceQtyService from '../../services/admin/egg-price-qty.service';
+import { IUpdateEggPriceQty } from 'egg-price-qty.interface';
+import { IOrderDetail } from 'order-detail.interface';
 
 const list: IController = async (req, res) => {
   try {
@@ -90,29 +94,61 @@ const updateStatus: IController = async (req, res) => {
       status: newStatus,
     };
 
-    // ACCEPTED OR SUCCESS NOT REQUIRE "REASON"
-    if (
-      newStatus in
-      [application.status.ACCEPTED, application.status.SUCCESS]
-    ) {
-      updateData = await orderService.updateStatus(params);
-    }
-
     // REJECT OR CANCEL REQUIRE "REASON"
     if (
-      newStatus in
-      [application.status.REJECTED, application.status.CANCELED]
+      newStatus === application.status.REJECTED ||
+      newStatus === application.status.CANCELED
     ) {
-      updateData = await orderService.rejectOrCancelOrder({
-        ...params,
-        reason: req.body.reason,
-      });
+      params.reason = req.body?.reason;
     }
+    // update status
+    updateData = await orderService.updateStatus(params);
+
+    // IF NEWSTATUS IS ACCEPTED => DECREASE CORRESPONDING EGGQTYS
+    // 1. get all item inside order {egg_id and quantity}[]
+    // 2. each item, get corresponding currentQtys
+    // 3. update qty
+    if (newStatus === application.status.ACCEPTED) {
+      const orderItems: IOrderDetail[] = await orderDetailService.getByOrderId(
+        id,
+      );
+      const decreseRes = await decreseEggQtys(orderItems, res);
+    }
+
+    // NOTIFICATION SERVICE
+    
 
     ApiResponse.result(res, updateData, httpStatusCodes.OK);
   } catch (e) {
     ApiResponse.error(res, httpStatusCodes.BAD_REQUEST, e);
   }
+};
+
+const decreseEggQtys = async (
+  orderEggQtys: IOrderDetail[],
+  res: Response,
+) => {
+  const decreseRes = await Promise.all(
+    orderEggQtys.map(async (eggQty) => {
+      const currEggQty = await eggPriceQtyService.byEggId(
+        eggQty.egg_id,
+      );
+      // if current quantity is less than newEggQty then throw message for admin
+      if (currEggQty.quantity < eggQty.quantity) {
+        ApiResponse.error(
+          res,
+          httpStatusCodes.BAD_REQUEST,
+          `${eggQty.egg_id} hết hàng`,
+        );
+      }
+      const newEggQty: IUpdateEggPriceQty = {
+        egg_id: currEggQty.egg_id,
+        quantity: currEggQty.quantity - eggQty.quantity,
+      };
+      await eggPriceQtyService.update(newEggQty);
+    }),
+  );
+  return decreseRes;
 };
 
 const update: IController = async (req, res) => {

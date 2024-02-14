@@ -14,6 +14,10 @@ import orderDetailService from '../../services/client/order-detail.service';
 import orderService from '../../services/client/order.service';
 import ApiResponse from '../../utilities/api-response.utility';
 import ApiUtility from '../../utilities/api.utility';
+import userService from '../../services/client/user.service';
+import { IUserRecord } from 'user.interface';
+import orderNotiService from '../../services/client/order-noti.service';
+import { INotiCreate } from 'noti.interface';
 
 const list: IController = async (req, res) => {
   try {
@@ -56,7 +60,7 @@ const create: IController = async (req, res) => {
     const user_id = req.user.id;
 
     const params: ICreateOrder = {
-      user_id: user_id, 
+      user_id: user_id,
       date: req.body.date,
       time: req.body.time,
       status: constants.APPLICATION.status.WAITING_APPROVAL,
@@ -75,6 +79,25 @@ const create: IController = async (req, res) => {
       createdItems.push(itemDetail);
     }
     newOrder.items = createdItems;
+
+    // noti for all admin
+    const listAdmin: IUserRecord[] = await userService.listAdmin();
+    const listOrderNotiParams: INotiCreate[] = listAdmin.map(
+      (admin) => {
+        return {
+          from_user_id: req.user.id,
+          to_user_id: admin.id,
+          order_id: newOrder.id,
+          new_status: constants.APPLICATION.status.WAITING_APPROVAL,
+          content: constants.APPLICATION.noti.content.CREATED,
+        };
+      },
+    );
+    const sendNotiToListAdmin = await orderNotiService.createMany(
+      listOrderNotiParams,
+    );
+
+    console.log(sendNotiToListAdmin);
 
     ApiResponse.result(res, newOrder, httpStatusCodes.CREATED);
   } catch (e) {

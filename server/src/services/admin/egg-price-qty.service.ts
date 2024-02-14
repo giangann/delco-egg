@@ -5,6 +5,8 @@ import {
 import { getRepository } from 'typeorm';
 import { EggPriceQty } from '../../entities/egg-price-qty/egg-price-qty.entity';
 import { StringError } from '../../errors/string.error';
+import ApiUtility from '../../utilities/api.utility';
+import ApiResponse from '../../utilities/api-response.utility';
 
 const list = async () => {
   const data = await getRepository(EggPriceQty)
@@ -51,4 +53,18 @@ const remove = async (params: Pick<IEggPriceQty, 'egg_id'>) => {
   return deletedRow;
 };
 
-export default { list, create, update, remove };
+const byEggId = async (egg_id: number) => {
+  try {
+    const eggPriceQty: IEggPriceQty = await getRepository(
+      EggPriceQty,
+    ).findOne({
+      egg_id: egg_id,
+    });
+
+    return eggPriceQty;
+  } catch (e) {
+    return null;
+  }
+};
+
+export default { list, create, update, remove, byEggId };

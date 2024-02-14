@@ -49,6 +49,11 @@ const login = async (params: ILoginUser) => {
   throw new StringError('Mật khẩu bạn đã nhập không đúng');
 };
 
+const listAdmin = async () => {
+  const listAdmin = await getRepository(User).find({ isAdmin: true });
+  return listAdmin;
+};
+
 const getById = async (params: IDetailById) => {
   try {
     const data = await getRepository(User).findOne({ id: params.id });
@@ -87,6 +92,7 @@ const update = async (params: IUpdateUser) => {
 
 export default {
   login,
+  listAdmin,
   getById,
   detail,
   update,
