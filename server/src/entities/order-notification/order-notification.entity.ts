@@ -8,6 +8,7 @@ import {
 import { BaseEntity } from '../base/base.entity';
 import { User } from '../user/user.entity';
 import { Order } from '../order/order.entity';
+import { boolean } from 'joi';
 
 @Entity('order_notification', { orderBy: { createdAt: 'DESC' } })
 export class OrderNoti extends BaseEntity {
@@ -28,6 +29,12 @@ export class OrderNoti extends BaseEntity {
 
   @Column({ nullable: true })
   content: string;
+
+  @Column({ nullable: true, default: false })
+  is_read: boolean;
+  
+  @Column({ nullable: true, default: true })
+  is_display: boolean;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'from_user_id', referencedColumnName: 'id' })

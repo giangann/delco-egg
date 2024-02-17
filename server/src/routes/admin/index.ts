@@ -5,6 +5,7 @@ import userRouter from './user.route';
 import authRouter from './auth.route';
 import meRouter from './me.route';
 import orderRouter from './order.route';
+import orderNotiRouter from './order-noti.route';
 
 const router = express.Router();
 router.use('/egg-price-qty', eggPriceQtyRoute);
@@ -12,5 +13,7 @@ router.use('/egg', eggRouter);
 router.use('/user', userRouter);
 router.use('/auth', authRouter);
 router.use('/me', meRouter);
-router.use('/order',orderRouter)
+router.use('/order', orderRouter);
+router.use('/noti', orderNotiRouter);
+
 export default router;

@@ -7,7 +7,7 @@ import {
   TableHead,
   TableRow,
   Typography,
-  styled
+  styled,
 } from "@mui/material";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
@@ -54,7 +54,7 @@ export const EggOrderDetail = () => {
       setOrder(res.data);
     }
     fetchOrderById();
-  }, [refetch]);
+  }, [refetch, params]);
 
   return (
     <Container>

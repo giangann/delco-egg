@@ -36,7 +36,7 @@ export const CustomDrawer = (props: CustomDrawerProps) => {
       onClose={onClose}
       {...drawerProps}
     >
-      <Box pl={4} py={8}>
+      <Box pl={2} py={8}>
         <ItemsBlock
           spacing={4}
           items={[...item, { path: "/", text: "Về Trang Chủ" }]}

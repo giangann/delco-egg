@@ -1,21 +1,56 @@
-import { Box, IconButton, Menu, Typography, styled } from "@mui/material";
-import React from "react";
+import {
+  Badge,
+  Box,
+  IconButton,
+  Menu,
+  Typography,
+  styled,
+} from "@mui/material";
+import React, { createContext, useEffect, useState } from "react";
 import { MaterialSymbolsNotificationsActiveRounded } from "../../../../shared/icons/Icon";
+import { INoti } from "../../../../shared/types/noti";
+import { getApi } from "../../../../lib/utils/fetch/fetchRequest";
+import { alignCenterSx } from "../../../../styled/styled";
+import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
+import SCREEN_PATHS from "../../../../shared/constants/screenPaths";
 
 export const NotificationMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [listNoti, setListNoti] = useState<INoti[]>([]);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleNotiClick = (orderId: number) => {
+    handleClose();
+    let path = SCREEN_PATHS.APPLICATION.DETAIL;
+    let arrPathBySlash = path.split("/");
+    arrPathBySlash.pop();
 
+    let newPathWithoutSlug = arrPathBySlash.join("/");
+    navigate(`${newPathWithoutSlug}/${orderId}`);
+  };
+  useEffect(() => {
+    async function fetchListNoti() {
+      const fetchListNotiResponse = await getApi("noti");
+      if (fetchListNotiResponse.success)
+        setListNoti(fetchListNotiResponse.data);
+    }
+    fetchListNoti();
+  }, []);
   return (
     <>
       <IconButton onClick={handleClick}>
-        <MaterialSymbolsNotificationsActiveRounded style={{ color: "white" }} />
+        <Badge badgeContent={listNoti.length} color="error">
+          <MaterialSymbolsNotificationsActiveRounded
+            style={{ color: "white" }}
+          />
+        </Badge>
       </IconButton>
       {/* user menu */}
       <Menu
@@ -24,23 +59,30 @@ export const NotificationMenu = () => {
         open={open}
         onClose={handleClose}
       >
-        {/* <MenuItem onClick={handleClose}>
-          <NotiTitleText>Đơn bị từ chối</NotiTitleText>
-          <NotiContentText>
-            Đơn của bạn bị từ chối với lý do giá quá cao, click để xem chi tiết
-          </NotiContentText>
-          <NotiContentText>28/12 4:50</NotiContentText>
-        </MenuItem> */}
         <Box sx={{ px: 1.25 }}>
-          <NotiItem handleClose={handleClose} />
-          <NotiItem handleClose={handleClose} />
+          {listNoti && listNoti?.length ? (
+            listNoti.map((noti) => (
+              <NotiItem {...noti} handleNotiClick={handleNotiClick} />
+            ))
+          ) : (
+            <NoNotification />
+          )}
         </Box>
       </Menu>
     </>
   );
 };
 
-const NotiItem = ({ handleClose }: { handleClose: () => void }) => {
+type NotiItemProps = {
+  handleNotiClick: (orderId: number) => void;
+} & INoti;
+const NotiItem = ({
+  handleNotiClick,
+  from_user,
+  createdAt,
+  content,
+  order_id,
+}: NotiItemProps) => {
   return (
     <Box
       component="div"
@@ -51,14 +93,27 @@ const NotiItem = ({ handleClose }: { handleClose: () => void }) => {
         borderBottom: "1px solid #ccc",
         py: 2,
       }}
-      onClick={handleClose}
+      onClick={() => handleNotiClick(order_id)}
     >
-      <NotiTitleText>Đơn bị từ chối</NotiTitleText>
+      <NotiTitleText>{content}</NotiTitleText>
       <NotiContentText>
-        Đơn của bạn bị từ chối với lý do giá quá cao,
-        <br /> click để xem chi tiết
+        Từ:{" "}
+        <span style={{ fontWeight: 550, textDecoration: "underline" }}>
+          {from_user.username}
+        </span>
       </NotiContentText>
-      <NotiDateTimeText>28/12 4:50</NotiDateTimeText>
+      <NotiContentText>{content}</NotiContentText>
+      <NotiDateTimeText>
+        {dayjs(createdAt).format("DD/MM/YY HH:mm")}
+      </NotiDateTimeText>
+    </Box>
+  );
+};
+
+const NoNotification = () => {
+  return (
+    <Box sx={{ ...alignCenterSx }}>
+      <NotiTitleText>{"Không có thông báo"}</NotiTitleText>
     </Box>
   );
 };

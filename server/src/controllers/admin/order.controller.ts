@@ -18,6 +18,7 @@ import ApiUtility from '../../utilities/api.utility';
 import eggPriceQtyService from '../../services/admin/egg-price-qty.service';
 import { IUpdateEggPriceQty } from 'egg-price-qty.interface';
 import { IOrderDetail } from 'order-detail.interface';
+import orderNotiService from '../../services/admin/order-noti.service';
 
 const list: IController = async (req, res) => {
   try {
@@ -113,15 +114,48 @@ const updateStatus: IController = async (req, res) => {
         id,
       );
       const decreseRes = await decreseEggQtys(orderItems, res);
+      const notiAction = await handleNotiForAcceptOrder(
+        req.user.id,
+        id,
+      );
     }
-
     // NOTIFICATION SERVICE
-    
 
     ApiResponse.result(res, updateData, httpStatusCodes.OK);
   } catch (e) {
     ApiResponse.error(res, httpStatusCodes.BAD_REQUEST, e);
   }
+};
+
+const handleNotiForAcceptOrder = async (
+  userId: number,
+  orderId: number,
+) => {
+  // new_status of this noti is waiting, not accepted
+  const correspondingNoti = await orderNotiService.detail({
+    order_id: orderId,
+    new_status: application.status.WAITING_APPROVAL,
+  });
+  if (!correspondingNoti) {
+    return false;
+  }
+
+  const disappearNoti = await orderNotiService.update({
+    id: correspondingNoti.id,
+    is_display: false,
+  });
+
+  // get client for this order
+  const thisOrder = await orderService.detail({ id: orderId });
+
+  // create new noti for client
+  const newNotiForClient = await orderNotiService.create({
+    content: application.noti.content.ACCEPTED,
+    from_user_id: userId,
+    to_user_id: thisOrder.user_id,
+    new_status: application.status.ACCEPTED,
+    order_id: orderId,
+  });
 };
 
 const decreseEggQtys = async (

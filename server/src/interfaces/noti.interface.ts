@@ -8,6 +8,8 @@ export interface INotiRecord {
   to_user_id: number;
   order_id: number;
   new_status: number;
+  is_read: boolean;
+  is_display: boolean;
   content?: string;
 }
 
@@ -21,6 +23,7 @@ export interface INotiCreate {
 
 export interface INotiListParams {
   to_user_id: number;
+  is_display?: boolean;
 }
 
 export interface INotiUpdate extends IOptionalUpdateById<INotiRecord> {}
