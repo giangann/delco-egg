@@ -1,5 +1,18 @@
 import { baseURL } from "../../query/request";
 
+export type TResponseSuccess<T> = {
+  success: true;
+  data: T;
+};
+export type TResponseFailure = {
+  success: false;
+  error: {
+    name?: string;
+    message: string;
+  };
+};
+export type TResponse<T> = TResponseSuccess<T> | TResponseFailure;
+
 export const getApi = async (
   endpoint: string,
   searchParams?: Record<string, string>

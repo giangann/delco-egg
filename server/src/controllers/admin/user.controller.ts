@@ -53,7 +53,7 @@ const create: IController = async (req, res) => {
 };
 
 const login: IController = async (req, res) => {
-  console.log('login')
+  console.log('login');
   try {
     const params: ILoginUser = {
       username: req.body.username,
@@ -75,6 +75,21 @@ const login: IController = async (req, res) => {
       res,
       httpStatusCodes.BAD_REQUEST,
       'Something went wrong',
+    );
+  }
+};
+
+const logout: IController = (req, res) => {
+  try {
+    return res
+      .clearCookie(constants.COOKIE.COOKIE_USER)
+      .status(200)
+      .json({ success: true });
+  } catch (e) {
+    return ApiResponse.error(
+      res,
+      httpStatusCodes.BAD_REQUEST,
+      e?.message || 'Something when wrong',
     );
   }
 };
@@ -189,6 +204,7 @@ const generateUserCookie = async (userId: number) => {
 export default {
   create,
   login,
+  logout,
   me,
   detail,
   update,

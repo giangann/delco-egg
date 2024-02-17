@@ -20,10 +20,18 @@ const useAuth = () => {
       setUserAtom(result.data);
     }
   };
+  const logout = async () => {
+    const result = await getApi("auth/logout");
+    if (result.success) {
+      setUserAtom(null);
+    }
+    return result;
+  };
   return {
     user,
     checkUser,
     login,
+    logout
   };
 };
 

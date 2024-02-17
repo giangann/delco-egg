@@ -1,9 +1,12 @@
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import React from "react";
 import { IconamoonProfileCircleFill } from "../../../../shared/icons/Icon";
+import useAuth from "../../../../hooks/useAuth";
+import { toast } from "react-toastify";
 
 export const UserProfileMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const { logout } = useAuth();
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -13,7 +16,9 @@ export const UserProfileMenu = () => {
   };
 
   const handleLogout = async () => {
-    console.log("logout");
+    const result = await logout();
+    if (result.success) toast.success("Đăng xuất thành công");
+    else toast.error('Có lỗi, đăng xuất thất bại')
     handleClose();
   };
   return (

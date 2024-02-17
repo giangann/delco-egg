@@ -7,12 +7,13 @@ import userController from '../../controllers/admin/user.controller';
 // Schema
 import userSchema from '../../validations/schemas/user.schema';
 
-const router = express.Router();
+const authRoute = express.Router();
 
-router.post(
+authRoute.post(
   '/login',
   schemaValidator(userSchema.login),
   userController.login,
 );
+authRoute.get('/logout', userController.logout);
 
-export default router;
+export default authRoute;

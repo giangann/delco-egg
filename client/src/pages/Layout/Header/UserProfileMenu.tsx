@@ -4,10 +4,13 @@ import { IconamoonProfileCircleFill } from "../../../shared/icons/Icon";
 import { CustomIconBtn } from "./Mobile/HeaderMobile";
 import { useNavigate } from "react-router-dom";
 import SCREEN_PATHS from "../../../shared/constants/screenPaths";
+import useAuth from "../../../hooks/useAuth";
+import { toast } from "react-toastify";
 
 export const UserProfileMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const {logout} = useAuth()
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -25,7 +28,9 @@ export const UserProfileMenu = () => {
 
   // action 3: logout
   const handleLogout = async () => {
-    console.log("logout");
+    const result = await logout();
+    if (result.success) toast.success("Đăng xuất thành công");
+    else toast.error('Có lỗi, đăng xuất thất bại')
     handleClose();
   };
 

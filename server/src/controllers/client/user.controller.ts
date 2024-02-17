@@ -2,12 +2,10 @@ import httpStatusCodes from 'http-status-codes';
 
 // Interfaces
 import IController from '../../interfaces/IController';
-import {
-  IDetailById
-} from '../../interfaces/common.interface';
+import { IDetailById } from '../../interfaces/common.interface';
 import {
   ILoginUser,
-  IUpdateUser
+  IUpdateUser,
 } from '../../interfaces/user.interface';
 
 // Errors
@@ -45,6 +43,20 @@ const login: IController = async (req, res) => {
       res,
       httpStatusCodes.BAD_REQUEST,
       'Something went wrong',
+    );
+  }
+};
+const logout: IController = (req, res) => {
+  try {
+    return res
+      .clearCookie(constants.COOKIE.COOKIE_USER)
+      .status(200)
+      .json({ success: true });
+  } catch (e) {
+    return ApiResponse.error(
+      res,
+      httpStatusCodes.BAD_REQUEST,
+      e?.message || 'Something when wrong',
     );
   }
 };
@@ -114,6 +126,7 @@ const generateUserCookie = async (userId: number) => {
 
 export default {
   login,
+  logout,
   me,
   detail,
   update,
