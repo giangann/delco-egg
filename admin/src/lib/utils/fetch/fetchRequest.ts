@@ -46,7 +46,7 @@ export const postApi = async (endpoint: string, data: any) => {
   return respond.json();
 };
 
-export const putApi = async (endpoint: string, data: any) => {
+export const putApi = async (endpoint: string, data?: any) => {
   const fullUrl = baseURL + "/" + endpoint;
   const respond = await fetch(fullUrl, {
     method: "PUT", // or 'PUT'

@@ -15,6 +15,20 @@ const list: IController = async (req, res) => {
   }
 };
 
+const maskAsRead: IController = async (req, res) => {
+  try {
+    const notiId = parseInt(req.params.id);
+    const updateNotiRes = orderNotiService.update({
+      id: notiId,
+      is_read: true,
+    });
+    ApiResponse.result(res, updateNotiRes);
+  } catch (e) {
+    ApiResponse.error(res, httpStatusCode.BAD_REQUEST, e);
+  }
+};
+
 export default {
   list,
+  maskAsRead,
 };

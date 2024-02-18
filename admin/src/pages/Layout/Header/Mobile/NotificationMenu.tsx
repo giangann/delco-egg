@@ -1,9 +1,8 @@
 import { Badge, Box, IconButton, Typography, styled } from "@mui/material";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MobileDrawer } from "../../../../components/Drawer/MobileDrawer";
-import { getApi } from "../../../../lib/utils/fetch/fetchRequest";
 import { OPACITY_TO_HEX } from "../../../../shared/constants/common";
 import SCREEN_PATHS from "../../../../shared/constants/screenPaths";
 import {
@@ -17,9 +16,10 @@ import {
   alignCenterSx,
 } from "../../../../styled/styled";
 import { CustomIconBtn } from "./HeaderMobile";
+import { NotiContext } from "../../Layout";
 export const NotificationMenu = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
-  const [listNoti, setListNoti] = useState<INoti[]>([]);
+  const listNoti = useContext(NotiContext).listNoti;
   const navigate = useNavigate();
 
   const onOpenDrawer = () => {
@@ -28,7 +28,7 @@ export const NotificationMenu = () => {
   const onCloseDrawer = () => {
     setOpenDrawer(false);
   };
-  const handleNotiClick = (orderId: number) => {
+  const handleNotiClick = async (orderId: number) => {
     onCloseDrawer();
     let path = SCREEN_PATHS.APPLICATION.DETAIL;
     let arrPathBySlash = path.split("/");
@@ -37,18 +37,13 @@ export const NotificationMenu = () => {
     let newPathWithoutSlug = arrPathBySlash.join("/");
     navigate(`${newPathWithoutSlug}/${orderId}`);
   };
-  useEffect(() => {
-    async function fetchListNoti() {
-      const fetchListNotiResponse = await getApi("noti");
-      if (fetchListNotiResponse.success)
-        setListNoti(fetchListNotiResponse.data);
-    }
-    fetchListNoti();
-  }, []);
   return (
     <>
       <CustomIconBtn onClick={onOpenDrawer}>
-        <Badge badgeContent={listNoti.length} color="error">
+        <Badge
+          badgeContent={listNoti.filter((noti) => !noti.is_read).length}
+          color="error"
+        >
           <MaterialSymbolsNotificationsActiveRounded
             style={{ color: "white" }}
           />
@@ -98,7 +93,14 @@ const NotiItem = ({
   from_user,
   createdAt,
   is_read,
+  id,
 }: NotiItemProps) => {
+  const noti = useContext(NotiContext);
+  const onClick = async () => {
+    handleNotiClick(order_id);
+    if (!is_read) await noti.maskAsRead(id);
+    noti.refetch();
+  };
   return (
     <Box
       component="div"
@@ -114,7 +116,7 @@ const NotiItem = ({
           : `${GREEN["500"]}${OPACITY_TO_HEX["15"]}`,
         opacity: is_read ? 0.75 : 1,
       }}
-      onClick={() => handleNotiClick(order_id)}
+      onClick={onClick}
     >
       <Box>
         <NotiTitleText>Đơn mới</NotiTitleText>

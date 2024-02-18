@@ -1,5 +1,6 @@
 // Noti interfaces for order
 export interface INoti {
+  id: number
   createdAt: string;
   content: string;
   from_user: {

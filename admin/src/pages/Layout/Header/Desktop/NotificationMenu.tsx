@@ -6,18 +6,19 @@ import {
   Typography,
   styled,
 } from "@mui/material";
-import React, { createContext, useEffect, useState } from "react";
-import { MaterialSymbolsNotificationsActiveRounded } from "../../../../shared/icons/Icon";
-import { INoti } from "../../../../shared/types/noti";
-import { getApi } from "../../../../lib/utils/fetch/fetchRequest";
-import { alignCenterSx } from "../../../../styled/styled";
 import dayjs from "dayjs";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import SCREEN_PATHS from "../../../../shared/constants/screenPaths";
+import { MaterialSymbolsNotificationsActiveRounded } from "../../../../shared/icons/Icon";
+import { INoti } from "../../../../shared/types/noti";
+import { alignCenterSx } from "../../../../styled/styled";
+import { NotiContext } from "../../Layout";
 
 export const NotificationMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [listNoti, setListNoti] = useState<INoti[]>([]);
+  const listNoti = useContext(NotiContext).listNoti;
+
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -35,18 +36,13 @@ export const NotificationMenu = () => {
     let newPathWithoutSlug = arrPathBySlash.join("/");
     navigate(`${newPathWithoutSlug}/${orderId}`);
   };
-  useEffect(() => {
-    async function fetchListNoti() {
-      const fetchListNotiResponse = await getApi("noti");
-      if (fetchListNotiResponse.success)
-        setListNoti(fetchListNotiResponse.data);
-    }
-    fetchListNoti();
-  }, []);
   return (
     <>
       <IconButton onClick={handleClick}>
-        <Badge badgeContent={listNoti.length} color="error">
+        <Badge
+          badgeContent={listNoti.filter((noti) => !noti.is_read).length}
+          color="error"
+        >
           <MaterialSymbolsNotificationsActiveRounded
             style={{ color: "white" }}
           />
@@ -82,7 +78,15 @@ const NotiItem = ({
   createdAt,
   content,
   order_id,
+  id,
+  is_read,
 }: NotiItemProps) => {
+  const noti = useContext(NotiContext);
+  const onClick = async () => {
+    handleNotiClick(order_id);
+    if (!is_read) await noti.maskAsRead(id);
+    noti.refetch();
+  };
   return (
     <Box
       component="div"
@@ -93,7 +97,7 @@ const NotiItem = ({
         borderBottom: "1px solid #ccc",
         py: 2,
       }}
-      onClick={() => handleNotiClick(order_id)}
+      onClick={onClick}
     >
       <NotiTitleText>{content}</NotiTitleText>
       <NotiContentText>

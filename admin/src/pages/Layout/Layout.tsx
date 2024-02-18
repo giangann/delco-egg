@@ -1,18 +1,46 @@
-import { useEffect } from "react";
+import { createContext, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { Footer } from "./Footer";
-import { Box } from "@mui/material";
 import { Header } from "./Header/Header";
+import { INoti } from "../../shared/types/noti";
+import { getApi, putApi } from "../../lib/utils/fetch/fetchRequest";
 
+interface INotiContext {
+  listNoti: INoti[];
+  refetch: () => void;
+  maskAsRead: (notiId: number) => Promise<void>;
+}
+export const NotiContext = createContext<INotiContext>({
+  listNoti: [],
+  refetch: () => {},
+  maskAsRead: async () => {},
+});
 export const Layout = () => {
+  const [listNoti, setListNoti] = useState<INoti[]>([]);
+  const [refetch, setRefetch] = useState(1);
+  const refetchListNoti = () => {
+    setRefetch(refetch + 1);
+  };
+  const maskAsRead = async (notiId: number) => {
+    const updateResult = await putApi(`noti/${notiId}`);
+    if (updateResult.sucees) console.log("mask as read success", notiId);
+  };
+
   useEffect(() => {
-    console.log("layout rendered");
-  }, []);
+    async function fetchListNoti() {
+      const fetchListNotiResponse = await getApi("noti");
+      if (fetchListNotiResponse.success)
+        setListNoti(fetchListNotiResponse.data);
+    }
+    fetchListNoti();
+  }, [refetch]);
   return (
-    <Box>
+    <NotiContext.Provider
+      value={{ listNoti, maskAsRead, refetch: refetchListNoti }}
+    >
       <Header />
       <Outlet />
       <Footer />
-    </Box>
+    </NotiContext.Provider>
   );
 };

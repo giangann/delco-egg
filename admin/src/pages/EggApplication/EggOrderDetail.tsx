@@ -10,7 +10,7 @@ import {
   styled,
 } from "@mui/material";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Page } from "../../components/Page/Page";
 import { BoxByStatus } from "../../components/Table/BoxByStatus";
@@ -25,9 +25,11 @@ import {
 } from "../../shared/helper";
 import { IOrder, IOrderItem } from "../../shared/types/order";
 import { OrderActionByStatus } from "./OrderActionByStatus";
+import { NotiContext } from "../Layout/Layout";
 
 export const EggOrderDetail = () => {
   const [refetch, setRefetch] = useState(0);
+  const refetchNoti = useContext(NotiContext).refetch
   const [order, setOrder] = useState<IOrder>({
     id: 0,
     status: ORDER_STATUS.WAITING_APPROVAL,
@@ -44,6 +46,7 @@ export const EggOrderDetail = () => {
 
   const triggerRefetch = () => {
     setRefetch(refetch + 1);
+    refetchNoti()
   };
   const params = useParams();
   console.log(params);
