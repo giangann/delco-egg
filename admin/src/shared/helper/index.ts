@@ -23,7 +23,7 @@ export function numberWithComma(number: number) {
   let result = "";
   for (let i = arr.length - 1; i >= 0; i--) {
     result += arr[i];
-    if (j && j % 3 === 0) {
+    if (j && i !== 0 && j % 3 === 0) {
       result += ",";
       j = 0;
     }

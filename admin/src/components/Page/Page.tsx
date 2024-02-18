@@ -2,15 +2,14 @@ import { Box, Button, Container, Paper } from "@mui/material";
 import React from "react";
 import { useDevice } from "../../hooks/useDevice";
 import {
-  AlignCenterBox,
-  ButtonResponsive,
-  PageTitleText,
-} from "../../styled/styled";
-import {
   IcRoundKeyboardBackspace,
   MaterialSymbolsArrowCircleRight,
 } from "../../shared/icons/Icon";
-import { FlexDefaultBox } from "../../styled/styled";
+import {
+  ButtonResponsive,
+  FlexDefaultBox,
+  PageTitleText
+} from "../../styled/styled";
 
 interface PageProps {
   title: string;

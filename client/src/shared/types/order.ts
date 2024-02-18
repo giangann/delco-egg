@@ -1,3 +1,5 @@
+import { IEgg } from "./egg";
+
 export interface IOrderItem {
   egg_id: number;
   quantity: number;
@@ -21,4 +23,12 @@ export interface IOrderRow {
   time: string;
   status: number;
   createdAt: string;
+}
+
+export interface IOrderItemDetail extends IOrderItem {
+  egg?: IEgg;
+}
+export interface IOrderDetail extends IOrder {
+  status: number;
+  items: IOrderItemDetail[];
 }

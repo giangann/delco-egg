@@ -24,7 +24,8 @@ export function isTomorrow(day: Date | string) {
 }
 
 // day is msql date column type with format YYYY-MM-DD
-export function toDayOrTomorrowOrYesterday(day: Date | string) {
+export function toDayOrTomorrowOrYesterday(day: Date | string | undefined) {
+  if (day === undefined) return day;
   const today = dayjs();
   const isTomorrow = dayjs(day).isSame(
     today.add(1, "day").format(CONFIG.MY_SQL_DATE_FORMAT)
@@ -36,7 +37,14 @@ export function toDayOrTomorrowOrYesterday(day: Date | string) {
   if (isToday) return "Hôm nay";
   if (isTomorrow) return "Ngày mai";
   if (isYesterday) return "Hôm qua";
-  return false;
+  return "";
+}
+export function timeWithoutSecond(time: string | undefined) {
+  if (!time) return "undefined";
+  // HH:mm:ss - default time column type mysql
+  let arr = time.split(":");
+  arr.pop();
+  return arr.join(":");
 }
 
 export function commonDate() {
@@ -82,4 +90,22 @@ export function eggPriceQtyInOrderItem(
   if (foundOrderItems && foundOrderItems?.length) {
     return foundOrderItems[0];
   } else return undefined;
+}
+
+export function numberWithComma(number: number) {
+  let arr = number.toString().split("");
+  let j = 1;
+  let result = "";
+  for (let i = arr.length - 1; i >= 0; i--) {
+    result += arr[i];
+    if (j && i !== 0 && j % 3 === 0) {
+      result += ",";
+      j = 0;
+    }
+    j += 1;
+  }
+
+  let result2 = result.split("");
+  let final = result2.reverse().join("");
+  return final;
 }

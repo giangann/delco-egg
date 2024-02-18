@@ -11,12 +11,15 @@ import { IOrderRow } from "../../shared/types/order";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import SCREEN_PATHS from "../../shared/constants/screenPaths";
+import { useNavigate } from "react-router-dom";
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
 export const List = () => {
   const { isMobile } = useDevice();
   const [myOrderList, setMyOrderList] = useState([]);
+  const navigate = useNavigate()
   const fields: StrictField<IOrderRow>[] = [
     // {
     //   header: "Id",
@@ -59,7 +62,7 @@ export const List = () => {
   ];
 
   const onViewDetail = ({ id }: IOrderRow) => {
-    let path = SCREEN_PATHS.APPLICATION.DETAIL;
+    let path = SCREEN_PATHS.DETAIL;
     let arrPathBySlash = path.split("/");
     arrPathBySlash.pop();
 

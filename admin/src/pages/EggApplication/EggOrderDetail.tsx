@@ -14,7 +14,6 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Page } from "../../components/Page/Page";
 import { BoxByStatus } from "../../components/Table/BoxByStatus";
-import { useDevice } from "../../hooks/useDevice";
 import { getApi } from "../../lib/utils/fetch/fetchRequest";
 import { ORDER_STATUS } from "../../shared/constants/orderStatus";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
@@ -24,8 +23,8 @@ import {
   toDayOrTomorrowOrYesterday,
 } from "../../shared/helper";
 import { IOrder, IOrderItem } from "../../shared/types/order";
-import { OrderActionByStatus } from "./OrderActionByStatus";
 import { NotiContext } from "../Layout/Layout";
+import { OrderActionByStatus } from "./OrderActionByStatus";
 
 export const EggOrderDetail = () => {
   const [refetch, setRefetch] = useState(0);
@@ -37,7 +36,6 @@ export const EggOrderDetail = () => {
     date: "",
     items: [],
   });
-  const { isMobile } = useDevice();
   const navigate = useNavigate();
   const goBackList = () => {
     navigate(SCREEN_PATHS.APPLICATION.LIST);

@@ -1,4 +1,8 @@
-import { INotiCreate, INotiListParams } from 'noti.interface';
+import {
+  INotiCreate,
+  INotiListParams,
+  INotiUpdate,
+} from 'noti.interface';
 import { OrderNoti } from '../../entities/order-notification/order-notification.entity';
 import { getRepository } from 'typeorm';
 
@@ -18,6 +22,8 @@ const list = async (params: INotiListParams) => {
       'from_user',
     );
   }
+  const listNotiData = await orderNotiRepo.getMany()
+  return listNotiData
 };
 const create = async (params: INotiCreate) => {
   try {
@@ -40,5 +46,13 @@ const createMany = async (listParams: INotiCreate[]) => {
 
   return sendNotiResult;
 };
+const update = async (params: INotiUpdate) => {
+  const updatedNoti = await getRepository(OrderNoti).update(
+    { id: params.id },
+    { ...params },
+  );
 
-export default { list, create, createMany };
+  return updatedNoti;
+};
+
+export default { list, create, createMany, update };

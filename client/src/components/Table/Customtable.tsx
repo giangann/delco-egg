@@ -6,12 +6,15 @@ import {
   TableHead,
   TableRow,
   Typography,
+  styled,
 } from "@mui/material";
 import React from "react";
 import { usePagination } from "../../hooks/usePagination";
 import { UnknownObj } from "../../shared/types/base";
 import { GREEN } from "../../styled/color";
 import { CustomPagi } from "./CustomPagi";
+import { ButtonResponsive } from "../../styled/styled";
+import { IcRoundKeyboardBackspace } from "../../shared/icons/Icon";
 
 export interface StrictField<T> {
   header: string;
@@ -24,6 +27,8 @@ export interface CustomTableProps<TData extends UnknownObj> {
   fields: StrictField<TData>[];
   data: TData[];
   rows?: number;
+  onActionViewDetail?: (row: TData) => void;
+
 }
 
 const DEFAULT_CELL_WIDTH = "20%";
@@ -32,6 +37,7 @@ export function CustomTable<TData extends UnknownObj>({
   data,
   rows = data.length,
   fields,
+  onActionViewDetail
 }: CustomTableProps<TData>) {
   const {
     totalPage,
@@ -71,6 +77,11 @@ export function CustomTable<TData extends UnknownObj>({
                 </Typography>
               </TableCell>
             ))}
+            {onActionViewDetail && (
+              <TableCell sx={{ padding: { xs: "8px", sm: "16px" } }}>
+                <StyledText>{"Thao tác"}</StyledText>
+              </TableCell>
+            )}
           </TableRow>
         </TableHead>
 
@@ -99,6 +110,21 @@ export function CustomTable<TData extends UnknownObj>({
                     </TableCell>
                   );
                 })}
+                 {onActionViewDetail && (
+                  <TableCell sx={{ padding: { xs: "8px", sm: "16px" } }}>
+                    <ButtonResponsive
+                      // @ts-ignore
+                      onClick={() => onActionViewDetail(row)}
+                      startIcon={
+                        <IcRoundKeyboardBackspace
+                          style={{ transform: "rotate(180deg)" }}
+                        />
+                      }
+                    >
+                      chi tiết
+                    </ButtonResponsive>
+                  </TableCell>
+                )}
               </TableRow>
             ))}
         </TableBody>
@@ -116,3 +142,12 @@ export function CustomTable<TData extends UnknownObj>({
     </Box>
   );
 }
+const StyledText = styled(Typography)(({ theme }) => ({
+  textAlign: "center",
+  color: "white",
+  fontWeight: 500,
+  fontSize: 15,
+  [theme.breakpoints.up("sm")]: {
+    fontSize: 17,
+  },
+}));

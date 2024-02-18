@@ -1,139 +1,208 @@
 import {
   Box,
-  Button,
-  Container,
-  Paper,
+  Grid,
   Stack,
+  TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
   Typography,
-  styled,
+  styled
 } from "@mui/material";
-import { useDevice } from "../../hooks/useDevice";
-import EditIcon from '@mui/icons-material/Edit';
-interface Row {
-  type: string;
-  unitPrice: number;
-  quantity: number;
-  price?: number;
-}
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { BoxByStatus } from "../../components/Box/BoxByStatus";
+import { Page } from "../../components/Page/Page";
+import { getApi } from "../../lib/utils/fetch/fetchRequest";
+import SCREEN_PATHS from "../../shared/constants/screenPaths";
+import {
+  numberWithComma,
+  timeWithoutSecond,
+  toDayOrTomorrowOrYesterday,
+} from "../../shared/helpers/function";
+import { IOrderDetail, IOrderItem } from "../../shared/types/order";
+import { alignCenterSx } from "../../styled/styled";
 
 export const DetailForm = () => {
-  const { isMobile } = useDevice();
+  const [order, setOrder] = useState<IOrderDetail | null>(null);
+  const navigate = useNavigate();
+  const params = useParams();
 
+  const goBackList = () => {
+    navigate(SCREEN_PATHS.LIST);
+    // window.location.reload()
+  };
+
+  useEffect(() => {
+    async function fetchOrderById() {
+      const res = await getApi(`order/${params.id}`);
+      setOrder(res.data);
+    }
+    fetchOrderById();
+  }, [params]);
   return (
-    <Container>
-      <Paper elevation={isMobile ? 0 : 1} sx={{ padding: { xs: 0, sm: 2 } }}>
-        <TitleText mt={4}>Chi tiết đơn</TitleText>
+    <Page title="Chi tiết đơn" onGoBack={goBackList}>
+      {/* table */}
+      {!order ? (
+        <NoOrderData />
+      ) : (
+        <>
+          <Box mt={2}>
+            <BoxByStatus margin={"unset !important"} status={order.status} />
 
-        {/* table */}
-        <Box mt={2}>
-          <Stack
-            alignItems={"center"}
-            direction={"row"}
-            justifyContent={"space-between"}
-          >
-            <HeadingText> 1. Đơn hàng </HeadingText>
-            <EditButton startIcon={<EditIcon/>} variant="outlined">
-              <TextButton>Sửa</TextButton>
-            </EditButton>
-          </Stack>
-          <TableContainer>
-            <TableHead>
-              <TableRow>
-                <TableCell>Loại</TableCell>
-                <TableCell>{"Đơn giá (vnđ / 10 quả)"}</TableCell>
-                <TableCell>Số lượng</TableCell>
-                <TableCell> Thành tiền </TableCell>
-              </TableRow>
-            </TableHead>
-
-            {orderItems.map((row) => (
-              <TableRow key={row.type}>
-                <TableCell>{row.type}</TableCell>
-                <TableCell>{row.unitPrice}</TableCell>
-                <TableCell>{row.quantity}</TableCell>
-                <TableCell>{row.unitPrice * row.quantity}</TableCell>
-              </TableRow>
-            ))}
-            <TableRow sx={{ float: "right" }}>
-              <TableCell>
-                <TotalText fontWeight={900}>Tổng</TotalText>
-              </TableCell>
-              <TableCell align="right">
-                <TotalText>{subtotal(orderItems)}</TotalText>
-              </TableCell>
-            </TableRow>
-          </TableContainer>
-        </Box>
-
-        {/* time */}
-        <Box mt={2}>
-          <HeadingText> 2. Thời gian </HeadingText>
-          <SubHeadingText> - Ngày: 20/01/2024</SubHeadingText>
-          <SubHeadingText> - Giờ: 16:25</SubHeadingText>
-        </Box>
-      </Paper>
-    </Container>
+            <Stack
+              mt={4}
+              alignItems={"center"}
+              direction={"row"}
+              justifyContent={"space-between"}
+            >
+              <HeadingText> 1. Đơn hàng </HeadingText>
+            </Stack>
+            <TableContainer>
+              <TableHead>
+                <TableRow>
+                  <TableCellHeader>Loại</TableCellHeader>
+                  <TableCellHeader>{"Đơn giá"}</TableCellHeader>
+                  <TableCellHeader>Số lượng</TableCellHeader>
+                  <TableCellHeader> Thành tiền </TableCellHeader>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {order.items.map((row) => (
+                  <TableRow key={row.egg_id}>
+                    <TableCellStyled>{row.egg?.type_name}</TableCellStyled>
+                    <TableCellStyled>{row.deal_price}</TableCellStyled>
+                    <TableCellStyled>{row.quantity}</TableCellStyled>
+                    <TableCellStyled>
+                      {numberWithComma(row.deal_price * row.quantity)}
+                    </TableCellStyled>
+                  </TableRow>
+                ))}
+                {/* <TableRow sx={{ float: "right" }}> */}
+                <TableRow>
+                  <TableCellStyled
+                    colSpan={3}
+                    sx={{ textAlign: "right !important" }}
+                  >
+                    <TotalText fontWeight={900}>Tổng</TotalText>
+                  </TableCellStyled>
+                  <TableCellStyled>
+                    <TotalText>
+                      {numberWithComma(subtotal(order.items))} đ
+                    </TotalText>
+                  </TableCellStyled>
+                </TableRow>
+              </TableBody>
+            </TableContainer>
+          </Box>
+          {/* time */}
+          <Box mt={4}>
+            <HeadingText mb={1}> 2. Thời gian </HeadingText>
+            <DateAndTimeRow
+              property={"- Ngày: "}
+              value={`${dayjs(order.date).format(
+                "DD/MM/YYYY"
+              )} <${toDayOrTomorrowOrYesterday(order.date)}>`}
+            />
+            <DateAndTimeRow
+              property={"- Giờ: "}
+              value={timeWithoutSecond(order.time as string)}
+            />
+          </Box>
+        </>
+      )}
+    </Page>
   );
 };
 
-function subtotal(items: readonly Row[]) {
+const NoOrderData = () => {
+  return (
+    <Box height={"50vh"} sx={{ ...alignCenterSx }}>
+      <Typography variant="h4">{"Không có dữ liệu"}</Typography>
+    </Box>
+  );
+};
+
+const DateAndTimeRow = ({
+  property,
+  value,
+}: {
+  property: string;
+  value: string;
+}) => {
+  return (
+    <Grid container>
+      <Grid item xs={3} sm={1.6} md={1}>
+        <SubHeadingTextKey>{property} </SubHeadingTextKey>
+      </Grid>
+      <SubHeadingTextValue>{value}</SubHeadingTextValue>
+    </Grid>
+  );
+};
+function subtotal(items: IOrderItem[]) {
   return items
-    .map(({ unitPrice, quantity }) => unitPrice * quantity)
+    .map(({ deal_price, quantity }) => deal_price * quantity)
     .reduce((sum, i) => sum + i, 0);
 }
-const orderItems = [
-  {
-    type: "Mix 1",
-    unitPrice: 3000,
-    quantity: 10000,
-  },
-  {
-    type: "Mix 2",
-    unitPrice: 2900,
-    quantity: 60000,
-  },
-  {
-    type: "Mix 3",
-    unitPrice: 2125,
-    quantity: 50000,
-  },
-  {
-    type: "Mix 4",
-    unitPrice: 2750,
-    quantity: 200000,
-  },
-];
-const TitleText = styled(Typography)(({ theme }) => ({
-  color: "green",
-  fontSize: 24,
-  fontWeight: 900,
-  textAlign: "center",
-  [theme.breakpoints.up("sm")]: {},
-}));
+
 const TotalText = styled(Typography)(({ theme }) => ({
-  fontWeight: 900,
-  [theme.breakpoints.up("sm")]: {},
+  fontWeight: 800,
+  fontSize: 18,
+
+  [theme.breakpoints.up("sm")]: {
+    fontSize: 20,
+  },
 }));
 
 const HeadingText = styled(Typography)(({ theme }) => ({
-  fontWeight: 900,
+  fontWeight: 800,
+  fontSize: 20,
+  [theme.breakpoints.up("sm")]: {
+    fontSize: 22,
+  },
+}));
+
+const SubHeadingTextKey = styled(Typography)(({ theme }) => ({
+  fontWeight: 500,
+  fontSize: 18,
+  [theme.breakpoints.up("sm")]: {
+    fontSize: 20,
+  },
+}));
+const SubHeadingTextValue = styled(Typography)(({ theme }) => ({
+  fontWeight: 700,
+  fontSize: 18,
+  [theme.breakpoints.up("sm")]: {
+    fontSize: 20,
+  },
+}));
+const TableCellStyled = styled(TableCell)(({ theme }) => ({
+  fontSize: 16,
+  paddingLeft: 9,
+  paddingRight: 9,
+  paddingTop: 16,
+  paddingBottom: 16,
+  textAlign: "center",
+  [theme.breakpoints.up("sm")]: {
+    padding: 16,
+    fontSize: 18,
+    textAlign: "center",
+  },
+}));
+
+const TableCellHeader = styled(TableCellStyled)(({ theme }) => ({
+  fontWeight: 650,
+  textDecoration: "underline",
   fontSize: 18,
   [theme.breakpoints.up("sm")]: {},
 }));
-const SubHeadingText = styled(Typography)(({ theme }) => ({
-  fontWeight: 700,
-  fontSize: 16,
-  [theme.breakpoints.up("sm")]: {},
-}));
 
-const EditButton = styled(Button)({
-  // borderColor: "black",
-});
-const TextButton = styled(Typography)(({ theme }) => ({
-  textTransform: "none",
-  [theme.breakpoints.up("sm")]: {},
-}));
+// const EditButton = styled(Button)({
+//   // borderColor: "black",
+// });
+// const TextButton = styled(Typography)(({ theme }) => ({
+//   textTransform: "none",
+//   [theme.breakpoints.up("sm")]: {},
+// }));
