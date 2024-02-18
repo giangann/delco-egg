@@ -109,3 +109,11 @@ export function numberWithComma(number: number) {
   let final = result2.reverse().join("");
   return final;
 }
+
+export function fakeDelay(seconds: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, seconds * 1000);
+  });
+}

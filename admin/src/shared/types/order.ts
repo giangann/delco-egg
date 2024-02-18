@@ -32,4 +32,5 @@ export interface IOrderUserInfo {
   username: string;
   fullname: string;
   company_name: string;
+  phone_number: string;
 }

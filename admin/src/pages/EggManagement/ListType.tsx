@@ -12,15 +12,15 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ConfirmDialog } from "../../components/Dialog/ConfirmDialog";
-import { CustomInput } from "../../components/Input/CustomInput";
+import { BaseInput } from "../../components/Input/BaseInput";
 import { Page } from "../../components/Page/Page";
 import { deleteApi, getApi, putApi } from "../../lib/utils/fetch/fetchRequest";
+import SCREEN_PATHS from "../../shared/constants/screenPaths";
 import { IEggUpdate } from "../../shared/types/egg";
 import { BoxFlexEnd, TextButton } from "../../styled/styled";
-import { useNavigate } from "react-router-dom";
-import SCREEN_PATHS from "../../shared/constants/screenPaths";
 
 const DEFAULT_ID = -1;
 export const ListType = () => {
@@ -206,18 +206,18 @@ const EditDialog = ({
       <Box p={4} component="form" onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={6}>
-            <InputLabelText>Nhập tên loại</InputLabelText>
-            <CustomInput
+            <BaseInput
               {...register("type_name")}
               placeholder="VD: Mix 1, Mix 2 ... "
+              label="Nhập tên loại"
             />
           </Grid>
 
           <Grid item xs={12} sm={6}>
-            <InputLabelText>Nhập khối lượng</InputLabelText>
-            <CustomInput
+            <BaseInput
               {...register("weight")}
               placeholder="VD: 26kg - 30kg ..."
+              label="Nhập khối lượng"
             />
           </Grid>
         </Grid>
@@ -259,12 +259,4 @@ const ActionButton = styled(Button)(({ theme }) => ({
   padding: "3px 8px",
   textTransform: "none",
   [theme.breakpoints.up("sm")]: {},
-}));
-const InputLabelText = styled(Typography)(({ theme }) => ({
-  fontWeight: 500,
-  fontSize: 14,
-  marginBottom: 4,
-  [theme.breakpoints.up("sm")]: {
-    fontSize: 16,
-  },
 }));

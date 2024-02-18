@@ -1,20 +1,18 @@
-import { Box, Button, CircularProgress, Grid } from "@mui/material";
+import { Box, CircularProgress, Grid } from "@mui/material";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { CustomInput } from "../../components/Input/CustomInput";
+import { BaseInput } from "../../components/Input/BaseInput";
 import { Page } from "../../components/Page/Page";
+import { useDevice } from "../../hooks/useDevice";
 import { postApi } from "../../lib/utils/fetch/fetchRequest";
+import SCREEN_PATHS from "../../shared/constants/screenPaths";
+import { MaterialSymbolsArrowCircleLeftOutline } from "../../shared/icons/Icon";
 import { IEggInfo } from "../../shared/types/egg";
 import {
   BoxFlexEnd,
-  ButtonResponsive,
-  InputLabelText,
-  TextButton,
+  ButtonResponsive
 } from "../../styled/styled";
-import { useNavigate } from "react-router-dom";
-import SCREEN_PATHS from "../../shared/constants/screenPaths";
-import { MaterialSymbolsArrowCircleLeftOutline } from "../../shared/icons/Icon";
-import { useDevice } from "../../hooks/useDevice";
 
 export const CreateNewType = () => {
   const {
@@ -41,18 +39,18 @@ export const CreateNewType = () => {
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={4}>
-            <InputLabelText>Nhập tên loại</InputLabelText>
-            <CustomInput
+            <BaseInput
               {...register("type_name")}
               placeholder="VD: Mix 1, Mix 2 ... "
+              label="Nhập tên loại"
             />
           </Grid>
 
           <Grid item xs={12} sm={4}>
-            <InputLabelText>Nhập khối lượng</InputLabelText>
-            <CustomInput
+            <BaseInput
               {...register("weight")}
               placeholder="VD: 26kg - 30kg ..."
+              label="Nhập khối lượng"
             />
           </Grid>
         </Grid>

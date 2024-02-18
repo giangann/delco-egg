@@ -82,6 +82,10 @@ export const ATagCustom = styled("a")({
   textDecoration: "none",
   color: "inherit",
 });
+export const FakeATag = styled(Link)({
+  textDecoration: "underline",
+  color: "#0000EE",
+});
 
 // style for sx, not component
 export const alignCenterSx = {

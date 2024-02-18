@@ -3,6 +3,13 @@ export interface IUserLogin {
   password: string;
 }
 
+export interface IUserAtom {
+  username: string;
+  phone_number: string;
+  fullname: string;
+  company_name?: string;
+}
+
 export interface IUserCreate {
   username: string;
   password: string;

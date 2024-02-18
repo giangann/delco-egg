@@ -145,8 +145,8 @@ const SubHeadingTextValue = styled(Typography)(({ theme }) => ({
 }));
 const TableCellStyled = styled(TableCell)(({ theme }) => ({
   fontSize: 16,
-  paddingLeft: 9,
-  paddingRight: 9,
+  paddingLeft: 6,
+  paddingRight: 6,
   paddingTop: 16,
   paddingBottom: 16,
   textAlign: "center",

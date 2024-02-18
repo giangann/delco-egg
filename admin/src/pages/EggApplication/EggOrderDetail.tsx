@@ -1,7 +1,8 @@
 import {
   Box,
-  Container,
+  Grid,
   Stack,
+  TableBody,
   TableCell,
   TableContainer,
   TableHead,
@@ -15,7 +16,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Page } from "../../components/Page/Page";
 import { BoxByStatus } from "../../components/Table/BoxByStatus";
 import { getApi } from "../../lib/utils/fetch/fetchRequest";
-import { ORDER_STATUS } from "../../shared/constants/orderStatus";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
 import {
   numberWithComma,
@@ -23,119 +23,167 @@ import {
   toDayOrTomorrowOrYesterday,
 } from "../../shared/helper";
 import { IOrder, IOrderItem } from "../../shared/types/order";
+import { FakeATag, alignCenterSx } from "../../styled/styled";
 import { NotiContext } from "../Layout/Layout";
 import { OrderActionByStatus } from "./OrderActionByStatus";
 
 export const EggOrderDetail = () => {
   const [refetch, setRefetch] = useState(0);
-  const refetchNoti = useContext(NotiContext).refetch
-  const [order, setOrder] = useState<IOrder>({
-    id: 0,
-    status: ORDER_STATUS.WAITING_APPROVAL,
-    time: "",
-    date: "",
-    items: [],
-  });
+  const refetchNoti = useContext(NotiContext).refetch;
+  const [order, setOrder] = useState<IOrder | null>(null);
   const navigate = useNavigate();
   const goBackList = () => {
     navigate(SCREEN_PATHS.APPLICATION.LIST);
-    // window.location.reload()
   };
 
   const triggerRefetch = () => {
     setRefetch(refetch + 1);
-    refetchNoti()
+    refetchNoti();
   };
   const params = useParams();
-  console.log(params);
 
   useEffect(() => {
     async function fetchOrderById() {
-      const res = await getApi(`order/${params.id}`);
-      setOrder(res.data);
+      const res = await getApi<IOrder>(`order/${params.id}`);
+      if (res.success) {
+        setOrder(res.data);
+      }
     }
     fetchOrderById();
   }, [refetch, params]);
 
   return (
-    <Container>
-      <Page title="Chi tiết đơn" onGoBack={goBackList}>
-        {/* table */}
-        <Box mt={2}>
-          <BoxByStatus margin={"unset !important"} status={order.status} />
+    <Page title="Chi tiết đơn" onGoBack={goBackList}>
+      {!order ? (
+        <NoOrderData />
+      ) : (
+        <Grid container spacing={{ xs: 3, sm: 5 }}>
+          {/* status */}
+          <Grid item xs={12}>
+            <BoxByStatus margin={"unset !important"} status={order.status} />
+          </Grid>
 
-          <Stack
-            mt={4}
-            alignItems={"center"}
-            direction={"row"}
-            justifyContent={"space-between"}
-          >
-            <HeadingText> 1. Đơn hàng </HeadingText>
-          </Stack>
-          <TableContainer>
-            <TableHead>
-              <TableRow>
-                <TableCell>Loại</TableCell>
-                <TableCell>{"Đơn giá"}</TableCell>
-                <TableCell>Số lượng</TableCell>
-                <TableCell> Thành tiền </TableCell>
-              </TableRow>
-            </TableHead>
+          {/* table */}
+          <Grid item xs={12} sm={6}>
+            <BoxWrapper>
+              <HeadingText> 1. Đơn hàng </HeadingText>
+              <TableContainer>
+                <TableHead>
+                  <TableRow>
+                    <TableCellHeader>Loại</TableCellHeader>
+                    <TableCellHeader>{"Đơn giá"}</TableCellHeader>
+                    <TableCellHeader>Số lượng</TableCellHeader>
+                    <TableCellHeader> Thành tiền </TableCellHeader>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {order.items.map((row: IOrderItem) => (
+                    <TableRow key={row.egg_id}>
+                      <TableCellStyled>{row.egg?.type_name}</TableCellStyled>
+                      <TableCellStyled>{row.deal_price}</TableCellStyled>
+                      <TableCellStyled>{row.quantity}</TableCellStyled>
+                      <TableCellStyled>
+                        {numberWithComma(row.deal_price * row.quantity)}
+                      </TableCellStyled>
+                    </TableRow>
+                  ))}
+                  <TableRow>
+                    <TableCellStyled
+                      colSpan={3}
+                      sx={{ textAlign: "right !important" }}
+                    >
+                      <TotalText fontWeight={900}>Tổng</TotalText>
+                    </TableCellStyled>
+                    <TableCellStyled>
+                      <TotalText>
+                        {numberWithComma(subtotal(order.items))} đ
+                      </TotalText>
+                    </TableCellStyled>
+                  </TableRow>
+                </TableBody>
+              </TableContainer>
+            </BoxWrapper>
+          </Grid>
 
-            {order.items.map((row: IOrderItem) => (
-              <TableRow key={row.egg_id}>
-                <TableCell>{row.egg?.type_name}</TableCell>
-                <TableCell>{row.deal_price}</TableCell>
-                <TableCell>{row.quantity}</TableCell>
-                <TableCell>
-                  {numberWithComma(row.deal_price * row.quantity)}
-                </TableCell>
-              </TableRow>
-            ))}
-            <TableRow sx={{ float: "right" }}>
-              <TableCell>
-                <TotalText fontWeight={900}>Tổng</TotalText>
-              </TableCell>
-              <TableCell align="right">
-                <TotalText>
-                  {numberWithComma(subtotal(order.items))} đ
-                </TotalText>
-              </TableCell>
-            </TableRow>
-          </TableContainer>
-        </Box>
+          {/* time */}
+          <Grid item xs={12} sm={6}>
+            <BoxWrapper>
+              <HeadingText mb={1}> 2. Thời gian </HeadingText>
+              <GridOuter container>
+                <Grid item xs={9}>
+                  <UserInfoRow
+                    property="Ngày:"
+                    value={
+                      `${dayjs(order.date).format(
+                        "DD/MM/YYYY"
+                      )} <${toDayOrTomorrowOrYesterday(order.date)}>` as string
+                    }
+                  />
+                </Grid>
+                <Grid item xs={3}>
+                  <UserInfoRow
+                    property="Giờ:"
+                    value={timeWithoutSecond(order.time as string)}
+                  />
+                </Grid>
+              </GridOuter>
+            </BoxWrapper>
+          </Grid>
 
-        {/* time */}
-        <Box mt={2}>
-          <HeadingText> 2. Thời gian </HeadingText>
-          <SubHeadingText>
-            - Ngày: {dayjs(order.date).format("DD/MM/YYYY")}{" "}
-            {`<${toDayOrTomorrowOrYesterday(order.date)}>`}
-          </SubHeadingText>
-          <SubHeadingText>
-            - Giờ: {timeWithoutSecond(order.time)}
-          </SubHeadingText>
-        </Box>
+          {/* User info */}
+          <Grid item xs={12} sm={6}>
+            <BoxWrapper>
+              <Stack mb={1} direction={"row"} spacing={2} alignItems={"center"}>
+                <HeadingText> 3. Thông tin người đặt</HeadingText>
+                <FakeATag to="#">
+                  <Typography>{">> chi tiết"}</Typography>
+                </FakeATag>
+              </Stack>
+              <GridOuter container columnSpacing={4}>
+                <Grid item xs={6} sm={6}>
+                  <UserInfoRow
+                    property="Họ tên:"
+                    value={order.user?.fullname as string}
+                  />
+                </Grid>
+                <Grid item xs={6} sm={6}>
+                  <UserInfoRow
+                    property="Số điện thoại:"
+                    value={
+                      <a href={`tel:${order.user?.phone_number}`}>
+                        <BoxFieldValue>
+                          {order.user?.phone_number}
+                        </BoxFieldValue>
+                      </a>
+                    }
+                  />
+                </Grid>
+                <Grid item xs={6} sm={6}>
+                  <UserInfoRow
+                    property="Tên tài khoản:"
+                    value={order.user?.username as string}
+                  />
+                </Grid>
+                <Grid item xs={6} sm={6}>
+                  <UserInfoRow
+                    property="Công ty:"
+                    value={order.user?.company_name || "KXĐ"}
+                  />
+                </Grid>
+              </GridOuter>
+            </BoxWrapper>
+          </Grid>
 
-        {/*  */}
-        <Box mt={2}>
-          <HeadingText> 3. Thông tin người đặt</HeadingText>
-          <SubHeadingText>
-            - Tên tài khoản: {order.user?.username}
-          </SubHeadingText>
-          <SubHeadingText>- Họ tên: {order.user?.fullname}</SubHeadingText>
-          <SubHeadingText>
-            - Công ty: {order.user?.company_name || "KXĐ"}
-          </SubHeadingText>
-        </Box>
-
-        <OrderActionByStatus
-          triggerRefetch={triggerRefetch}
-          status={order.status}
-          orderId={order.id}
-        />
-      </Page>
-    </Container>
+          <Grid item xs={12}>
+            <OrderActionByStatus
+              triggerRefetch={triggerRefetch}
+              status={order.status}
+              orderId={order.id}
+            />
+          </Grid>
+        </Grid>
+      )}
+    </Page>
   );
 };
 
@@ -145,25 +193,99 @@ function subtotal(items: IOrderItem[]) {
     .reduce((sum, i) => sum + i, 0);
 }
 
-const TitleText = styled(Typography)(({ theme }) => ({
-  color: "green",
-  fontSize: 24,
-  fontWeight: 900,
-  textAlign: "center",
-  [theme.breakpoints.up("sm")]: {},
-}));
+const NoOrderData = () => {
+  return (
+    <Box height={"50vh"} sx={{ ...alignCenterSx }}>
+      <Typography variant="h4">{"Không có dữ liệu"}</Typography>
+    </Box>
+  );
+};
+
+type Row = {
+  property: string;
+  value: string | React.ReactNode;
+};
+
+const UserInfoRow = ({ property, value }: Row) => {
+  return (
+    <BoxContent>
+      <BoxFieldName>{property}</BoxFieldName>
+      {typeof value === "string" ? (
+        <BoxFieldValue>{value}</BoxFieldValue>
+      ) : (
+        value
+      )}
+    </BoxContent>
+  );
+};
+
 const TotalText = styled(Typography)(({ theme }) => ({
-  fontWeight: 900,
-  [theme.breakpoints.up("sm")]: {},
+  fontWeight: 700,
+  fontSize: 18,
+
+  [theme.breakpoints.up("sm")]: {
+    fontSize: 20,
+  },
 }));
 
 const HeadingText = styled(Typography)(({ theme }) => ({
-  fontWeight: 900,
+  fontWeight: 600,
+  fontSize: 22,
+  [theme.breakpoints.up("sm")]: {
+    fontSize: 24,
+  },
+}));
+
+const TableCellStyled = styled(TableCell)(({ theme }) => ({
+  fontSize: 16,
+  paddingLeft: 6,
+  paddingRight: 6,
+  paddingTop: 12,
+  paddingBottom: 12,
+  textAlign: "center",
+  [theme.breakpoints.up("sm")]: {
+    padding: 16,
+    fontSize: 18,
+    textAlign: "center",
+  },
+}));
+
+const TableCellHeader = styled(TableCellStyled)(({ theme }) => ({
+  fontWeight: 500,
+  textDecoration: "underline",
   fontSize: 18,
+  [theme.breakpoints.up("sm")]: {
+    fontSize: 20,
+  },
+}));
+
+const BoxWrapper = styled(Box)(({ theme }) => ({
+  paddingLeft: 4,
   [theme.breakpoints.up("sm")]: {},
 }));
-const SubHeadingText = styled(Typography)(({ theme }) => ({
-  fontWeight: 600,
-  fontSize: 16,
+
+const GridOuter = styled(Grid)(({ theme }) => ({
+  paddingLeft: 8,
   [theme.breakpoints.up("sm")]: {},
+}));
+
+const BoxContent = styled(Box)(({ theme }) => ({
+  marginBottom: 8,
+  [theme.breakpoints.up("sm")]: {},
+}));
+
+const BoxFieldName = styled(Typography)(({ theme }) => ({
+  fontSize: 18,
+  fontWeight: 450,
+  [theme.breakpoints.up("sm")]: {
+    fontSize: 20,
+  },
+}));
+
+const BoxFieldValue = styled(Typography)(({ theme }) => ({
+  fontSize: 18,
+  fontWeight: 600,
+  [theme.breakpoints.up("sm")]: {
+    fontSize: 20,
+  },
 }));

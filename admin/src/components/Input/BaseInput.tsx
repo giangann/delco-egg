@@ -30,10 +30,10 @@ export const BaseInput = forwardRef(
 );
 
 const InputLabelText = styled(Typography)(({ theme }) => ({
-  fontWeight: 400,
+  fontWeight: 500,
+  display: "inline",
   fontSize: 14,
   marginBottom: 4,
-  display: "inline",
   [theme.breakpoints.up("sm")]: {
     fontSize: 16,
   },

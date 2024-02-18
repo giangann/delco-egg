@@ -16,14 +16,9 @@ import { CustomInput } from "../../components/Input/CustomInput";
 import { Page } from "../../components/Page/Page";
 import { IUserProfile } from "../../shared/types/user";
 import { TextButton } from "../../styled/styled";
+import { fakeDelay } from "../../shared/helpers/function";
 
-export function fakeDelay(seconds: number): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, seconds * 1000);
-  });
-}
+
 // user name, account, other information, change password
 export const MyProfile = () => {
   const [isLoading, setIsLoading] = useState(false);

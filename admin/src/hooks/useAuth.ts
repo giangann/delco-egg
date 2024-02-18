@@ -2,20 +2,20 @@ import { useAtom } from "jotai";
 import { useCallback } from "react";
 import { userAtom } from "../atom/userAtom";
 import { getApi, postApi } from "../lib/utils/fetch/fetchRequest";
-import { IUserLogin } from "../shared/types/user";
+import { IUserAtom, IUserLogin } from "../shared/types/user";
 
 const useAuth = () => {
   const [user, setUserAtom] = useAtom(userAtom);
 
   const checkUser = useCallback(async () => {
-    const result = await getApi("me");
+    const result = await getApi<IUserAtom>("me");
     if (result.success) {
       setUserAtom(result.data);
     }
   }, [setUserAtom]);
 
   const login = async (user: IUserLogin) => {
-    const result = await postApi("auth/login", user);
+    const result = await postApi<IUserAtom>("auth/login", user);
     if (result.success) {
       setUserAtom(result.data);
     }

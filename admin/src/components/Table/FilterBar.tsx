@@ -1,6 +1,7 @@
 import { Box, Grid, Stack } from "@mui/material";
 import { useRef, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { useDevice } from "../../hooks/useDevice";
 import {
   IcBaselineFilterAlt,
@@ -10,12 +11,10 @@ import { UnknownObj } from "../../shared/types/base";
 import { GREEN } from "../../styled/color";
 import {
   BoxFlexEnd,
-  ButtonResponsive,
-  InputLabelText,
+  ButtonResponsive
 } from "../../styled/styled";
-import { CustomInput } from "../Input/CustomInput";
+import { BaseInput } from "../Input/BaseInput";
 import { StrictField } from "./Customtable";
-import { useNavigate } from "react-router-dom";
 
 type FilterBarProps<TData extends UnknownObj> = {
   onResetParams: () => void;
@@ -103,10 +102,10 @@ export const FilterBar = <TData extends UnknownObj>({
           <Grid container spacing={2}>
             {fields.map((field, index) => (
               <Grid item xs={6} sm={3} key={index}>
-                <InputLabelText>{field["header"]}</InputLabelText>
-                <CustomInput
+                <BaseInput
                   {...register(field.fieldKey as string)}
                   placeholder={`Tìm theo "${field.header}"`}
+                  label={field["header"]}
                 />
               </Grid>
             ))}

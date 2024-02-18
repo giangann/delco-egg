@@ -42,8 +42,10 @@ export const CustomTableWithFilter = <TData extends UnknownObj>({
   // ----------------------------------------------------------------------------
   useEffect(() => {
     async function fetchData() {
-      const res = await getApi(apiEndPoint, params);
-      setData(res.data);
+      const res = await getApi<TData[]>(apiEndPoint, params);
+      if (res.success) {
+        setData(res.data);
+      }
     }
     fetchData();
   }, [searchParams]);

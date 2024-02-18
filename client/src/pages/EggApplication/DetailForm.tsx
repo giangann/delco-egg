@@ -8,7 +8,7 @@ import {
   TableHead,
   TableRow,
   Typography,
-  styled
+  styled,
 } from "@mui/material";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
@@ -32,7 +32,6 @@ export const DetailForm = () => {
 
   const goBackList = () => {
     navigate(SCREEN_PATHS.LIST);
-    // window.location.reload()
   };
 
   useEffect(() => {
@@ -80,7 +79,6 @@ export const DetailForm = () => {
                     </TableCellStyled>
                   </TableRow>
                 ))}
-                {/* <TableRow sx={{ float: "right" }}> */}
                 <TableRow>
                   <TableCellStyled
                     colSpan={3}
@@ -141,6 +139,7 @@ const DateAndTimeRow = ({
     </Grid>
   );
 };
+
 function subtotal(items: IOrderItem[]) {
   return items
     .map(({ deal_price, quantity }) => deal_price * quantity)
@@ -180,8 +179,8 @@ const SubHeadingTextValue = styled(Typography)(({ theme }) => ({
 }));
 const TableCellStyled = styled(TableCell)(({ theme }) => ({
   fontSize: 16,
-  paddingLeft: 9,
-  paddingRight: 9,
+  paddingLeft: 6,
+  paddingRight: 6,
   paddingTop: 16,
   paddingBottom: 16,
   textAlign: "center",

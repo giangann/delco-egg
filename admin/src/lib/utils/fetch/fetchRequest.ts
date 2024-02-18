@@ -13,10 +13,10 @@ export type TResponseFailure = {
 };
 export type TResponse<T> = TResponseSuccess<T> | TResponseFailure;
 
-export const getApi = async (
+export const getApi = async <T>(
   endpoint: string,
   searchParams?: Record<string, string>
-) => {
+): Promise<TResponse<T>> => {
   const queryParams = searchParams
     ? "?" + new URLSearchParams(searchParams)
     : "";
@@ -32,7 +32,10 @@ export const getApi = async (
   return respond.json();
 };
 
-export const postApi = async (endpoint: string, data: any) => {
+export const postApi = async <T>(
+  endpoint: string,
+  data: any
+): Promise<TResponse<T>> => {
   const fullUrl = baseURL + "/" + endpoint;
   const respond = await fetch(fullUrl, {
     method: "POST", // or 'PUT'
@@ -46,7 +49,10 @@ export const postApi = async (endpoint: string, data: any) => {
   return respond.json();
 };
 
-export const putApi = async (endpoint: string, data?: any) => {
+export const putApi = async <T>(
+  endpoint: string,
+  data?: any
+): Promise<TResponse<T>> => {
   const fullUrl = baseURL + "/" + endpoint;
   const respond = await fetch(fullUrl, {
     method: "PUT", // or 'PUT'
@@ -60,7 +66,7 @@ export const putApi = async (endpoint: string, data?: any) => {
   return respond.json();
 };
 
-export const deleteApi = async (endpoint: string) => {
+export const deleteApi = async <T>(endpoint: string): Promise<TResponse<T>> => {
   const fullUrl = baseURL + "/" + endpoint;
   const respond = await fetch(fullUrl, {
     method: "DELETE", // or 'PUT'
