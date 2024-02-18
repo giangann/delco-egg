@@ -22,13 +22,14 @@ export const Layout = () => {
     setRefetch(refetch + 1);
   };
   const maskAsRead = async (notiId: number) => {
-    const updateResult = await putApi(`noti/${notiId}`);
-    if (updateResult.sucees) console.log("mask as read success", notiId);
+    const updateResult = await putApi<INoti>(`noti/${notiId}`);
+    if (updateResult.success) console.log("mask as read success", notiId);
+    else console.log(updateResult.error.message);
   };
 
   useEffect(() => {
     async function fetchListNoti() {
-      const fetchListNotiResponse = await getApi("noti");
+      const fetchListNotiResponse = await getApi<INoti[]>("noti");
       if (fetchListNotiResponse.success)
         setListNoti(fetchListNotiResponse.data);
     }

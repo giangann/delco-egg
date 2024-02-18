@@ -62,23 +62,27 @@ export const UpdateQuantity = () => {
     if (res.success) {
       setRerender(rerender + 1);
       toast.success("Cập nhật thành công!");
+    }else {
+      toast.error(res.error.message)
     }
     setOpenConfirmUpdateDialog(false);
   };
 
   const onNewRow = async () => {
-    const res = await getApi("egg");
     const currList = getValues().quantities;
-    const ableListEgg = res.data.filter((egg: IEgg) =>
-      currList.every((field) => field.egg_id !== egg.id)
-    );
-    setListEgg(ableListEgg);
+    const res = await getApi<IEgg[]>("egg");
+    if (res.success) {
+      const ableListEgg = res.data.filter((egg: IEgg) =>
+        currList.every((field) => field.egg_id !== egg.id)
+      );
+      setListEgg(ableListEgg);
+    }
   };
 
   useEffect(() => {
     async function fetchEggPriceQty() {
-      const res = await getApi("egg-price-qty");
-      setValue("quantities", res.data);
+      const res = await getApi<IEggQty[]>("egg-price-qty");
+      if (res.success) setValue("quantities", res.data);
 
       // force rerender because use useForm to render value
       setCount(count + 1);

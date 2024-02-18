@@ -3,6 +3,7 @@ import { useCallback } from "react";
 import { userAtom } from "../atom/userAtom";
 import { getApi, postApi } from "../lib/utils/fetch/fetchRequest";
 import { IUserAtom, IUserLogin } from "../shared/types/user";
+import { toast } from "react-toastify";
 
 const useAuth = () => {
   const [user, setUserAtom] = useAtom(userAtom);
@@ -18,6 +19,8 @@ const useAuth = () => {
     const result = await postApi<IUserAtom>("auth/login", user);
     if (result.success) {
       setUserAtom(result.data);
+    } else {
+      toast.error(result.error.message);
     }
     return result;
   };

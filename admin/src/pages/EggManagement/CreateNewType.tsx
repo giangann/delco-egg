@@ -9,10 +9,7 @@ import { postApi } from "../../lib/utils/fetch/fetchRequest";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
 import { MaterialSymbolsArrowCircleLeftOutline } from "../../shared/icons/Icon";
 import { IEggInfo } from "../../shared/types/egg";
-import {
-  BoxFlexEnd,
-  ButtonResponsive
-} from "../../styled/styled";
+import { BoxFlexEnd, ButtonResponsive } from "../../styled/styled";
 
 export const CreateNewType = () => {
   const {
@@ -27,6 +24,7 @@ export const CreateNewType = () => {
   const onSubmit = async (data: IEggInfo) => {
     const res = await postApi("egg", data);
     if (res.success) toast.success("created success");
+    else toast.error(res.error.message);
     // reset form
     reset();
   };

@@ -17,16 +17,8 @@ import { toDayOrTomorrowOrYesterday } from "../../shared/helper";
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
-export interface EggForm {
-  formId: string;
-  dateCreated: Date | string;
-  timeCreated: Date | string;
-  totalPrice: number;
-  status: string;
-}
-
 export const EggOrderList = () => {
-  const [myOrderList, setMyOrderList] = useState([]);
+  const [myOrderList, setMyOrderList] = useState<IOrderRow[]>([]);
   const navigate = useNavigate();
   const fields: StrictField<IOrderRow>[] = [
     {
@@ -83,7 +75,7 @@ export const EggOrderList = () => {
 
   useEffect(() => {
     async function fetchMyListOrder() {
-      const res = await getApi("order");
+      const res = await getApi<IOrderRow[]>("order");
 
       if (res.success) setMyOrderList(res.data);
     }

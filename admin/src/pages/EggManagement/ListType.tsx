@@ -52,14 +52,15 @@ export const ListType = () => {
 
     const res = await deleteApi(`egg/${eggId}`);
 
-    if (res.success) toast.success("Xóa thanh cong");
+    if (res.success) toast.success("Xóa thành công");
+    else toast.error(res.error.message);
     setIsSubmitting(false);
     handleCloseDeleteDialog();
     setCount(count + 1);
   };
   useEffect(() => {
     async function getListEggType() {
-      const res = await getApi("egg");
+      const res = await getApi<IEggUpdate[]>("egg");
       if (res.success) setListEggType(res.data);
     }
     getListEggType();
@@ -194,7 +195,7 @@ const EditDialog = ({
   const onSubmit = async (data: IEggUpdate) => {
     const res = await putApi(`egg/:${data.id}`, data);
 
-    if (res.success) toast.success("update success");
+    if (res.success) toast.success("Cập nhật thành công");
     else toast.error(res.error.message);
 
     // @ts-ignore

@@ -26,7 +26,6 @@ export const UpdatePrice = () => {
   const {
     register,
     handleSubmit,
-    getValues,
     control,
     setValue,
     formState: { isSubmitting, isDirty },
@@ -67,9 +66,9 @@ export const UpdatePrice = () => {
 
   useEffect(() => {
     async function fetchEggPriceQty() {
-      const res = await getApi("egg-price-qty");
+      const res = await getApi<IEggPrice[]>("egg-price-qty");
 
-      setValue("prices", res.data);
+      if (res.success) setValue("prices", res.data);
 
       setCount(count + 1);
     }
@@ -90,7 +89,6 @@ export const UpdatePrice = () => {
         <GridHeaderCustom item xs={grid.xs}>
           <HeaderText>Giá Thị trường</HeaderText>
         </GridHeaderCustom>
-        {/* <GridHeaderCustom item xs={actionGrid.xs} /> */}
       </GridContainerCustom>
 
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -129,32 +127,10 @@ export const UpdatePrice = () => {
                   {...register(`prices.${index}.price_3`)}
                 />
               </GridCustom>
-              {/* <GridCustom item xs={actionGrid.xs}>
-                <Box sx={{ ...alignCenterSx, height: "100%" }}>
-                  <IconButton
-                    sx={{
-                      padding: 0.2,
-                    }}
-                  >
-                    <IcBaselineDeleteForever color={red["700"]} />
-                  </IconButton>
-                </Box>
-              </GridCustom> */}
             </GridContainerCustom>
           );
         })}
-        <LastBox>
-          {/* <Button
-            onClick={() => {}}
-            sx={{
-              padding: 0.25,
-              marginY: 1,
-            }}
-            variant="outlined"
-          >
-            +
-          </Button> */}
-        </LastBox>
+        <LastBox></LastBox>
 
         <BoxFlexEnd mt={2}>
           <Button
