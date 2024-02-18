@@ -14,6 +14,8 @@ import { MaterialSymbolsNotificationsActiveRounded } from "../../../../shared/ic
 import { INoti } from "../../../../shared/types/noti";
 import { alignCenterSx } from "../../../../styled/styled";
 import { NotiContext } from "../../Layout";
+import { BLUE, GREEN } from "../../../../styled/color";
+import { OPACITY_TO_HEX } from "../../../../shared/constants/common";
 
 export const NotificationMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -55,7 +57,7 @@ export const NotificationMenu = () => {
         open={open}
         onClose={handleClose}
       >
-        <Box sx={{ px: 1.25 }}>
+        <Box>
           {listNoti && listNoti?.length ? (
             listNoti.map((noti) => (
               <NotiItem {...noti} handleNotiClick={handleNotiClick} />
@@ -93,9 +95,15 @@ const NotiItem = ({
       sx={{
         "&:hover": {
           cursor: "pointer",
+          backgroundColor: `${BLUE["500"]}${OPACITY_TO_HEX["10"]}`,
         },
         borderBottom: "1px solid #ccc",
         py: 2,
+        px: 1.25,
+        backgroundColor: is_read
+          ? "none"
+          : `${GREEN["500"]}${OPACITY_TO_HEX["15"]}`,
+        opacity: is_read ? 0.75 : 1,
       }}
       onClick={onClick}
     >

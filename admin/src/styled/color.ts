@@ -12,3 +12,4 @@ export const GREEN = {
 export const BACKGROUND_COLOR = {
   HEADER: "#05773f",
 };
+export const BLUE = { 500: "#1976d2" };

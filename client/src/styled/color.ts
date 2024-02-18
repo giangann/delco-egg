@@ -22,3 +22,5 @@ export const RED = {
   200: "#d32f2f",
   300: "#c62828",
 };
+
+export const BLUE = { 500: "#1976d2" };
