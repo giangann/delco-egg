@@ -9,11 +9,12 @@ interface BaseInputProps
   label?: string;
   required?: boolean;
   err?: string;
+  endIcon?: React.ReactNode | JSX.Element;
 }
 
 export const BaseInput = forwardRef(
   (props: BaseInputProps, ref: LegacyRef<HTMLInputElement> | undefined) => {
-    const { label, required, err, ...otherProps } = props;
+    const { label, required, err, endIcon, ...otherProps } = props;
     return (
       <div style={{ width: "100%" }}>
         <label>
@@ -21,7 +22,10 @@ export const BaseInput = forwardRef(
           {label && required && (
             <span style={{ color: "red", marginLeft: 6 }}>*</span>
           )}
-          <StyledBaseInput err={Boolean(err)} {...otherProps} ref={ref} />
+          <div style={{ position: "relative" }}>
+            <StyledBaseInput err={Boolean(err)} {...otherProps} ref={ref} />
+            {endIcon && <IconBox>{endIcon}</IconBox>}
+          </div>
           {err && <InputErrorText>{err}</InputErrorText>}
         </label>
       </div>
@@ -30,10 +34,10 @@ export const BaseInput = forwardRef(
 );
 
 const InputLabelText = styled(Typography)(({ theme }) => ({
-  fontWeight: 400,
+  fontWeight: 500,
+  display: "inline",
   fontSize: 14,
   marginBottom: 4,
-  display: "inline",
   [theme.breakpoints.up("sm")]: {
     fontSize: 16,
   },
@@ -90,4 +94,11 @@ const StyledBaseInput = styled("input", {
     fontSize: 16,
     lineHeight: 1.25,
   },
+}));
+
+const IconBox = styled("div")(({ theme }) => ({
+  position: "absolute",
+  right: 0,
+  top: 0,
+  [theme.breakpoints.up("sm")]: {},
 }));

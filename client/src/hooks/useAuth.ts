@@ -19,6 +19,7 @@ const useAuth = () => {
     if (result.success) {
       setUserAtom(result.data);
     }
+    return result
   };
   const logout = async () => {
     const result = await getApi("auth/logout");

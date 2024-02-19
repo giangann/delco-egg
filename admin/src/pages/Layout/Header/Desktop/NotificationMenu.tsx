@@ -75,7 +75,7 @@ type NotiItemProps = {
   handleNotiClick: (orderId: number) => void;
 } & INoti;
 const NotiItem = ({
-  handleNotiClick,
+handleNotiClick,
   from_user,
   createdAt,
   content,

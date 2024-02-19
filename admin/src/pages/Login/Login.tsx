@@ -1,5 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Box, Button, Paper, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,6 +17,9 @@ import useAuth from "../../hooks/useAuth";
 import { useDevice } from "../../hooks/useDevice";
 import { IUserLogin } from "../../shared/types/user";
 import { InputErrorText, alignCenterSx } from "../../styled/styled";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+
 const loginSchema = object({
   username: string().required("Tên đăng nhập không được bỏ trống"),
   password: string().required("Mật khẩu không được bỏ trống"),
@@ -20,6 +30,7 @@ export const Login = () => {
   const { login } = useAuth();
   const [serverErr, setServerErr] = useState<string | null>(null);
   const navigate = useNavigate();
+  const [showPW, setShowPW] = useState(false);
   const handleLogin = async (credentials: IUserLogin) => {
     setServerErr(null);
     const res = await login(credentials);
@@ -63,7 +74,14 @@ export const Login = () => {
               <BaseInput
                 {...register("password")}
                 placeholder="Mật khẩu"
+                type={showPW ? "text" : "password"}
+                endIcon={
+                  <IconButton onClick={() => setShowPW(!showPW)}>
+                    {showPW ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                }
                 err={errors.password?.message}
+                style={{ paddingRight: 48 }}
               />
               {serverErr && <InputErrorText>{serverErr}</InputErrorText>}
               <Button type="submit" sx={{ width: "50%" }} variant="contained">
