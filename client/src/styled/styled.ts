@@ -8,7 +8,11 @@ export const PageTitleText = styled(Typography)(({ theme }) => ({
   fontSize: 28,
   fontWeight: 900,
   textAlign: "center",
-  [theme.breakpoints.up("sm")]: {},
+  lineHeight: 1.25,
+  [theme.breakpoints.up("sm")]: {
+    fontSize: 30,
+    lineHeight: 1.5,
+  },
 }));
 export const TextButton = styled(Typography)(({ theme }) => ({
   textTransform: "none",

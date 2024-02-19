@@ -8,7 +8,7 @@ import {
 import {
   ButtonResponsive,
   FlexDefaultBox,
-  PageTitleText
+  PageTitleText,
 } from "../../styled/styled";
 
 interface PageProps {
@@ -22,8 +22,8 @@ export const Page = ({ title, children, onGoBack, onCreate }: PageProps) => {
   return (
     <Container sx={{ paddingX: { xs: 1, sm: 3 } }}>
       <Paper
-        elevation={isMobile ? 0 : 1}
-        sx={{ paddingY: { xs: 0, sm: 2 }, mt: 3 }}
+        elevation={0}
+        sx={{ paddingY: { xs: 0, sm: 2 }, mt: { xs: 2, sm: 3 } }}
       >
         <Box position="relative">
           <Box
@@ -42,7 +42,7 @@ export const Page = ({ title, children, onGoBack, onCreate }: PageProps) => {
               </Button>
             )}
           </Box>
-          <PageTitleText mb={4}>{title}</PageTitleText>
+          <PageTitleText mb={{ xs: 3, sm: 4 }}>{title}</PageTitleText>
           {onCreate && (
             <FlexDefaultBox my={3} justifyContent={"center"}>
               <ButtonResponsive

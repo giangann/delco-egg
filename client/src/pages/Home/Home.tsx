@@ -16,6 +16,7 @@ import { IEggPriceQty } from "../../shared/types/egg";
 import { GREEN } from "../../styled/color";
 import { LinkCustom, PageTitleText } from "../../styled/styled";
 import { WaitingUpdatePrice } from "./WaitingUpdatePrice";
+import { Page } from "../../components/Page/Page";
 
 export const Home = () => {
   const { isMobile } = useDevice();
@@ -29,13 +30,13 @@ export const Home = () => {
     fetchListEgg();
   }, []);
   return (
-    <Container>
-      <Paper elevation={4} sx={{ padding: 2, mt: 3 }}>
-        <PageTitleText>Giá trứng hôm nay</PageTitleText>
+    <>
+      <Page title="Giá trứng hôm nay">
+        {/* <PageTitleText>Giá trứng hôm nay</PageTitleText> */}
         {/* <UnitText>{"(vnđ/quả)"}</UnitText> */}
 
         {listEgg.length ? (
-          <Grid mt={0} container columnSpacing={1} rowSpacing={3}>
+          <Grid mt={0} container columnSpacing={1} rowGap={{ xs: 1.5, sm: 3 }}>
             {listEgg.map((egg) => (
               <Grid item xs={4}>
                 <PriceBox {...egg} />
@@ -45,38 +46,33 @@ export const Home = () => {
         ) : (
           <WaitingUpdatePrice />
         )}
-      </Paper>
-      <Paper elevation={0} sx={{ padding: 2, mt: 4 }}>
-        <Box>
-          <PageTitleText mb={2}>Thao tác</PageTitleText>
-          <Grid container spacing={3}>
-            {items.map((item: Item, index: number) => (
-              <Grid item xs={6} key={index}>
-                <LinkCustom to={item.path}>
-                  <Paper
-                    elevation={4}
-                    sx={{
-                      backgroundColor: GREEN["500"],
-                      py: 2,
-                      px: 1.5,
-                      color: "whitesmoke",
-                      minHeight: isMobile ? 90 : "none",
-                    }}
-                  >
-                    <Stack spacing={1} alignItems={"center"}>
-                      <TypeText>{item.text}</TypeText>
-                      <IcBaselineAddCircleOutline
-                        fontSize={isMobile ? 20 : 24}
-                      />
-                    </Stack>
-                  </Paper>{" "}
-                </LinkCustom>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
-      </Paper>
-    </Container>
+      </Page>
+      <Page title="Thao tác">
+        <Grid container spacing={{ xs: 1.5, sm: 2 }} mb={2}>
+          {items.map((item: Item, index: number) => (
+            <Grid item xs={6} sm={3} key={index}>
+              <LinkCustom to={item.path}>
+                <Paper
+                  elevation={4}
+                  sx={{
+                    backgroundColor: GREEN["500"],
+                    py: { xs: 2, sm: 4 },
+                    px: 1.5,
+                    color: "whitesmoke",
+                    minHeight: isMobile ? 90 : "none",
+                  }}
+                >
+                  <Stack spacing={1} alignItems={"center"}>
+                    <TypeText>{item.text}</TypeText>
+                    <IcBaselineAddCircleOutline fontSize={isMobile ? 20 : 24} />
+                  </Stack>
+                </Paper>
+              </LinkCustom>
+            </Grid>
+          ))}
+        </Grid>
+      </Page>
+    </>
   );
 };
 
@@ -111,31 +107,39 @@ const LineBlockInPriceBox = styled(Box)({});
 // }));
 
 const TypeText = styled(Typography)(({ theme }) => ({
-  fontSize: 18,
+  fontSize: 20,
   fontWeight: 700,
 
   textAlign: "center",
-  [theme.breakpoints.up("sm")]: {},
+  [theme.breakpoints.up("sm")]: {
+    fontSize: 22,
+  },
 }));
 
 const InfoTextKey = styled(Typography)(({ theme }) => ({
-  fontSize: 14,
+  fontSize: 18,
   fontWeight: 400,
   textAlign: "center",
-  [theme.breakpoints.up("sm")]: {},
+  [theme.breakpoints.up("sm")]: {
+    fontSize: 20,
+  },
 }));
 const InfoTextValue = styled(Typography)(({ theme }) => ({
-  fontSize: 14,
+  fontSize: 18,
   fontWeight: 600,
   textAlign: "center",
-  [theme.breakpoints.up("sm")]: {},
+  [theme.breakpoints.up("sm")]: {
+    fontSize: 20,
+  },
 }));
 
 const PriceText = styled(Typography)(({ theme }) => ({
-  fontSize: 20,
+  fontSize: 22,
   fontWeight: 700,
   textAlign: "center",
-  [theme.breakpoints.up("sm")]: {},
+  [theme.breakpoints.up("sm")]: {
+    fontSize: 24,
+  },
 }));
 type Item = {
   path: string;
@@ -157,32 +161,5 @@ export const items: Item[] = [
   {
     path: SCREEN_PATHS.CONTACT,
     text: "Liên hệ",
-  },
-];
-
-export const eggPrices = [
-  {
-    type: "Mix 1",
-    price: 3000,
-  },
-  {
-    type: "Mix 2",
-    price: 2900,
-  },
-  {
-    type: "Mix 3",
-    price: 2150,
-  },
-  {
-    type: "Mix 4",
-    price: 2300,
-  },
-  {
-    type: "Mix 5",
-    price: 2400,
-  },
-  {
-    type: "Mix 6",
-    price: 2600,
   },
 ];
