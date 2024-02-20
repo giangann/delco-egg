@@ -45,8 +45,8 @@ const detail: IController = async (req, res) => {
 
     let params: IOrderDetailParams = {
       id: parseInt(req.params.id),
+      user_id: user.id,
     };
-    if (!user.isAdmin) params.user_id = user.id;
 
     const order = await orderService.detail(params);
     return ApiResponse.result(res, order, httpStatusCodes.OK, null);

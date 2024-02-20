@@ -16,6 +16,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { BoxByStatus } from "../../components/Box/BoxByStatus";
 import { Page } from "../../components/Page/Page";
 import { getApi } from "../../lib/utils/fetch/fetchRequest";
+import { ORDER_STATUS } from "../../shared/constants/orderStatus";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
 import {
   numberWithComma,
@@ -24,6 +25,7 @@ import {
 } from "../../shared/helpers/function";
 import { IOrderDetail, IOrderItem } from "../../shared/types/order";
 import { alignCenterSx } from "../../styled/styled";
+import { TrackingStatusBlock } from "./TrackingStatusBlock";
 
 export const DetailForm = () => {
   const [order, setOrder] = useState<IOrderDetail | null>(null);
@@ -51,6 +53,20 @@ export const DetailForm = () => {
           <Box mt={2}>
             <BoxByStatus margin={"unset !important"} status={order.status} />
 
+            <TrackingStatusBlock
+              newStatus={order.status}
+              adminName={"Admin"}
+              dateTime={dayjs("2024-02-20 18:45").format("DD/MM/YYYY HH:mm")}
+              diffTime={"2 giờ trước"}
+            />
+
+            <TrackingStatusBlock
+              newStatus={ORDER_STATUS.ACCEPTED}
+              adminName={"Admin"}
+              dateTime={dayjs("2024-02-20 18:45").format("DD/MM/YYYY HH:mm")}
+              diffTime={"3 giờ trước"}
+            />
+
             <Stack
               mt={4}
               alignItems={"center"}
@@ -59,6 +75,10 @@ export const DetailForm = () => {
             >
               <HeadingText> 1. Đơn hàng </HeadingText>
             </Stack>
+            <Typography textAlign={"left"}>
+              {"Tạo lúc 21/04/2024 18:39 (39 phút trước)"}
+            </Typography>
+
             <TableContainer>
               <TableHead>
                 <TableRow>

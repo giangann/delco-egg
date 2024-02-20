@@ -61,12 +61,18 @@ export const EggOrderDetail = () => {
           {/* status */}
           <Grid item xs={12}>
             <BoxByStatus margin={"unset !important"} status={order.status} />
+            <Box sx={{marginTop:1}}>
+              <Typography textAlign={'center'}>
+                {"Tạo lúc 21/04/2024 18:39 (39 phút trước)"}
+              </Typography>
+            </Box>
           </Grid>
 
           {/* table */}
           <Grid item xs={12} sm={6}>
             <BoxWrapper>
               <HeadingText> 1. Đơn hàng </HeadingText>
+              
               <TableContainer>
                 <TableHead>
                   <TableRow>
