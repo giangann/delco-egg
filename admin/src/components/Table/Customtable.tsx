@@ -75,44 +75,48 @@ export function CustomTable<TData extends UnknownObj>({
           </TableRow>
         </TableHead>
 
-        <TableBody>
-          {data
-            .slice((currPage - 1) * perpage, currPage * perpage)
-            .map((row: TData) => (
-              <TableRow>
-                {fields.map(({ fieldKey, render }: StrictField<TData>) => {
-                  return (
-                    <TableCell sx={{ padding: { xs: "12px", sm: "16px" } }}>
-                      {render ? (
-                        render(row)
-                      ) : (
-                        <React.Fragment>
-                          <DefaultBodyText>
-                            {row[fieldKey] ?? "none"}
-                          </DefaultBodyText>
-                        </React.Fragment>
-                      )}
+        {!data.length ? (
+          <NoTableData />
+        ) : (
+          <TableBody>
+            {data
+              .slice((currPage - 1) * perpage, currPage * perpage)
+              .map((row: TData) => (
+                <TableRow>
+                  {fields.map(({ fieldKey, render }: StrictField<TData>) => {
+                    return (
+                      <TableCell sx={{ padding: { xs: "12px", sm: "16px" } }}>
+                        {render ? (
+                          render(row)
+                        ) : (
+                          <React.Fragment>
+                            <DefaultBodyText>
+                              {row[fieldKey] ?? "none"}
+                            </DefaultBodyText>
+                          </React.Fragment>
+                        )}
+                      </TableCell>
+                    );
+                  })}
+                  {onActionViewDetail && (
+                    <TableCell sx={{ padding: { xs: "8px", sm: "16px" } }}>
+                      <ButtonResponsive
+                        // @ts-ignore
+                        onClick={() => onActionViewDetail(row)}
+                        startIcon={
+                          <IcRoundKeyboardBackspace
+                            style={{ transform: "rotate(180deg)" }}
+                          />
+                        }
+                      >
+                        chi tiết
+                      </ButtonResponsive>
                     </TableCell>
-                  );
-                })}
-                {onActionViewDetail && (
-                  <TableCell sx={{ padding: { xs: "8px", sm: "16px" } }}>
-                    <ButtonResponsive
-                      // @ts-ignore
-                      onClick={() => onActionViewDetail(row)}
-                      startIcon={
-                        <IcRoundKeyboardBackspace
-                          style={{ transform: "rotate(180deg)" }}
-                        />
-                      }
-                    >
-                      chi tiết
-                    </ButtonResponsive>
-                  </TableCell>
-                )}
-              </TableRow>
-            ))}
-        </TableBody>
+                  )}
+                </TableRow>
+              ))}
+          </TableBody>
+        )}
       </TableContainer>
       <CustomPagi
         totalPage={totalPage}
@@ -145,3 +149,13 @@ export const DefaultBodyText = styled(Typography)(({ theme }) => ({
     fontSize: 17,
   },
 }));
+
+export const NoTableData = () => {
+  return (
+    <Box sx={{ my: 8 }}>
+      <Typography textAlign={"center"} sx={{ fontSize: 32, fontWeight: 600 }}>
+        {"Không có dữ liệu"}
+      </Typography>
+    </Box>
+  );
+};
