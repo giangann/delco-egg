@@ -13,3 +13,17 @@ export const BACKGROUND_COLOR = {
   HEADER: "#05773f",
 };
 export const BLUE = { 500: "#1976d2" };
+
+const Orange = "#ed6c02";
+const Green = "#06773f"; // GREEN["500"]
+const Red = "#d32f2f";
+const Purple = "#9c27b0";
+const Blue = "#1976d2";
+
+export enum COLOR_BG_STATUS {
+  WAITING_APPROVAL = Orange,
+  ACCEPTED = Green,
+  SUCCESS = Blue,
+  REJECTED = Red,
+  CANCELED = Purple,
+}

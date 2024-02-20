@@ -20,6 +20,11 @@ const list = async (params: INotiListParams) => {
       is_display: params.is_display,
     });
   }
+  if (params.order_id) {
+    notiRepo.andWhere('order_notification.order_id = :order_id', {
+      order_id: params.order_id,
+    });
+  }
 
   const listNotiData = await notiRepo.getMany();
 

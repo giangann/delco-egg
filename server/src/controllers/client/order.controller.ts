@@ -43,12 +43,26 @@ const detail: IController = async (req, res) => {
   try {
     const user = req.user;
 
+    // order info by id (not allow user get order of other user)
     let params: IOrderDetailParams = {
       id: parseInt(req.params.id),
       user_id: user.id,
     };
-
     const order = await orderService.detail(params);
+
+    // get items of this order
+    const itemsByOrderId = await orderDetailService.getByOrderId(
+      params.id,
+    );
+    order.items = itemsByOrderId;
+
+    // get tracking list notis of this order
+    const listNotisByOrderId = await orderNotiService.list({
+      order_id: params.id,
+      to_user_id: params.user_id,
+    });
+    order.notis = listNotisByOrderId;
+
     return ApiResponse.result(res, order, httpStatusCodes.OK, null);
   } catch (e) {
     ApiResponse.exception(res, e);

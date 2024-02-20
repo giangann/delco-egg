@@ -18,6 +18,7 @@ import { BoxByStatus } from "../../components/Table/BoxByStatus";
 import { getApi } from "../../lib/utils/fetch/fetchRequest";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
 import {
+  diffDateTimeWithNow,
   numberWithComma,
   timeWithoutSecond,
   toDayOrTomorrowOrYesterday,
@@ -26,6 +27,7 @@ import { IOrder, IOrderItem } from "../../shared/types/order";
 import { FakeATag, alignCenterSx } from "../../styled/styled";
 import { NotiContext } from "../Layout/Layout";
 import { OrderActionByStatus } from "./OrderActionByStatus";
+import { TrackingStatusBlock } from "./TrackingStatusBlock";
 
 export const EggOrderDetail = () => {
   const [refetch, setRefetch] = useState(0);
@@ -61,18 +63,32 @@ export const EggOrderDetail = () => {
           {/* status */}
           <Grid item xs={12}>
             <BoxByStatus margin={"unset !important"} status={order.status} />
-            <Box sx={{marginTop:1}}>
-              <Typography textAlign={'center'}>
-                {"Tạo lúc 21/04/2024 18:39 (39 phút trước)"}
-              </Typography>
-            </Box>
+
+            {order.notis.map((noti) => (
+              <TrackingStatusBlock
+                newStatus={noti.new_status}
+                adminName={noti.from_user.fullname}
+                dateTime={dayjs(noti.createdAt).format("DD/MM/YYYY HH:mm")}
+                diffTime={diffDateTimeWithNow(noti.createdAt)}
+                reason={order.reason}
+              />
+            ))}
           </Grid>
 
           {/* table */}
           <Grid item xs={12} sm={6}>
             <BoxWrapper>
               <HeadingText> 1. Đơn hàng </HeadingText>
-              
+              <Box sx={{ marginTop: 1 }}>
+                <Typography textAlign={"left"}>
+                  {`Tạo lúc ${dayjs(order.createdAt).format(
+                    "DD/MM/YYYY HH:mm"
+                  )} `}
+                  <span style={{ fontWeight: 600 }}>{`<${diffDateTimeWithNow(
+                    order.createdAt as string
+                  )}>`}</span>
+                </Typography>
+              </Box>
               <TableContainer>
                 <TableHead>
                   <TableRow>

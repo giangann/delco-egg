@@ -1,4 +1,5 @@
 import { IEgg } from "./egg";
+import { INoti } from "./noti";
 
 export interface IOrderItem {
   egg_id: number;
@@ -31,4 +32,7 @@ export interface IOrderItemDetail extends IOrderItem {
 export interface IOrderDetail extends IOrder {
   status: number;
   items: IOrderItemDetail[];
+  notis: INoti[];
+  createdAt?: string;
+  reason?: string;
 }

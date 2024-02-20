@@ -8,7 +8,6 @@ import {
 import { getRepository } from 'typeorm';
 import { Order } from '../../entities/order/order.entity';
 import { StringError } from '../../errors/string.error';
-import orderDetailService from './order-detail.service';
 
 const list = async (params: IOrderQueryParams) => {
   const listOrders = await getRepository(Order)
@@ -41,10 +40,6 @@ const detail = async (params: IOrderDetailParams) => {
       user_id: user_id,
     })
     .getOne();
-
-  const itemsByOrderId = await orderDetailService.getByOrderId(id);
-
-  order.items = itemsByOrderId;
 
   return order;
 };

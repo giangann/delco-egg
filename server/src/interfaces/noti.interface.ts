@@ -23,6 +23,8 @@ export interface INotiCreate {
 
 export interface INotiListParams {
   to_user_id: number;
+  from_user_id?: number;
+  order_id?: number;
   is_display?: boolean;
 }
 

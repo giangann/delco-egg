@@ -8,7 +8,6 @@ import {
 import { getRepository } from 'typeorm';
 import { Order } from '../../entities/order/order.entity';
 import { StringError } from '../../errors/string.error';
-import orderDetailService from './order-detail.service';
 
 const list = async (params: IOrderQueryParams) => {
   const orderRepo = getRepository(Order).createQueryBuilder('order');
@@ -38,9 +37,6 @@ const detail = async (params: IOrderDetailParams) => {
     .leftJoinAndSelect('order.user', 'user');
 
   const order = await orderRepo.getOne();
-  const itemsByOrderId = await orderDetailService.getByOrderId(id);
-
-  order.items = itemsByOrderId;
 
   return order;
 };

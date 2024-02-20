@@ -1,4 +1,5 @@
 import { IEgg } from "./egg";
+import { INoti } from "./noti";
 
 export interface IOrderItem {
   egg_id: number;
@@ -13,7 +14,10 @@ export interface IOrder {
   time: string;
   items: IOrderItem[];
   user?: IOrderUserInfo;
+  notis: INoti[];
   status: number;
+  createdAt?: string;
+  reason?:string
 }
 
 export interface IOrderRow {

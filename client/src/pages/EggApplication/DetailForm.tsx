@@ -16,9 +16,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { BoxByStatus } from "../../components/Box/BoxByStatus";
 import { Page } from "../../components/Page/Page";
 import { getApi } from "../../lib/utils/fetch/fetchRequest";
-import { ORDER_STATUS } from "../../shared/constants/orderStatus";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
 import {
+  diffDateTimeWithNow,
   numberWithComma,
   timeWithoutSecond,
   toDayOrTomorrowOrYesterday,
@@ -53,19 +53,16 @@ export const DetailForm = () => {
           <Box mt={2}>
             <BoxByStatus margin={"unset !important"} status={order.status} />
 
-            <TrackingStatusBlock
-              newStatus={order.status}
-              adminName={"Admin"}
-              dateTime={dayjs("2024-02-20 18:45").format("DD/MM/YYYY HH:mm")}
-              diffTime={"2 giờ trước"}
-            />
+            {order.notis.map((noti) => (
+              <TrackingStatusBlock
+                newStatus={noti.new_status}
+                adminName={noti.from_user.fullname}
+                dateTime={dayjs(noti.createdAt).format("DD/MM/YYYY HH:mm")}
+                diffTime={diffDateTimeWithNow(noti.createdAt)}
+                reason={order.reason}
 
-            <TrackingStatusBlock
-              newStatus={ORDER_STATUS.ACCEPTED}
-              adminName={"Admin"}
-              dateTime={dayjs("2024-02-20 18:45").format("DD/MM/YYYY HH:mm")}
-              diffTime={"3 giờ trước"}
-            />
+              />
+            ))}
 
             <Stack
               mt={4}
@@ -76,7 +73,10 @@ export const DetailForm = () => {
               <HeadingText> 1. Đơn hàng </HeadingText>
             </Stack>
             <Typography textAlign={"left"}>
-              {"Tạo lúc 21/04/2024 18:39 (39 phút trước)"}
+              {`Tạo lúc ${dayjs(order.createdAt).format("DD/MM/YYYY HH:mm")} `}
+              <span style={{ fontWeight: 600 }}>{`<${diffDateTimeWithNow(
+                order.createdAt as string
+              )}>`}</span>
             </Typography>
 
             <TableContainer>
@@ -218,10 +218,3 @@ const TableCellHeader = styled(TableCellStyled)(({ theme }) => ({
   [theme.breakpoints.up("sm")]: {},
 }));
 
-// const EditButton = styled(Button)({
-//   // borderColor: "black",
-// });
-// const TextButton = styled(Typography)(({ theme }) => ({
-//   textTransform: "none",
-//   [theme.breakpoints.up("sm")]: {},
-// }));

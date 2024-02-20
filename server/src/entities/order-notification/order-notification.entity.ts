@@ -44,7 +44,7 @@ export class OrderNoti extends BaseEntity {
   @JoinColumn({ name: 'to_user_id', referencedColumnName: 'id' })
   to_user: User;
 
-  @ManyToOne(() => Order)
+  @ManyToOne(() => Order,(order) => order.notis)
   @JoinColumn({ name: 'order_id', referencedColumnName: 'id' })
   order: Order;
 }

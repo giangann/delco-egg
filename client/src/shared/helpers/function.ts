@@ -3,6 +3,13 @@ import { CONFIG } from "../constants/common";
 import { IOrderItem } from "../types/order";
 import { IEggPriceQty } from "../types/egg";
 
+export function fakeDelay(seconds: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, seconds * 1000);
+  });
+}
 export const generateDealPrices = (originPrice: number, step: number) => {
   return [
     originPrice,
@@ -110,10 +117,24 @@ export function numberWithComma(number: number) {
   return final;
 }
 
-export function fakeDelay(seconds: number): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, seconds * 1000);
-  });
+export function diffDateTimeWithNow(dateTime: string | Date) {
+  let res = "";
+  const diffYear = dayjs().diff(dateTime, "year");
+  if (diffYear) return (res = diffYear + " năm trước");
+
+  const diffMonth = dayjs().diff(dateTime, "month");
+  if (diffMonth) return (res = diffMonth + " tháng trước");
+
+  const diffWeek = dayjs().diff(dateTime, "week");
+  if (diffWeek) return (res = diffWeek + " tuần trước");
+
+  const diffDay = dayjs().diff(dateTime, "day");
+  if (diffDay) return (res = diffDay + " ngày trước");
+
+  const diffHour = dayjs().diff(dateTime, "hour");
+  if (diffHour) return (res = diffHour + " giờ trước");
+
+  const diffMinute = dayjs().diff(dateTime, "minute");
+  if (diffMinute) return (res = diffMinute + " phút trước");
+  else return (res = "Vừa xong");
 }

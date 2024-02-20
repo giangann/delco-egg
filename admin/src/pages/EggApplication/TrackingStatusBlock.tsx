@@ -69,7 +69,7 @@ export const TrackingStatusBlock = ({
         {`Lúc: ${dateTime} `}
         <span style={{ fontWeight: 600 }}>{`<${diffTime}>`}</span>
       </Typography>
-     
+      
     </Box>
   );
 };

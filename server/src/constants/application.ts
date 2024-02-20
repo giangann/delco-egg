@@ -24,12 +24,13 @@ export default {
     REJECTED: -1,
     CANCELED: -2,
   },
-  noti:{
+  noti: {
     content: {
-      CREATED:'Đơn hàng mới, hãy kiểm tra',
+      CREATED: 'Đơn hàng mới, hãy kiểm tra',
       ACCEPTED: 'Đơn hàng được chấp nhận',
       REJECTED: 'Đơn hàng bị từ chối, hãy kiểm tra',
-      SUCCESS:'Đơn hàng kết thúc thành công'
-    }
-  }
+      SUCCESS: 'Đơn hàng kết thúc thành công',
+      CANCELED: 'Đơn hàng đã bị hủy, hãy kiểm tra',
+    },
+  },
 };

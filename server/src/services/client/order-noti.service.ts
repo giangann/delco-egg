@@ -3,28 +3,33 @@ import {
   INotiListParams,
   INotiUpdate,
 } from 'noti.interface';
-import { OrderNoti } from '../../entities/order-notification/order-notification.entity';
 import { getRepository } from 'typeorm';
+import { OrderNoti } from '../../entities/order-notification/order-notification.entity';
 
 const list = async (params: INotiListParams) => {
   const to_user_id = params.to_user_id;
-
+  const order_id = params.order_id;
   const orderNotiRepo = getRepository(OrderNoti).createQueryBuilder(
     'order_notification',
   );
-
+  orderNotiRepo.leftJoinAndSelect(
+    'order_notification.from_user',
+    'from_user',
+  );
   if (to_user_id) {
     orderNotiRepo.where('to_user_id = :user_id', {
       user_id: to_user_id,
     });
-    orderNotiRepo.leftJoinAndSelect(
-      'order_notification.from_user',
-      'from_user',
-    );
   }
-  const listNotiData = await orderNotiRepo.getMany()
-  return listNotiData
+  if (order_id) {
+    orderNotiRepo.andWhere('order_id = :order_id', {
+      order_id: order_id,
+    });
+  }
+  const listNotiData = await orderNotiRepo.getMany();
+  return listNotiData;
 };
+
 const create = async (params: INotiCreate) => {
   try {
     const createOrderNotiData = await getRepository(OrderNoti).save({
