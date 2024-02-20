@@ -1,22 +1,21 @@
 import {
   Box,
-  Container,
   Grid,
   Paper,
   Stack,
   Typography,
-  styled,
+  styled
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import { Page } from "../../components/Page/Page";
 import { useDevice } from "../../hooks/useDevice";
 import { getApi } from "../../lib/utils/fetch/fetchRequest";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
 import { IcBaselineAddCircleOutline } from "../../shared/icons/Icon";
 import { IEggPriceQty } from "../../shared/types/egg";
 import { GREEN } from "../../styled/color";
-import { LinkCustom, PageTitleText } from "../../styled/styled";
+import { LinkCustom } from "../../styled/styled";
 import { WaitingUpdatePrice } from "./WaitingUpdatePrice";
-import { Page } from "../../components/Page/Page";
 
 export const Home = () => {
   const { isMobile } = useDevice();

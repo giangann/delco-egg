@@ -6,16 +6,18 @@ import {
   Typography,
   styled,
 } from "@mui/material";
+import { useState } from "react";
 import { BoxFlexEnd, ButtonResponsive } from "../../styled/styled";
 
 type ConfirmDialogProps = {
   onClose: () => void;
-  onAccept?: () => void;
+  onAccept?: () => Promise<void>;
   isSubmitting?: boolean;
   title?: string;
   content?: string;
   childrent?: React.ReactNode;
   insideFormEl?: boolean;
+  disabled?: boolean;
 } & DialogProps;
 export const ConfirmDialog = ({
   isSubmitting,
@@ -25,8 +27,17 @@ export const ConfirmDialog = ({
   onClose,
   onAccept,
   insideFormEl,
+  disabled,
   ...dialogProps
 }: ConfirmDialogProps) => {
+  const [isLoading, setIsLoading] = useState(false);
+  let isShowLoading = isLoading || isSubmitting;
+
+  const handleAccept = async () => {
+    setIsLoading(true);
+    if (onAccept) await onAccept();
+    setIsLoading(false);
+  };
   return (
     <Dialog onClose={onClose} {...dialogProps}>
       <Box p={3}>
@@ -36,28 +47,28 @@ export const ConfirmDialog = ({
 
         <BoxFlexEnd mt={3}>
           <ButtonResponsive onClick={() => onClose()} variant="outlined">
-            Hủy
+            Đóng
           </ButtonResponsive>
           {insideFormEl ? (
             <ButtonResponsive
               type="submit"
               sx={{ marginLeft: 1 }}
               variant="contained"
-              disabled={isSubmitting}
+              disabled={disabled || isShowLoading}
               endIcon={
-                isSubmitting && <CircularProgress color="inherit" size={14} />
+                isShowLoading && <CircularProgress color="inherit" size={14} />
               }
             >
               Ok
             </ButtonResponsive>
           ) : (
             <ButtonResponsive
-              onClick={onAccept}
+              onClick={handleAccept}
               sx={{ marginLeft: 1 }}
               variant="contained"
-              disabled={isSubmitting}
+              disabled={disabled || isShowLoading}
               endIcon={
-                isSubmitting && <CircularProgress color="inherit" size={14} />
+                isShowLoading && <CircularProgress color="inherit" size={14} />
               }
             >
               Ok
