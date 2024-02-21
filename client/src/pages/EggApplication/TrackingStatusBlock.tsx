@@ -23,6 +23,15 @@ export const TrackingStatusBlock = ({
 }: BlockProps) => {
   let bgColor;
   let statusLabel;
+  let isShowReason = false;
+
+  if (
+    newStatus === ORDER_STATUS.REJECTED ||
+    newStatus === ORDER_STATUS.CANCELED
+  ) {
+    isShowReason = true;
+  }
+
   switch (newStatus) {
     case ORDER_STATUS.ACCEPTED:
       bgColor = `${COLOR_BG_STATUS.ACCEPTED}${OPACITY_TO_HEX["10"]}`;
@@ -59,7 +68,7 @@ export const TrackingStatusBlock = ({
         {`${statusLabel} bởi: `}
         <span style={{ fontWeight: 600 }}>{adminName}</span>
       </Typography>
-      {reason && (
+      {isShowReason && reason && (
         <Typography textAlign={"center"}>
           {`Lý do: `}
           <span style={{ fontWeight: 600 }}>{`${reason}`}</span>
@@ -69,7 +78,6 @@ export const TrackingStatusBlock = ({
         {`Lúc: ${dateTime} `}
         <span style={{ fontWeight: 600 }}>{`<${diffTime}>`}</span>
       </Typography>
-     
     </Box>
   );
 };
