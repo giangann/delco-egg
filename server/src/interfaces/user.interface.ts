@@ -30,7 +30,17 @@ export interface ILoginUser {
 }
 
 export interface IUpdateUser extends IOptionalUpdateById<ICreateUser> {}
+export interface IUpdateUserInfo
+  extends Omit<
+    IOptionalUpdateById<ICreateUser>,
+    'username' | 'password'
+  > {}
 
 export interface IUserQueryParams
   extends IBaseQueryParams,
     Partial<ICreateUser> {}
+
+export interface IUserChangePasswordParams {
+  user_id: number;
+  new_password: string;
+}

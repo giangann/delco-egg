@@ -13,6 +13,7 @@ import { IDetailById } from '../../interfaces/common.interface';
 import {
   ILoginUser,
   IUpdateUser,
+  IUserChangePasswordParams,
 } from '../../interfaces/user.interface';
 
 // Errors
@@ -58,6 +59,7 @@ const getById = async (params: IDetailById) => {
   try {
     const data = await getRepository(User).findOne({ id: params.id });
     return ApiUtility.sanitizeUser(data);
+    return data;
   } catch (e) {
     return null;
   }
@@ -90,10 +92,40 @@ const update = async (params: IUpdateUser) => {
   });
 };
 
+const detailWithPassword = async (params: { id: number }) => {
+  const user = await getRepository(User)
+    .createQueryBuilder('user')
+    .where('id=:id', { id: params.id })
+    .select([
+      'user.createdAt',
+      'user.updatedAt',
+      'user.id',
+      'user.username',
+      'user.password',
+      'user.phone_number',
+      'user.fullname',
+      'user.company_name',
+      'user.note',
+      'user.isDeleted',
+    ])
+    .getOne();
+
+  return user;
+};
+const changePassword = async (params: IUserChangePasswordParams) => {
+  const updatedRecord = await getRepository(User).update(
+    { id: params.user_id },
+    { password: params.new_password },
+  );
+  return updatedRecord;
+};
+
 export default {
   login,
   listAdmin,
   getById,
   detail,
   update,
+  detailWithPassword,
+  changePassword,
 };

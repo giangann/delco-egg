@@ -17,4 +17,6 @@ router.put(
   userController.updateMe,
 );
 
+router.put('/change-password',userController.changePassword)
+
 export default router;

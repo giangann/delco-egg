@@ -1,71 +1,51 @@
-import { Box, Stack, Typography, styled } from "@mui/material";
-import { ChangeEvent, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useSearchParams } from "react-router-dom";
+import { Box, Button, CircularProgress, Stack, styled } from "@mui/material";
 import { BaseInput } from "../components/Input/BaseInput";
 import { OPACITY_TO_HEX } from "../shared/constants/common";
 import { GREEN } from "../styled/color";
-
-type User = {
-  fullname: string;
-  phone_number: string;
-  school: School[];
-};
-
-type School = {
-  school_name: string;
-  years_of_study: number;
-};
+import { useForm } from "react-hook-form";
+import { IUserChangePassword, TUserUpdate } from "../shared/types/user";
+import { fakeDelay } from "../shared/helpers/function";
 
 export const Test = () => {
-  const { register, setValue, getValues } = useForm<User>();
-  const [params, setParams] = useSearchParams();
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<IUserChangePassword>();
 
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.name as keyof User, event.target.value);
-    console.log(getValues());
-    const { school, fullname, phone_number } = getValues();
-
-    params.set("school", JSON.stringify(school));
-    params.set("fullname", fullname);
-    params.set("phone_number", phone_number);
-
-    setParams(params);
+  const onChangePassword = async (value: IUserChangePassword) => {
+    await fakeDelay(1);
+    console.log(value);
   };
-
-  const nothing = params.get("nothing")
-  console.log(JSON.parse(nothing as string))
-
-  useEffect(() => {
-    const school = JSON.parse(params.get("school") as string);
-    const fullname = params.get("fullname");
-    const phone_number = params.get("phone_number");
-
-    setValue("school", school);
-    setValue("fullname", fullname as string);
-    setValue("phone_number", phone_number as string);
-  }, []);
   return (
     <BoxWrapper>
-      <Stack spacing={3} component={"form"}>
-        <BaseInput placeholder="Fullname" {...register("fullname")} />
-        <BaseInput placeholder="Phone number" {...register("phone_number")} />
-
-        {[1, 2, 3, 4].map((item, index) => (
-          <Stack spacing={1}>
-            <Typography>{`School ${index}`}</Typography>
-            <BaseInput
-              placeholder="Fullname"
-              {...register(`school.${index}.school_name`)}
-              onBlur={onChange}
-            />
-            <BaseInput
-              placeholder="Years of study"
-              {...register(`school.${index}.years_of_study`)}
-              onBlur={onChange}
-            />
-          </Stack>
-        ))}
+      <Stack
+        spacing={3}
+        component={"form"}
+        onSubmit={handleSubmit(onChangePassword)}
+      >
+        <BaseInput
+          label="Mật khẩu hiện tại"
+          required
+          placeholder="Fullname"
+          {...register("current_password")}
+        />
+        <BaseInput
+          label="Mật khẩu mới"
+          required
+          placeholder="Phone number"
+          {...register("new_password")}
+        />
+        <Button
+          variant="contained"
+          type="submit"
+          disabled={isSubmitting}
+          endIcon={
+            isSubmitting && <CircularProgress color="inherit" size={14} />
+          }
+        >
+          Submit
+        </Button>
       </Stack>
     </BoxWrapper>
   );

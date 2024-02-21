@@ -12,10 +12,10 @@ export interface IBaseQueryParams {
 }
 
 export interface IOverrideRequest {
-  code: number;
-  message: string;
-  positive: string;
-  negative: string;
+  // errors: {
+  //   [key: string]: { name: string; message: string };
+  // };
+  [key: string]: { name: string; message: string };
 }
 
 export interface ICookie {
