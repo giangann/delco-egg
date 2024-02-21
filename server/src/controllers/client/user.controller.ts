@@ -97,7 +97,7 @@ const update: IController = async (req, res) => {
 const updateMe: IController = async (req, res) => {
   try {
     const params: IUpdateUserInfo = {
-      id: parseInt(req.params.id, 10),
+      id: req.user.id,
       phone_number: req.body?.phone_number,
       fullname: req.body?.fullname,
       company_name: req.body?.company_name,

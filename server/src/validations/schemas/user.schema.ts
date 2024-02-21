@@ -17,8 +17,9 @@ export default {
   },
   updateMe: {
     body: {
-      // firstName: joi.string().min(3).max(100).required(),
-      // lastName: joi.string().min(3).max(100).required(),
+      company_name: joi.string().min(3).max(100).required(),
+      fullname: joi.string().min(3).max(100).required(),
+      phone_number: joi.string().min(3).max(100).required(),
     },
   },
 };

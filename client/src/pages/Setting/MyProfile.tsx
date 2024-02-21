@@ -1,5 +1,6 @@
 import CircularProgress from "@mui/material/CircularProgress";
 
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Box,
   Button,
@@ -10,29 +11,17 @@ import {
   styled,
 } from "@mui/material";
 import { useState } from "react";
-import {
-  FieldValues,
-  UseFormRegister,
-  useForm,
-  UseFormReturn,
-  Resolver,
-} from "react-hook-form";
+import { Resolver, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { CustomInput } from "../../components/Input/CustomInput";
-import { Page } from "../../components/Page/Page";
-import {
-  IUserChangePassword,
-  IUserProfile,
-  TUserUpdate,
-} from "../../shared/types/user";
-import { TextButton } from "../../styled/styled";
-import { fakeDelay } from "../../shared/helpers/function";
-import useAuth from "../../hooks/useAuth";
-import { BaseInput } from "../../components/Input/BaseInput";
 import { object, string } from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { BaseInput } from "../../components/Input/BaseInput";
 import { PasswordInput } from "../../components/Input/PasswordInput";
+import { Page } from "../../components/Page/Page";
+import useAuth from "../../hooks/useAuth";
 import { putApi } from "../../lib/utils/fetch/fetchRequest";
+import { fakeDelay } from "../../shared/helpers/function";
+import { IUserChangePassword, TUserUpdate } from "../../shared/types/user";
+import { TextButton } from "../../styled/styled";
 
 const changePasswordSchema = object({
   current_password: string().required("Mật khẩu hiện tại không được bỏ trống"),
@@ -75,7 +64,6 @@ const Account = () => {
   });
 
   const onChangePassword = async (value: IUserChangePassword) => {
-    console.log(value);
     const changePwRespond = await putApi("me/change-password", value);
     if (changePwRespond.success) {
       toast.success("Cập nhật thành công");
@@ -177,10 +165,14 @@ const UserInfo = () => {
   });
 
   const onUpdateUserInfo = async (info: TUserUpdate) => {
-    await fakeDelay(1);
     console.log(info);
-
-    setIsEdit(false);
+    const updateInfoResponse = await putApi("me", info);
+    if (updateInfoResponse.success) {
+      toast.success("Cập nhật thành công");
+      setIsEdit(false);
+    } else {
+      toast.error(updateInfoResponse.error.message);
+    }
   };
   return (
     <Paper
