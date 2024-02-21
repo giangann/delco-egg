@@ -55,6 +55,7 @@
     "prettier": "^2.2.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
+    "socket.io": "^4.7.4",
     "supertest": "^6.0.1",
     "ts-jest": "^26.4.4",
     "ts-node": "^9.1.1",
