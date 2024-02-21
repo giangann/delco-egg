@@ -4,7 +4,7 @@ import {
   Paper,
   Stack,
   Typography,
-  styled
+  styled,
 } from "@mui/material";
 import { useState } from "react";
 import { IcBaselineArrowDropDown } from "../../../../shared/icons/Icon";
@@ -12,7 +12,7 @@ import { BACKGROUND_COLOR, GREEN } from "../../../../styled/color";
 import { LinkCustom } from "../../../../styled/styled";
 import { Item, items } from "../../../Home/Home";
 import { NotificationMenu } from "./NotificationMenu";
-import { UserProfileMenu } from "./UserProfileMenu";
+import { UserProfileMenu } from "../UserProfileMenu";
 
 const DEFAULT_POS = -1;
 export const HeaderDesktop = () => {

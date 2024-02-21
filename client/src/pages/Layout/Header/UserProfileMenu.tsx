@@ -11,6 +11,8 @@ export const UserProfileMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const {logout} = useAuth()
+  const navigate = useNavigate();
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -35,7 +37,6 @@ export const UserProfileMenu = () => {
   };
 
 
-  const navigate = useNavigate();
   return (
     <>
       <CustomIconBtn onClick={handleClick}>

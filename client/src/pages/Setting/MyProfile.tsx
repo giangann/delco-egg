@@ -19,7 +19,6 @@ import { PasswordInput } from "../../components/Input/PasswordInput";
 import { Page } from "../../components/Page/Page";
 import useAuth from "../../hooks/useAuth";
 import { putApi } from "../../lib/utils/fetch/fetchRequest";
-import { fakeDelay } from "../../shared/helpers/function";
 import { IUserChangePassword, TUserUpdate } from "../../shared/types/user";
 import { TextButton } from "../../styled/styled";
 
@@ -59,6 +58,7 @@ const Account = () => {
     formState: { isSubmitting, errors },
     handleSubmit,
     setError,
+    reset,
   } = useForm<IUserChangePassword>({
     resolver: yupResolver(changePasswordSchema),
   });
@@ -68,6 +68,7 @@ const Account = () => {
     if (changePwRespond.success) {
       toast.success("Cập nhật thành công");
       setIsEdit(false);
+      reset()
     } else {
       setError("current_password", changePwRespond.override.current_password);
     }

@@ -10,6 +10,12 @@ export type TResponseFailure = {
     name?: string;
     message: string;
   };
+  override?: {
+    [key: string]: {
+      name?: string;
+      message: string;
+    };
+  };
 };
 export type TResponse<T> = TResponseSuccess<T> | TResponseFailure;
 

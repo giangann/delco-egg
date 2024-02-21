@@ -1,15 +1,17 @@
-import { Menu, MenuItem } from "@mui/material";
+import { IconButton, Menu, MenuItem } from "@mui/material";
 import React from "react";
-import { IconamoonProfileCircleFill } from "../../../../shared/icons/Icon";
-import { CustomIconBtn } from "./HeaderMobile";
+import { IconamoonProfileCircleFill } from "../../../shared/icons/Icon";
+import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-toastify";
-import useAuth from "../../../../hooks/useAuth";
+import SCREEN_PATHS from "../../../shared/constants/screenPaths";
+import { useNavigate } from "react-router-dom";
 
 export const UserProfileMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const { logout } = useAuth();
-
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -17,17 +19,24 @@ export const UserProfileMenu = () => {
     setAnchorEl(null);
   };
 
+  // action 1
+  const gotoMyProfile = () => {
+    handleClose();
+    navigate(`${SCREEN_PATHS.MY_PROFILE}`);
+  };
+
+
   const handleLogout = async () => {
     const result = await logout();
     if (result.success) toast.success("Đăng xuất thành công");
-    else toast.error('Có lỗi, đăng xuất thất bại')
+    else toast.error("Có lỗi, đăng xuất thất bại");
     handleClose();
   };
   return (
     <>
-      <CustomIconBtn onClick={handleClick}>
+      <IconButton onClick={handleClick}>
         <IconamoonProfileCircleFill style={{ color: "white" }} />
-      </CustomIconBtn>
+      </IconButton>
       {/* user menu */}
       <Menu
         id="basic-menu"
@@ -38,11 +47,10 @@ export const UserProfileMenu = () => {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleClose}>Thông tin</MenuItem>
+        <MenuItem onClick={gotoMyProfile}>Thông tin</MenuItem>
         <MenuItem onClick={handleClose}>Cài đặt</MenuItem>
         <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
       </Menu>
     </>
   );
 };
-

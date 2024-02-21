@@ -3,7 +3,7 @@ import { InputHTMLAttributes, LegacyRef, forwardRef } from "react";
 import { MUIStyledCommonProps } from "@mui/system";
 import { blue, grey, red } from "@mui/material/colors";
 
-interface BaseInputProps
+export interface BaseInputProps
   extends InputHTMLAttributes<HTMLInputElement>,
     MUIStyledCommonProps<Theme> {
   label?: string;

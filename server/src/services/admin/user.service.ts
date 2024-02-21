@@ -13,6 +13,7 @@ import {
   ICreateUser,
   ILoginUser,
   IUpdateUser,
+  IUserChangePasswordParams,
   IUserQueryParams,
 } from '../../interfaces/user.interface';
 import {
@@ -177,6 +178,33 @@ const remove = async (params: IDeleteById) => {
     updatedAt: DateTimeUtility.getCurrentTimeStamp(),
   });
 };
+const detailWithPassword = async (params: { id: number }) => {
+  const user = await getRepository(User)
+    .createQueryBuilder('user')
+    .where('id=:id', { id: params.id })
+    .select([
+      'user.createdAt',
+      'user.updatedAt',
+      'user.id',
+      'user.username',
+      'user.password',
+      'user.phone_number',
+      'user.fullname',
+      'user.company_name',
+      'user.note',
+      'user.isDeleted',
+    ])
+    .getOne();
+
+  return user;
+};
+const changePassword = async (params: IUserChangePasswordParams) => {
+  const updatedRecord = await getRepository(User).update(
+    { id: params.user_id },
+    { password: params.new_password },
+  );
+  return updatedRecord;
+};
 
 export default {
   create,
@@ -187,4 +215,6 @@ export default {
   list,
   remove,
   listAdmin,
+  detailWithPassword,
+  changePassword,
 };

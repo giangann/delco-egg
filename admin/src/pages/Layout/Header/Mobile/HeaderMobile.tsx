@@ -12,7 +12,7 @@ import {
 } from "../../../../styled/styled";
 import { items } from "../../../Home/Home";
 import { NotificationMenu } from "./NotificationMenu";
-import { UserProfileMenu } from "./UserProfileMenu";
+import { UserProfileMenu } from "../UserProfileMenu";
 
 export const HeaderMobile = () => {
   const [openDrawer, setOpenDrawer] = useState(false);

@@ -132,9 +132,7 @@ const update: IController = async (req, res) => {
 const updateMe: IController = async (req, res) => {
   try {
     const params: IUpdateUser = {
-      id: parseInt(req.params.id, 10),
-      username: req.body?.username,
-      password: req.body?.password,
+      id: req.user.id,
       phone_number: req.body?.phone_number,
       fullname: req.body?.fullname,
       company_name: req.body?.company_name,
@@ -142,6 +140,39 @@ const updateMe: IController = async (req, res) => {
     };
     await userService.update(params);
     return ApiResponse.result(res, params, httpStatusCodes.OK);
+  } catch (e) {
+    ApiResponse.exception(res, e);
+  }
+};
+const changePassword: IController = async (req, res) => {
+  try {
+    // get user and hash password in db
+    const userWithPassword = await userService.detailWithPassword({
+      id: req.user.id,
+    });
+
+    let currPw = req.body?.current_password;
+    let newPw = req.body?.new_password;
+    const verifyResult = await Encryption.verifyHash(
+      currPw,
+      userWithPassword.password,
+    );
+
+    if (verifyResult) {
+      newPw = await Encryption.generateHash(newPw, 10);
+      const updatedPassword = await userService.changePassword({
+        user_id: userWithPassword.id,
+        new_password: newPw,
+      });
+
+      ApiResponse.result(res, updatedPassword);
+    } else
+      ApiResponse.error(res, 400, 'Mật khẩu hiện tại không đúng', {
+        current_password: {
+          name: 'Sai',
+          message: 'Mật khẩu hiện tại không đúng',
+        },
+      });
   } catch (e) {
     ApiResponse.exception(res, e);
   }
@@ -211,4 +242,5 @@ export default {
   updateMe,
   list,
   remove,
+  changePassword,
 };
