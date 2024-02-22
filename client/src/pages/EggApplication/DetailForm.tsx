@@ -11,7 +11,7 @@ import {
   styled,
 } from "@mui/material";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BoxByStatus } from "../../components/Box/BoxByStatus";
 import { Page } from "../../components/Page/Page";
@@ -26,26 +26,49 @@ import {
 import { IOrderDetail, IOrderItem } from "../../shared/types/order";
 import { alignCenterSx } from "../../styled/styled";
 import { TrackingStatusBlock } from "./TrackingStatusBlock";
+import { SocketContext } from "../../contexts/SocketContext";
 
 export const DetailForm = () => {
-  const [order, setOrder] = useState<IOrderDetail | null>(null);
-  const navigate = useNavigate();
   const params = useParams();
+  const orderId = parseInt(params.id as string);
+  const navigate = useNavigate();
 
   const goBackList = () => {
     navigate(SCREEN_PATHS.LIST);
   };
-
-  useEffect(() => {
-    async function fetchOrderById() {
-      const res = await getApi(`order/${params.id}`);
-      setOrder(res.data);
-    }
-    fetchOrderById();
-  }, [params]);
   return (
     <Page title="Chi tiết đơn" onGoBack={goBackList}>
-      {/* table */}
+      <DetailFormInfo key={orderId} orderId={orderId} />
+    </Page>
+  );
+};
+const DetailFormInfo = ({ orderId }: { orderId: number }) => {
+  const [order, setOrder] = useState<IOrderDetail | null>(null);
+  const socketClient = useContext(SocketContext);
+
+  const fetchOrderById = useCallback(async () => {
+    const res = await getApi(`order/${orderId}`);
+    if (res.success) {
+      setOrder(res.data);
+    } else {
+      console.log(res.error.message);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchOrderById();
+
+    socketClient.on("updateOrder", (message) => {
+      fetchOrderById();
+    });
+
+    return () => {
+      socketClient.off("updateOrder");
+    };
+  }, [socketClient]);
+
+  return (
+    <>
       {!order ? (
         <NoOrderData />
       ) : (
@@ -60,7 +83,6 @@ export const DetailForm = () => {
                 dateTime={dayjs(noti.createdAt).format("DD/MM/YYYY HH:mm")}
                 diffTime={diffDateTimeWithNow(noti.createdAt)}
                 reason={order.reason}
-
               />
             ))}
 
@@ -131,10 +153,9 @@ export const DetailForm = () => {
           </Box>
         </>
       )}
-    </Page>
+    </>
   );
 };
-
 const NoOrderData = () => {
   return (
     <Box height={"50vh"} sx={{ ...alignCenterSx }}>
@@ -217,4 +238,3 @@ const TableCellHeader = styled(TableCellStyled)(({ theme }) => ({
   fontSize: 18,
   [theme.breakpoints.up("sm")]: {},
 }));
-

@@ -18,6 +18,7 @@ import userService from '../../services/client/user.service';
 import { IUserRecord } from 'user.interface';
 import orderNotiService from '../../services/client/order-noti.service';
 import { INotiCreate } from 'noti.interface';
+import webSocketService from '../../services/client/web-socket.service';
 
 const list: IController = async (req, res) => {
   try {
@@ -107,11 +108,20 @@ const create: IController = async (req, res) => {
         };
       },
     );
-    const sendNotiToListAdmin = await orderNotiService.createMany(
+    const notiToListAdmin = await orderNotiService.createMany(
       listOrderNotiParams,
     );
 
-    console.log(sendNotiToListAdmin);
+    // realtime noti for all admin
+    const listAdminRealTimeNotiParams = listAdmin.map((admin) => {
+      return {
+        order_id: newOrder.id,
+        user_id: admin.id,
+      };
+    });
+    webSocketService.sendNotiToListUser(listAdminRealTimeNotiParams);
+
+    console.log(notiToListAdmin);
 
     ApiResponse.result(res, newOrder, httpStatusCodes.CREATED);
   } catch (e) {

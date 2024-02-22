@@ -19,6 +19,7 @@ import orderService from '../../services/admin/order.service';
 import orderDetailService from '../../services/client/order-detail.service';
 import ApiResponse from '../../utilities/api-response.utility';
 import ApiUtility from '../../utilities/api.utility';
+import webSocketService from '../../services/client/web-socket.service';
 
 const list: IController = async (req, res) => {
   try {
@@ -55,7 +56,7 @@ const detail: IController = async (req, res) => {
       to_user_id: order.user_id,
       order_id: order.id,
     });
-    order.notis = noties
+    order.notis = noties;
 
     return ApiResponse.result(res, order, httpStatusCodes.OK, null);
   } catch (e) {
@@ -100,15 +101,15 @@ const updateStatus: IController = async (req, res) => {
     const newStatus = req.body.status;
     let updateData;
 
-    // get this order by if of order
+    //------------- 1. GET DETAIL OF ORDER BY ID-------------
     const thisOrder = await orderService.detail({ id: id });
 
+    //------------- 2. DEFINE PARAMS FOR UPDATE STATUS-------------
     let params: IUpdateStatusOrder = {
       id: id,
       status: newStatus,
     };
-
-    // REJECT OR CANCEL REQUIRE "REASON"
+    // reject/cancel require <reason>
     if (
       newStatus === application.status.REJECTED ||
       newStatus === application.status.CANCELED
@@ -118,10 +119,8 @@ const updateStatus: IController = async (req, res) => {
     // update status
     updateData = await orderService.updateStatus(params);
 
-    // IF NEWSTATUS IS ACCEPTED => DECREASE CORRESPONDING EGGQTYS
-    // 1. get all item inside order {egg_id and quantity}[]
-    // 2. each item, get corresponding currentQtys
-    // 3. update qty
+    //------------- 3. MAKE SIDE EFFECT (NOTI, EGG-QTY):-------------
+    // if accepted: decrese egg-qty, hide noti of admin, noti for user
     if (newStatus === application.status.ACCEPTED) {
       const orderItems: IOrderDetail[] = await orderDetailService.getByOrderId(
         id,
@@ -134,7 +133,7 @@ const updateStatus: IController = async (req, res) => {
       );
     }
 
-    // noti for reject/cancel/success
+    // if reject/cancel/success, noti for user
     if (
       [
         application.status.REJECTED,
@@ -164,6 +163,10 @@ const updateStatus: IController = async (req, res) => {
         order_id: id,
       });
     }
+
+    // Web-socket noti service:
+    await webSocketService.sendNotiToUser(thisOrder.user_id, id);
+    
     //OTHER NOTIFICATION SERVICE LIKE: ZALO-OA
 
     ApiResponse.result(res, updateData, httpStatusCodes.OK);

@@ -10,13 +10,13 @@ import {
   alignCenterSx,
 } from "../../../../styled/styled";
 import { CustomIconBtn } from "./HeaderMobile";
-import { NotiContext } from "../../Layout";
 import SCREEN_PATHS from "../../../../shared/constants/screenPaths";
 import { useNavigate } from "react-router-dom";
 import { GREEN } from "../../../../styled/color";
 import { OPACITY_TO_HEX } from "../../../../shared/constants/common";
 import { INoti } from "../../../../shared/types/noti";
 import dayjs from "dayjs";
+import { NotiContext } from "../../../../contexts/NotiContext";
 export const NotificationMenu = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const listNoti = useContext(NotiContext).listNoti;

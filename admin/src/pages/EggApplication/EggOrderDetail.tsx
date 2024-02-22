@@ -25,9 +25,9 @@ import {
 } from "../../shared/helper";
 import { IOrder, IOrderItem } from "../../shared/types/order";
 import { FakeATag, alignCenterSx } from "../../styled/styled";
-import { NotiContext } from "../Layout/Layout";
 import { OrderActionByStatus } from "./OrderActionByStatus";
 import { TrackingStatusBlock } from "./TrackingStatusBlock";
+import { NotiContext } from "../../contexts/NotiContext";
 
 export const EggOrderDetail = () => {
   const [refetch, setRefetch] = useState(0);

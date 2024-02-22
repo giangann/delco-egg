@@ -53,6 +53,7 @@ const create = async (params: ICreateOrder) => {
   order.items = params.items;
 
   const createdOrder = await getRepository(Order).save(order);
+
   return createdOrder;
 };
 

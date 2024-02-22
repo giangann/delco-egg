@@ -13,9 +13,9 @@ import SCREEN_PATHS from "../../../../shared/constants/screenPaths";
 import { MaterialSymbolsNotificationsActiveRounded } from "../../../../shared/icons/Icon";
 import { INoti } from "../../../../shared/types/noti";
 import { alignCenterSx } from "../../../../styled/styled";
-import { NotiContext } from "../../Layout";
 import { BLUE, GREEN } from "../../../../styled/color";
 import { OPACITY_TO_HEX } from "../../../../shared/constants/common";
+import { NotiContext } from "../../../../contexts/NotiContext";
 
 export const NotificationMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);

@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
-import { useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { Page } from "../../components/Page/Page";
 import { BoxByStatus } from "../../components/Table/BoxByStatus";
 import {
@@ -14,12 +14,14 @@ import { IOrderRow } from "../../shared/types/order";
 import { useNavigate } from "react-router-dom";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
 import { toDayOrTomorrowOrYesterday } from "../../shared/helper";
+import { SocketContext } from "../../contexts/SocketContext";
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
 export const EggOrderList = () => {
   const [myOrderList, setMyOrderList] = useState<IOrderRow[]>([]);
   const navigate = useNavigate();
+  const wsServer = useContext(SocketContext);
   const fields: StrictField<IOrderRow>[] = [
     {
       header: "Người tạo",
@@ -73,14 +75,25 @@ export const EggOrderList = () => {
     navigate(`${newPathWithoutSlug}/${id}`);
   };
 
-  useEffect(() => {
-    async function fetchMyListOrder() {
-      const res = await getApi<IOrderRow[]>("order");
+  const fetchMyListOrder = useCallback(async () => {
+    const res = await getApi<IOrderRow[]>("order");
+    if (res.success) setMyOrderList(res.data);
+  }, []);
 
-      if (res.success) setMyOrderList(res.data);
-    }
+  useEffect(() => {
     fetchMyListOrder();
   }, []);
+
+  useEffect(() => {
+    wsServer.on("updateListOrder", (message) => {
+      console.log(message);
+      fetchMyListOrder();
+    });
+    return () => {
+      wsServer.off("updateListOrder");
+    };
+  }, []);
+
   return (
     <Page title="Danh sách đơn trứng">
       <CustomTable

@@ -8,7 +8,6 @@ import {
 } from "@mui/material";
 import React, { useContext } from "react";
 import { MaterialSymbolsNotificationsActiveRounded } from "../../../../shared/icons/Icon";
-import { NotiContext } from "../../Layout";
 import { useNavigate } from "react-router-dom";
 import SCREEN_PATHS from "../../../../shared/constants/screenPaths";
 import { INoti } from "../../../../shared/types/noti";
@@ -16,6 +15,7 @@ import { alignCenterSx } from "../../../../styled/styled";
 import dayjs from "dayjs";
 import { BLUE, GREEN } from "../../../../styled/color";
 import { OPACITY_TO_HEX } from "../../../../shared/constants/common";
+import { NotiContext } from "../../../../contexts/NotiContext";
 
 export const NotificationMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);

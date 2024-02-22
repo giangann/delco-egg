@@ -16,7 +16,7 @@ import {
   alignCenterSx,
 } from "../../../../styled/styled";
 import { CustomIconBtn } from "./HeaderMobile";
-import { NotiContext } from "../../Layout";
+import { NotiContext } from "../../../../contexts/NotiContext";
 export const NotificationMenu = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const listNoti = useContext(NotiContext).listNoti;

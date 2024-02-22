@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { BoxByStatus } from "../../components/Box/BoxByStatus";
 import { Page } from "../../components/Page/Page";
 import { CustomTable, StrictField } from "../../components/Table/Customtable";
@@ -13,13 +13,15 @@ import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
 import { useNavigate } from "react-router-dom";
+import { SocketContext } from "../../contexts/SocketContext";
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
 export const List = () => {
   const { isMobile } = useDevice();
   const [myOrderList, setMyOrderList] = useState([]);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const wsServer = useContext(SocketContext);
   const fields: StrictField<IOrderRow>[] = [
     // {
     //   header: "Id",
@@ -69,13 +71,23 @@ export const List = () => {
     let newPathWithoutSlug = arrPathBySlash.join("/");
     navigate(`${newPathWithoutSlug}/${id}`);
   };
-  useEffect(() => {
-    async function fetchMyListOrder() {
-      const res = await getApi("order");
 
-      if (res.success) setMyOrderList(res.data);
-    }
+  const fetchMyListOrder = useCallback(async () => {
+    const res = await getApi("order");
+    if (res.success) setMyOrderList(res.data);
+  }, []);
+
+  useEffect(() => {
     fetchMyListOrder();
+  }, []);
+
+  useEffect(() => {
+    wsServer.on("updateListOrder", () => {
+      fetchMyListOrder();
+    });
+    return () => {
+      wsServer.off("updateListOrder");
+    };
   }, []);
   return (
     <Page title="Quản lý đơn đặt trứng">
