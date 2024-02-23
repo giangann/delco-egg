@@ -11,6 +11,7 @@ import {
   alignCenterSx,
 } from "../../styled/styled";
 import { BoxAnnotate } from "../../components/Box/BoxAnnotate";
+import { SLUG } from "../../shared/constants/slug";
 
 export const Home = () => {
   return (
@@ -120,14 +121,6 @@ export const Home = () => {
                   </StackAlignCenterJustifySpaceBetween>
                 </RowStatisticStyled>
               ))}
-
-              <Stack direction="row">
-                <Typography sx={{ fontWeight: 500, fontSize: 18 }}>
-                  Trung bình{": "}
-                  <span style={{ fontWeight: 650 }}>2143 đ/quả</span>
-                  {/* <span>{"so với hôm qua"}</span> */}
-                </Typography>
-              </Stack>
             </Box>
           </BoxStatistic>
         </Box>
@@ -176,7 +169,7 @@ export const items: Item[] = [
     text: "Quản lý đơn hàng",
   },
   {
-    path: "#",
+    path: `${SLUG.MANAGE}/${SLUG.EGG}`,
     text: "Quản lý trứng",
     children: [
       {

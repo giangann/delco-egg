@@ -140,7 +140,7 @@ const PriceText = styled(Typography)(({ theme }) => ({
     fontSize: 24,
   },
 }));
-type Item = {
+export type Item = {
   path: string;
   text: string;
 };

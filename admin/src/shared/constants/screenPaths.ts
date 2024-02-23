@@ -43,7 +43,10 @@ const SCREEN_PATHS = {
     UPDATE_TYPE: `${SLUG.EGG}/cap-nhat-mix`,
   },
   STATISTIC: {
-    USER: `${SLUG.STATISTIC}/nguoi-dung`,
+    REVENUE: `${SLUG.STATISTIC}/${SLUG.REVENUE}`,
+    APPLICATION: `${SLUG.STATISTIC}/${SLUG.APPLICATION}`,
+    EGG: `${SLUG.STATISTIC}/${SLUG.EGG}`,
+    USER: `${SLUG.STATISTIC}/${SLUG.USER}`,
   },
 };
 

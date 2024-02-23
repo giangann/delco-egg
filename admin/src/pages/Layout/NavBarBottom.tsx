@@ -6,11 +6,18 @@ import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import * as React from "react";
 import { GREEN } from "../../styled/color";
+import HomeIcon from "@mui/icons-material/Home";
+import AnalyticsIcon from "@mui/icons-material/Analytics";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import QueryStatsIcon from "@mui/icons-material/QueryStats";
+import { SLUG } from "../../shared/constants/slug";
+import { useNavigate } from "react-router-dom";
 export default function NavBarBottom() {
-  const [value, setValue] = React.useState("recents");
-
+  const [value, setValue] = React.useState("/");
+  const navigate = useNavigate();
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
+    navigate(newValue);
   };
 
   return (
@@ -26,18 +33,18 @@ export default function NavBarBottom() {
       >
         <StyledActionBtn
           label="Tổng quan"
-          value="recents"
-          icon={<RestoreIcon style={{ color: "white" }} />}
-        />
-        <StyledActionBtn
-          label="Báo cáo"
-          value="favorites"
-          icon={<FavoriteIcon style={{ color: "white" }} />}
+          value="/"
+          icon={<HomeIcon style={{ color: "white" }} />}
         />
         <StyledActionBtn
           label="Quản lý"
-          value="folder"
-          icon={<FolderIcon style={{ color: "white" }} />}
+          value={SLUG.MANAGE}
+          icon={<ListAltIcon style={{ color: "white" }} />}
+        />
+        <StyledActionBtn
+          label="Thống kê"
+          value={SLUG.STATISTIC}
+          icon={<QueryStatsIcon style={{ color: "white" }} />}
         />
       </BottomNavigation>
     </Paper>

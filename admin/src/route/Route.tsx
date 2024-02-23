@@ -15,6 +15,10 @@ import { UserList } from "../pages/UserManagement/UserList";
 import SCREEN_PATHS from "../shared/constants/screenPaths";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { UserStatistic } from "../pages/Statistic/User/UserStatistic";
+import { SLUG } from "../shared/constants/slug";
+import { Manage } from "../pages/Management/Manage";
+import { EggManage } from "../pages/Management/EggManage";
+import { Statistic } from "../pages/Statistic/Statistic";
 
 const routes: RouteObject[] = [
   {
@@ -70,6 +74,34 @@ const routes: RouteObject[] = [
         path: SCREEN_PATHS.MY_PROFILE,
         element: <MyProfile />,
       },
+
+      // QUẢN LÝ
+      {
+        path: SLUG.MANAGE,
+        element: <Manage />,
+      },
+      {
+        path: `${SLUG.MANAGE}/${SLUG.EGG}`,
+        element: <EggManage />,
+      },
+
+      // THỐNG KÊ
+      {
+        path: SLUG.STATISTIC,
+        element: <Statistic />,
+      },
+      // {
+      //   path: SCREEN_PATHS.STATISTIC.REVENUE,
+      //   element: <UserStatistic />,
+      // },
+      // {
+      //   path: SCREEN_PATHS.STATISTIC.APPLICATION,
+      //   element: <UserStatistic />,
+      // },
+      // {
+      //   path: SCREEN_PATHS.STATISTIC.EGG,
+      //   element: <UserStatistic />,
+      // },
       {
         path: SCREEN_PATHS.STATISTIC.USER,
         element: <UserStatistic />,
