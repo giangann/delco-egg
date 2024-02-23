@@ -62,7 +62,7 @@ export const EggOrderDetail = () => {
         <Grid container spacing={{ xs: 3, sm: 5 }}>
           {/* status */}
           <Grid item xs={12}>
-            <BoxByStatus margin={"unset !important"} status={order.status} />
+            <BoxByStatus margin={"0 auto"} status={order.status} />
 
             {order.notis.map((noti) => (
               <TrackingStatusBlock

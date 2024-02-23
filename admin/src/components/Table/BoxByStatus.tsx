@@ -49,7 +49,6 @@ export const BoxByStatus = ({
     <Box
       {...boxProps}
       sx={{
-        margin: "0 auto",
         paddingX: 1,
         paddingY: 0.5,
         borderRadius: 0.5,

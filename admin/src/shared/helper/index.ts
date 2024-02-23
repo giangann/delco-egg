@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import { CONFIG } from "../constants/common";
 import { EggPrice } from "../types/egg-price-qty";
+import { IOrderItem } from "../types/order";
 
 export function fakeDelay(seconds: number): Promise<void> {
   return new Promise((resolve) => {
@@ -86,4 +87,18 @@ export function diffDateTimeWithNow(dateTime: string | Date) {
   const diffMinute = dayjs().diff(dateTime, "minute");
   if (diffMinute) return (res = diffMinute + " phút trước");
   else return (res = "Vừa xong");
+}
+
+export function subtotal(items: IOrderItem[]) {
+  return items
+    .map(({ deal_price, quantity }) => deal_price * quantity)
+    .reduce((sum, i) => sum + i, 0);
+}
+
+export function orderItemsToTotalMoney(items: IOrderItem[] | undefined) {
+  if (!items) return "null"
+  let money = items
+    .map(({ deal_price, quantity }) => deal_price * quantity)
+    .reduce((sum, i) => sum + i, 0);
+  return numberWithComma(money);
 }

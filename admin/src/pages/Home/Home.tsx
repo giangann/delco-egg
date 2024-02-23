@@ -1,41 +1,138 @@
-import {
-  Box,
-  Container,
-  Grid,
-  Paper,
-  Stack,
-  Typography,
-  styled,
-} from "@mui/material";
+import { Box, Stack, Typography, styled } from "@mui/material";
+import { BoxStatistic } from "../../components/Box/BoxStatistic";
+import { OPACITY_TO_HEX } from "../../shared/constants/common";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
+import {
+  IcBaselineArrowDropUp,
+  IcOutlineNavigateNext,
+} from "../../shared/icons/Icon";
+import {
+  StackAlignCenterJustifySpaceBetween,
+  alignCenterSx,
+} from "../../styled/styled";
+import { BoxAnnotate } from "../../components/Box/BoxAnnotate";
 
 export const Home = () => {
   return (
-    <Container>
-      <Paper elevation={1} sx={{ padding: 2, mt: 8 }}>
-        <Box>
-          <TitleText>Thao tác</TitleText>
-          <Grid container spacing={3}>
-            {items.map((item: Item, index: number) => (
-              <Grid item xs={6} key={index}>
-                <Stack
-                  spacing={1}
-                  alignItems={"center"}
-                  flexDirection={"column"}
+    <>
+      <Box height={200} width="100%" sx={{ backgroundColor: "white", mb: 1.5 }}>
+        <Box sx={{ padding: 0 }}>
+          <Typography
+            sx={{ fontWeight: 500, fontSize: 20, py: 1, paddingLeft: 1.5 }}
+          >
+            Xin chào, <span style={{ fontWeight: 600 }}>Admin Lê Hường !</span>
+          </Typography>
+
+          {/* tổng quan: doanh thu + số trứng xuất + trung bình doanh thu/quả */}
+          <BoxStatistic title="Tổng quan">
+            <Box paddingLeft={0.25} marginTop={1.25}>
+              <RowStatisticStyled>
+                <StackAlignCenterJustifySpaceBetween>
+                  <Typography sx={{ fontWeight: 500, fontSize: 18 }}>
+                    Tổng doanh thu{": "}
+                    <span style={{ fontWeight: 650 }}>124,678,993 đ</span>
+                  </Typography>
+                  <IcOutlineNavigateNext />
+                </StackAlignCenterJustifySpaceBetween>
+              </RowStatisticStyled>
+
+              <RowStatisticStyled>
+                {" "}
+                <StackAlignCenterJustifySpaceBetween>
+                  <Typography sx={{ fontWeight: 500, fontSize: 18 }}>
+                    Tổng trứng xuất{": "}
+                    <span style={{ fontWeight: 650 }}>57,000 </span>quả
+                  </Typography>
+                  <IcOutlineNavigateNext />
+                </StackAlignCenterJustifySpaceBetween>{" "}
+              </RowStatisticStyled>
+
+              <Stack direction="row">
+                <Typography sx={{ fontWeight: 500, fontSize: 18 }}>
+                  Trung bình{": "}
+                  <span style={{ fontWeight: 650 }}>2143 đ/quả</span>
+                  {/* <span>{"so với hôm qua"}</span> */}
+                </Typography>
+                <Box sx={{ ...alignCenterSx }}>
+                  <Typography
+                    style={{ marginLeft: 8, fontWeight: 500, color: "green" }}
+                  >
+                    35đ
+                  </Typography>
+                  <IcBaselineArrowDropUp
+                    color="green"
+                    style={{ fontSize: 25 }}
+                  />
+                </Box>
+              </Stack>
+            </Box>
+          </BoxStatistic>
+
+          {/* giá các mix */}
+          <BoxStatistic
+            rightElementInTitleRow={
+              <Box sx={{ ...alignCenterSx }}>
+                <Typography
+                  style={{ marginLeft: 8, fontWeight: 500, color: "green" }}
                 >
-                  <TypeText>{item.text}</TypeText>
-                  <a href={item.path}>
-                    <Typography sx={{ textAlign: "center" }} variant="caption">
-                      {">>>"}go
+                  35đ
+                </Typography>
+                <IcBaselineArrowDropUp color="green" style={{ fontSize: 25 }} />
+              </Box>
+            }
+            title="Giá trứng hôm nay"
+          >
+            <Box marginTop={1.25}>
+              <Stack direction={"row"} spacing={3} ml={7}>
+                <BoxAnnotate color="black" fieldName="Delco" />
+                <BoxAnnotate color="purple" fieldName="Thị trường" />
+                <BoxAnnotate color="blue" fieldName="CP" />
+              </Stack>
+              {[1, 2, 3, 4].map((item) => (
+                <RowStatisticStyled>
+                  <StackAlignCenterJustifySpaceBetween>
+                    <Typography sx={{ fontWeight: 500, fontSize: 18 }}>
+                      Mix {item}
+                      {":"}
+                      <span style={{ marginLeft: 12, fontWeight: 650 }}>
+                        2300 đ
+                      </span>
+                      <span
+                        style={{
+                          marginLeft: 12,
+                          fontWeight: 650,
+                          color: "purple",
+                        }}
+                      >
+                        2300 đ
+                      </span>
+                      <span
+                        style={{
+                          marginLeft: 12,
+                          fontWeight: 650,
+                          color: "blue",
+                        }}
+                      >
+                        2300 đ
+                      </span>
                     </Typography>
-                  </a>
-                </Stack>
-              </Grid>
-            ))}
-          </Grid>
+                    <IcOutlineNavigateNext />
+                  </StackAlignCenterJustifySpaceBetween>
+                </RowStatisticStyled>
+              ))}
+
+              <Stack direction="row">
+                <Typography sx={{ fontWeight: 500, fontSize: 18 }}>
+                  Trung bình{": "}
+                  <span style={{ fontWeight: 650 }}>2143 đ/quả</span>
+                  {/* <span>{"so với hôm qua"}</span> */}
+                </Typography>
+              </Stack>
+            </Box>
+          </BoxStatistic>
         </Box>
-      </Paper>
-    </Container>
+      </Box>
+    </>
   );
 };
 
@@ -133,3 +230,11 @@ export const eggPrices = [
     price: 2600,
   },
 ];
+
+const RowStatisticStyled = styled(Box)(({ theme }) => ({
+  paddingLeft: "2px",
+  paddingTop: "4px",
+  paddingBottom: "4px",
+  borderBottom: `1px solid #000000${OPACITY_TO_HEX["10"]}`,
+  [theme.breakpoints.up("sm")]: {},
+}));

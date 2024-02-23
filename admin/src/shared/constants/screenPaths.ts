@@ -42,6 +42,9 @@ const SCREEN_PATHS = {
     UPDATE_QUANTITY: `${SLUG.EGG}/cap-nhat-so-luong`,
     UPDATE_TYPE: `${SLUG.EGG}/cap-nhat-mix`,
   },
+  STATISTIC: {
+    USER: `${SLUG.STATISTIC}/nguoi-dung`,
+  },
 };
 
 export default SCREEN_PATHS;

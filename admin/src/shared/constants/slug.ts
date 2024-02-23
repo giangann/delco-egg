@@ -6,6 +6,7 @@ export const SLUG = {
   APPLICATION: "/don-dat-trung",
   USER: "/user",
   EGG: "/trung",
+  STATISTIC: "/thong-ke",
 };
 
 export const SUFFIX = {

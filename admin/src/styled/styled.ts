@@ -1,6 +1,7 @@
-import { Box, Button, Typography, styled } from "@mui/material";
+import { Box, Button, Stack, Typography, styled } from "@mui/material";
 import { Link } from "react-router-dom";
 import { GREEN } from "./color";
+import { OPACITY_TO_HEX } from "../shared/constants/common";
 
 // Text
 export const PageTitleText = styled(Typography)(({ theme }) => ({
@@ -26,14 +27,13 @@ export const InputLabelText = styled(Typography)(({ theme }) => ({
 export const InputErrorText = styled(Typography)(({ theme }) => ({
   fontWeight: 400,
   fontSize: 13,
-  marginTop:4,
-  marginLeft:4,
+  marginTop: 4,
+  marginLeft: 4,
   color: "red",
   [theme.breakpoints.up("sm")]: {
     fontSize: 15,
   },
 }));
-
 
 // Box
 export const BoxAbsoluteFull = styled(Box)({
@@ -68,9 +68,22 @@ export const AlignCenterBox = styled(Box)({
 export const FlexDefaultBox = styled(Box)({
   display: "flex",
 });
-
 export const BoxFlexEnd = styled(FlexDefaultBox)({
   justifyContent: "flex-end",
+});
+export const RowStatisticStyled = styled(Box)(({ theme }) => ({
+  paddingLeft: "2px",
+  paddingTop: "4px",
+  paddingBottom: "4px",
+  borderBottom: `1px solid #000000${OPACITY_TO_HEX["10"]}`,
+  [theme.breakpoints.up("sm")]: {},
+}));
+
+// Stack
+export const StackAlignCenterJustifySpaceBetween = styled(Stack)({
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
 });
 
 // Link
@@ -104,3 +117,4 @@ export const ButtonResponsive = styled(Button)(({ theme }) => ({
     padding: "6px 16px",
   },
 }));
+

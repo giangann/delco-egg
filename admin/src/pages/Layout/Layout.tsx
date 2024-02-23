@@ -7,6 +7,7 @@ import { getApi, putApi } from "../../lib/utils/fetch/fetchRequest";
 import { INoti } from "../../shared/types/noti";
 import { Footer } from "./Footer";
 import { Header } from "./Header/Header";
+import NavBarBottom from "./NavBarBottom";
 
 // WHEN HAVE TIME, PLEASE FIX THIS DIRTY CODE :((
 export const Layout = () => {
@@ -54,6 +55,7 @@ export const Layout = () => {
         <Header />
         <Outlet />
         <Footer />
+        <NavBarBottom/>
       </NotiContext.Provider>
     </SocketContext.Provider>
   );

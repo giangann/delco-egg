@@ -30,6 +30,7 @@ export interface IOrderRow {
   fullname: string;
   phone_number: string;
   company_name: string;
+  items?: IOrderItem[];
 }
 
 export interface IOrderUserInfo {

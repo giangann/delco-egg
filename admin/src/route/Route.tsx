@@ -14,6 +14,7 @@ import { UserInformation } from "../pages/UserManagement/UserInformation";
 import { UserList } from "../pages/UserManagement/UserList";
 import SCREEN_PATHS from "../shared/constants/screenPaths";
 import { ProtectedRoute } from "./ProtectedRoute";
+import { UserStatistic } from "../pages/Statistic/User/UserStatistic";
 
 const routes: RouteObject[] = [
   {
@@ -68,6 +69,10 @@ const routes: RouteObject[] = [
       {
         path: SCREEN_PATHS.MY_PROFILE,
         element: <MyProfile />,
+      },
+      {
+        path: SCREEN_PATHS.STATISTIC.USER,
+        element: <UserStatistic />,
       },
     ],
   },

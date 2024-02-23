@@ -1,3 +1,5 @@
+import { ORDER_STATUS } from "../shared/constants/orderStatus";
+
 export const BLACK = {
   900: "#333333",
 };
@@ -26,4 +28,29 @@ export enum COLOR_BG_STATUS {
   SUCCESS = Blue,
   REJECTED = Red,
   CANCELED = Purple,
+}
+
+export function colorByStatus(status: ORDER_STATUS) {
+  let color = "";
+  switch (status) {
+    case ORDER_STATUS.WAITING_APPROVAL:
+      color = COLOR_BG_STATUS.WAITING_APPROVAL;
+      break;
+    case ORDER_STATUS.ACCEPTED:
+      color = COLOR_BG_STATUS.ACCEPTED;
+      break;
+    case ORDER_STATUS.SUCCESS:
+      color = COLOR_BG_STATUS.SUCCESS;
+      break;
+    case ORDER_STATUS.REJECTED:
+      color = COLOR_BG_STATUS.REJECTED;
+      break;
+    case ORDER_STATUS.CANCELED:
+      color = COLOR_BG_STATUS.CANCELED;
+      break;
+
+    default:
+      break;
+  }
+  return color;
 }
