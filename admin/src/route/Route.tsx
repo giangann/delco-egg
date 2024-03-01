@@ -19,6 +19,7 @@ import { SLUG } from "../shared/constants/slug";
 import { Manage } from "../pages/Management/Manage";
 import { EggManage } from "../pages/Management/EggManage";
 import { Statistic } from "../pages/Statistic/Statistic";
+import { OrderStatistic } from "../pages/Statistic/Order/OrderStatistic";
 
 const routes: RouteObject[] = [
   {
@@ -94,10 +95,10 @@ const routes: RouteObject[] = [
       //   path: SCREEN_PATHS.STATISTIC.REVENUE,
       //   element: <UserStatistic />,
       // },
-      // {
-      //   path: SCREEN_PATHS.STATISTIC.APPLICATION,
-      //   element: <UserStatistic />,
-      // },
+      {
+        path: SCREEN_PATHS.STATISTIC.APPLICATION,
+        element: <OrderStatistic />,
+      },
       // {
       //   path: SCREEN_PATHS.STATISTIC.EGG,
       //   element: <UserStatistic />,
