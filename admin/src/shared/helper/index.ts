@@ -58,7 +58,31 @@ export function commonDate() {
   return { today, tomorrow, twoDaysAgo };
 }
 
-//
+export function commonDateWithMySqlFormat() {
+  const today = dayjs().format("YYYY-MM-DD");
+  const tomorrow = dayjs().add(1, "day").format("YYYY-MM-DD");
+  const twoDaysAgo = dayjs().add(2, "day").format("YYYY-MM-DD");
+  const threeDaysBefore = dayjs().subtract(3, "day").format("YYYY-MM-DD");
+  const sevenDaysBefore = dayjs().subtract(7, "day").format("YYYY-MM-DD");
+  const dateOneMonthBefore = dayjs().subtract(1, "month").format("YYYY-MM-DD");
+  return {
+    today,
+    tomorrow,
+    twoDaysAgo,
+    threeDaysBefore,
+    sevenDaysBefore,
+    dateOneMonthBefore,
+  };
+}
+
+// input date must have format: YYYY-MM-DD
+// so output will have format: DD/MM/YYYY
+export function dateMysqlToViewerFormat(mysqlFormatDate: string | null) {
+  if (!mysqlFormatDate) return "";
+  const splitedDate = mysqlFormatDate.split("-");
+  return splitedDate.reverse().join("/");
+}
+
 export function eggPriceInputToNumber(eggPrice: EggPrice) {
   if (Number.isNaN(parseInt(eggPrice as string))) {
     return null;
@@ -96,7 +120,7 @@ export function subtotal(items: IOrderItem[]) {
 }
 
 export function orderItemsToTotalMoney(items: IOrderItem[] | undefined) {
-  if (!items) return "null"
+  if (!items) return "null";
   let money = items
     .map(({ deal_price, quantity }) => deal_price * quantity)
     .reduce((sum, i) => sum + i, 0);

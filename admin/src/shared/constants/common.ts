@@ -102,7 +102,8 @@ export const OPACITY_TO_HEX = {
   100: "FF",
 };
 
-export const CONFIG ={
+export const CONFIG = {
   MY_SQL_DATE_FORMAT: "YYYY-MM-DD",
-  MY_SQL_TIME_FORMAT:'HH:mm:ss'
-}
+  MY_SQL_TIME_FORMAT: "HH:mm:ss",
+  VIEWR_DATE_FORMAT: "DD/MM/YYYY",
+};

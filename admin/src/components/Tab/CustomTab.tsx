@@ -39,14 +39,16 @@ export const CustomTab = forwardRef(
 const TabStyled = styled("div", {
   shouldForwardProp: (props) => props !== "active",
 })<{ active: boolean }>(({ active, theme }) => ({
+  cursor:'pointer',
   opacity: 1,
-  padding: "3px 14px",
+  padding: "3px 10px",
   [theme.breakpoints.up("sm")]: {},
 }));
 
 const TabText = styled(Typography, {
   shouldForwardProp: (props) => props !== "active",
 })<{ active: boolean }>(({ active, theme }) => ({
+  fontSize:18,
   fontWeight: active ? 550 : 450,
   opacity: active ? 1 : 0.8,
   [theme.breakpoints.up("sm")]: {},

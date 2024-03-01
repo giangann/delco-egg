@@ -22,8 +22,8 @@ export const BoxStatisticWithTimeRange = ({
   return (
     <BoxWrapperStyled>
       <Box>
-        <StackAlignCenterJustifySpaceBetween>
-          <Stack direction="column">
+        <StackAlignCenterJustifySpaceBetween px={1.25}>
+          <Stack>
             {typeof title == "string" ? (
               <Typography sx={{ fontWeight: 600, fontSize: 22 }}>
                 {title}
@@ -37,14 +37,15 @@ export const BoxStatisticWithTimeRange = ({
         </StackAlignCenterJustifySpaceBetween>
         {chooseTimeElement}
       </Box>
-      {children}
+      <Box px={1.25}>{children}</Box>
     </BoxWrapperStyled>
   );
 };
 
 const BoxWrapperStyled = styled(Box)(({ theme }) => ({
   marginTop: "16px",
-  padding: "10px",
+  paddingTop: "10px",
+  paddingBottom: "10px",
   backgroundColor: `${GREEN["500"]}${OPACITY_TO_HEX["20"]}`,
   [theme.breakpoints.up("sm")]: {},
 }));
