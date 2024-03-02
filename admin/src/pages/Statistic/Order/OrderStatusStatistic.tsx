@@ -8,8 +8,9 @@ import { TimeRangeTabs } from "./TimeRangeTabs";
 import { commonDateWithMySqlFormat } from "../../../shared/helper";
 import { Box, Typography } from "@mui/material";
 import { alignCenterSx } from "../../../styled/styled";
+import { OrderStatusStatisticDoughnut } from "./OrderStatusStatisticDoughnut";
 
-export const OrderStatisticTimePanel = () => {
+export const OrderStatusStatistic = () => {
   const defaultDateRange = {
     startDate: commonDateWithMySqlFormat().today,
     endDate: commonDateWithMySqlFormat().today,
@@ -33,7 +34,7 @@ export const OrderStatisticTimePanel = () => {
 
   return (
     <BoxStatisticWithTimeRange
-      title="Order theo mốc"
+      title="Thống kê trạng thái đơn hàng"
       chooseTimeElement={<TimeRangeTabs onChange={onChange} />}
     >
       <>
@@ -43,8 +44,9 @@ export const OrderStatisticTimePanel = () => {
           isActive={isChooseDateRangeActive}
         />
 
+      {/* Doughnut bar with 5 fields of status */}
         <Box sx={{ ...alignCenterSx, my: 4 }}>
-          <Typography> some things </Typography>
+          <OrderStatusStatisticDoughnut data={[]}/>
         </Box>
       </>
     </BoxStatisticWithTimeRange>
