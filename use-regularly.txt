@@ -16,5 +16,7 @@ const TriangleByBorder = styled(Box, {
 ------------------------------------------------------LIST BUG----------------------------------------------------------
 1. [Admin] /thong-ke/don-dat-trung: DatePicker => don't display current date choose
 2. [Client] 'tao moi don hang': chua validate egg quantity > in stock egg quantity
-			
+3. [Admin + CLient] 'goBack từ detail về list': không phải lúc nào cũng đi từ list => detail
+nên cần check xem: nếu từ tên miền khác hoặc list đến detail thì goback về list.
+                    nếu từ cùng tên miền nhưng k phải list đến detail thì goback -1
 

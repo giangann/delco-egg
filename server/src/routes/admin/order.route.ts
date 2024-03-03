@@ -12,5 +12,9 @@ orderRouter.get(
   '/statistic/by-status',
   orderController.orderStatisticByStatus,
 );
+orderRouter.get(
+  '/statistic/by-total',
+  orderController.orderStatisticByTotal,
+);
 
 export default orderRouter;

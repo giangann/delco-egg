@@ -3,6 +3,8 @@ import { IUpdateEggPriceQty } from 'egg-price-qty.interface';
 import { Response } from 'express';
 import httpStatusCodes from 'http-status-codes';
 import { IOrderDetail } from 'order-detail.interface';
+import { IOrderRecord } from 'order.interface';
+
 import {
   ICreateOrder,
   IOrderDetailParams,
@@ -252,7 +254,6 @@ const update: IController = async (req, res) => {
 
 const orderStatisticByStatus: IController = async (req, res) => {
   try {
-    console.log(req, Object.keys(req), req.body, req.params, req.query)
     const orderListByTimeRange = await orderService.list({
       limit: req.body.limit,
       page: req.body.page,
@@ -290,6 +291,48 @@ const orderStatisticByStatus: IController = async (req, res) => {
   }
 };
 
+const orderStatisticByTotal: IController = async (req, res) => {
+  try {
+    const successOrderListByTimeRange = await orderService.list({
+      limit: req.body.limit,
+      page: req.body.page,
+      startDate: req.query.start_date as string,
+      endDate: req.query.end_date as string,
+      status: application.status.SUCCESS,
+    });
+
+    const statisticData = successOrderListByTimeRange.map((order) => {
+      return {
+        ...order,
+        total: totalByOrderItems(order.items),
+      };
+    });
+    const sortedData = sortOrderByTotal(statisticData)
+
+    ApiResponse.result(res, sortedData, httpStatusCodes.OK);
+  } catch (e) {
+    ApiResponse.error(res, httpStatusCodes.BAD_REQUEST, e);
+  }
+};
+
+// helper function
+function totalByOrderItems(orderItems: IOrderDetail[]) {
+  let total = 0;
+  for (let item of orderItems) {
+    let totalOfItem = item.quantity * item.deal_price;
+    total += totalOfItem;
+  }
+  return total;
+}
+
+// helper function
+interface IOrderStatistic extends IOrderRecord{
+  total: number
+}
+function sortOrderByTotal (orderList: IOrderStatistic[]){
+  let sortedOrderList = orderList.sort((a,b)=>b.total - a.total)
+  return sortedOrderList
+}
 export default {
   list,
   detail,
@@ -297,4 +340,5 @@ export default {
   updateStatus,
   update,
   orderStatisticByStatus,
+  orderStatisticByTotal,
 };

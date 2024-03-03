@@ -1,11 +1,11 @@
 import { OrderStatusStatistic } from "./OrderStatusStatistic";
-import { OrderStatisticTimeRange } from "./OrderStatisticTimeRange";
+import { OrderTotalStatistic } from "./OrderTotalStatistic";
 
 export const OrderStatistic = () => {
   return (
     <div>
-      <OrderStatisticTimeRange />
       <OrderStatusStatistic />
+      <OrderTotalStatistic/>
     </div>
   );
 };

@@ -13,7 +13,7 @@ import { BaseEntity } from '../base/base.entity';
 import { User } from '../user/user.entity';
 import { OrderDetail } from '../order-detail/order-detail.entity';
 import { OrderNoti } from '../order-notification/order-notification.entity';
-@Entity('order', { orderBy: { createdAt: 'DESC' } })
+@Entity('order', { orderBy: { createdAt: 'ASC' } })
 export class Order extends BaseEntity {
   // id, user_id, status, date, time, reason, note
 

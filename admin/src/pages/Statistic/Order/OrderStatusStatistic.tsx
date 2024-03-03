@@ -11,11 +11,11 @@ import { alignCenterSx } from "../../../styled/styled";
 import { OrderStatusStatisticDoughnut } from "./OrderStatusStatisticDoughnut";
 import { getApi } from "../../../lib/utils/fetch/fetchRequest";
 
+export const defaultDateRange = {
+  startDate: commonDateWithMySqlFormat().today,
+  endDate: commonDateWithMySqlFormat().today,
+};
 export const OrderStatusStatistic = () => {
-  const defaultDateRange = {
-    startDate: commonDateWithMySqlFormat().today,
-    endDate: commonDateWithMySqlFormat().today,
-  };
   const [dateRange, setDateRange] = useState<IDateRange>(defaultDateRange);
   const [dataSets, setDataSets] = useState<number[]>([]);
   const [isChooseDateRangeActive, setIsChooseDateRangeActive] = useState(false);
@@ -42,12 +42,12 @@ export const OrderStatusStatistic = () => {
 
       if (response.success) setDataSets(response.data);
     }
-    fetchStatistic()
+    fetchStatistic();
   }, [dateRange]);
 
   return (
     <BoxStatisticWithTimeRange
-      title="Thống kê trạng thái đơn hàng"
+      title="Theo trạng thái đơn hàng"
       chooseTimeElement={<TimeRangeTabs onChange={onChange} />}
     >
       <>

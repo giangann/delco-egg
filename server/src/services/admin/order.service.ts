@@ -17,13 +17,16 @@ const list = async (params: IOrderQueryParams) => {
 
   const startDate = params.startDate;
   const endDate = params.endDate;
-
-  console.log('startDate', startDate, 'endDate', endDate);
   if (startDate && endDate) {
-    orderRepo.andWhere('order.createdAt >= :startDate', { startDate });
-    orderRepo.andWhere('order.createdAt < :endDate + interval 1 day', {
+    orderRepo.andWhere('order.date >= :startDate', { startDate });
+    orderRepo.andWhere('order.date < :endDate + interval 1 day', {
       endDate,
     });
+  }
+
+  const orderStatus = params.status;
+  if (orderStatus) {
+    orderRepo.andWhere('order.status = :orderStatus', { orderStatus });
   }
 
   const listOrders = await orderRepo.getMany();
