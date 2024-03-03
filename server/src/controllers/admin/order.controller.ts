@@ -166,7 +166,7 @@ const updateStatus: IController = async (req, res) => {
 
     // Web-socket noti service:
     await webSocketService.sendNotiToUser(thisOrder.user_id, id);
-    
+
     //OTHER NOTIFICATION SERVICE LIKE: ZALO-OA
 
     ApiResponse.result(res, updateData, httpStatusCodes.OK);
@@ -250,4 +250,51 @@ const update: IController = async (req, res) => {
   }
 };
 
-export default { list, detail, create, updateStatus, update };
+const orderStatisticByStatus: IController = async (req, res) => {
+  try {
+    console.log(req, Object.keys(req), req.body, req.params, req.query)
+    const orderListByTimeRange = await orderService.list({
+      limit: req.body.limit,
+      page: req.body.page,
+      startDate: req.query.start_date as string,
+      endDate: req.query.end_date as string,
+    });
+
+    let dataSets = [0, 0, 0, 0, 0];
+    orderListByTimeRange.forEach((order) => {
+      switch (order.status) {
+        case application.status.ACCEPTED:
+          dataSets[0] += 1;
+          break;
+        case application.status.REJECTED:
+          dataSets[1] += 1;
+          break;
+        case application.status.SUCCESS:
+          dataSets[2] += 1;
+          break;
+        case application.status.CANCELED:
+          dataSets[3] += 1;
+          break;
+        case application.status.WAITING_APPROVAL:
+          dataSets[4] += 1;
+          break;
+
+        default:
+          break;
+      }
+    });
+
+    ApiResponse.result(res, dataSets, httpStatusCodes.OK);
+  } catch (e) {
+    ApiResponse.error(res, httpStatusCodes.BAD_REQUEST, e);
+  }
+};
+
+export default {
+  list,
+  detail,
+  create,
+  updateStatus,
+  update,
+  orderStatisticByStatus,
+};

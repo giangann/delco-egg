@@ -15,6 +15,17 @@ const list = async (params: IOrderQueryParams) => {
   orderRepo.leftJoinAndSelect('order.items', 'item');
   orderRepo.leftJoinAndSelect('order.user', 'user');
 
+  const startDate = params.startDate;
+  const endDate = params.endDate;
+
+  console.log('startDate', startDate, 'endDate', endDate);
+  if (startDate && endDate) {
+    orderRepo.andWhere('order.createdAt >= :startDate', { startDate });
+    orderRepo.andWhere('order.createdAt < :endDate + interval 1 day', {
+      endDate,
+    });
+  }
+
   const listOrders = await orderRepo.getMany();
 
   return listOrders.map((order) => {

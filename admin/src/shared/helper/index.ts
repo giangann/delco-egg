@@ -126,3 +126,10 @@ export function orderItemsToTotalMoney(items: IOrderItem[] | undefined) {
     .reduce((sum, i) => sum + i, 0);
   return numberWithComma(money);
 }
+
+export function sumOfNumberArr(numberArr: number[]) {
+  let initialValue = 0;
+  let res = numberArr.reduce((prev, curr) => prev + curr, initialValue);
+
+  return res;
+}

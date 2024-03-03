@@ -12,3 +12,9 @@ const TriangleByBorder = styled(Box, {
   borderLeft: '1.46rem solid transparent',
   ...generateDefectiveTriangleByPosition(defectivePosition),
 }));
+
+------------------------------------------------------LIST BUG----------------------------------------------------------
+1. [Admin] /thong-ke/don-dat-trung: DatePicker => don't display current date choose
+2. [Client] 'tao moi don hang': chua validate egg quantity > in stock egg quantity
+			
+

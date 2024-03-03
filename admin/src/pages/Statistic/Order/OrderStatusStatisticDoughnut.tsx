@@ -1,5 +1,5 @@
 type ComponentProps = {
-  data: any[];
+  data: number[];
 };
 
 import {
@@ -14,12 +14,12 @@ import { ORDER_STATUS_LABEL } from "../../../shared/constants/orderStatus";
 import faker from "faker";
 import { COLOR_BG_STATUS } from "../../../styled/color";
 import { OPACITY_TO_HEX } from "../../../shared/constants/common";
+import { sumOfNumberArr } from "../../../shared/helper";
+import { Typography } from "@mui/material";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export const OrderStatusStatisticDoughnut = ({
-  data: realData,
-}: ComponentProps) => {
+export const OrderStatusStatisticDoughnut = ({ data }: ComponentProps) => {
   const labels = [
     ORDER_STATUS_LABEL.ACCEPTED,
     ORDER_STATUS_LABEL.REJECTED,
@@ -32,7 +32,8 @@ export const OrderStatusStatisticDoughnut = ({
     datasets: [
       {
         label: "Số đơn",
-        data: labels.map(() => faker.datatype.number({ min: 2, max: 50 })),
+        data:
+          data || labels.map(() => faker.datatype.number({ min: 2, max: 50 })),
         backgroundColor: [
           `${COLOR_BG_STATUS.ACCEPTED}${OPACITY_TO_HEX["20"]}`,
           `${COLOR_BG_STATUS.REJECTED}${OPACITY_TO_HEX["20"]}`,
@@ -51,7 +52,15 @@ export const OrderStatusStatisticDoughnut = ({
       },
     ],
   };
-  return <Doughnut data={orderData} options={options} />;
+  return (
+    <>
+      {sumOfNumberArr(data) == 0 ? (
+        <Typography fontSize = {18} textAlign={'center'} color={'red'}>{"Không có đơn hàng trong khoảng thời gian"}</Typography>
+      ) : (
+        <Doughnut data={orderData} options={options} />
+      )}
+    </>
+  );
 };
 
 const options: ChartOptions<"doughnut"> = {

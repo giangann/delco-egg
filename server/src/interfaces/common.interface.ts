@@ -6,6 +6,11 @@ export interface IDetailById {
   id: number;
 }
 
+export interface IBaseStatisticParams {
+  startDate: Date | string;
+  endDate: Date | string;
+}
+
 export interface IBaseQueryParams {
   limit: number;
   page: number;

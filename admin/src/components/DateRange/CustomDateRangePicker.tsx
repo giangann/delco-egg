@@ -7,8 +7,8 @@ import { dateMysqlToViewerFormat } from "../../shared/helper";
 import { IcBaselineArrowDropDown } from "../../shared/icons/Icon";
 
 export interface IDateRange {
-  startDate: string | null;
-  endDate: string | null;
+  startDate: string;
+  endDate: string;
 }
 type CustomDateRangePickerProps = {
   onChange: (newValue: IDateRange) => void;
@@ -82,6 +82,6 @@ export const CustomDateRangePicker = ({
 const TextDate = styled(Typography)(({ theme }) => ({
   fontSize: 17,
   fontWeight: 500,
-  letterSpacing:'1px',
+  letterSpacing: "1px",
   [theme.breakpoints.up("sm")]: {},
 }));

@@ -1,7 +1,11 @@
 import { IOptionalUpdateById } from 'generics.type';
 import { IOrderDetail } from 'order-detail.interface';
 import { OrderDetail } from '../entities/order-detail/order-detail.entity';
-import { IBaseQueryParams, IDetailById } from 'common.interface';
+import {
+  IBaseQueryParams,
+  IBaseStatisticParams,
+  IDetailById,
+} from 'common.interface';
 
 export interface IOrderRecord {
   id: number;
@@ -34,6 +38,7 @@ export type IUpdateStatusOrder = {
 
 export interface IOrderQueryParams
   extends IBaseQueryParams,
+    Partial<IBaseStatisticParams>,
     Partial<ICreateOrder> {}
 
 export interface IOrderDetailParams extends IDetailById {

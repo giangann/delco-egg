@@ -8,5 +8,9 @@ orderRouter.get('/:id', orderController.detail);
 orderRouter.post('/', orderController.create);
 orderRouter.put('/:id', orderController.update);
 orderRouter.put('/:id/update-status', orderController.updateStatus);
+orderRouter.get(
+  '/statistic/by-status',
+  orderController.orderStatisticByStatus,
+);
 
 export default orderRouter;
