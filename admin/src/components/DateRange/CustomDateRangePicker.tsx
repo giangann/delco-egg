@@ -1,20 +1,22 @@
 import { Box, Menu, Stack, Typography, styled } from "@mui/material";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { MouseEvent, useState } from "react";
 import { CONFIG } from "../../shared/constants/common";
-import { dateMysqlToViewerFormat } from "../../shared/helper";
 import { IcBaselineArrowDropDown } from "../../shared/icons/Icon";
 
 export interface IDateRange {
-  startDate: string;
-  endDate: string;
+  startDate: Dayjs;
+  endDate: Dayjs;
 }
 type CustomDateRangePickerProps = {
   onChange: (newValue: IDateRange) => void;
   dateRange: IDateRange;
   isActive?: boolean;
 };
+
+const attributeName = "data-date-range-type";
+
 export const CustomDateRangePicker = ({
   onChange,
   dateRange,
@@ -27,15 +29,17 @@ export const CustomDateRangePicker = ({
     setAnchorEl(event.currentTarget);
   };
 
-  const onDateChange = (newValue: Date | string) => {
-    let newDateValue = dayjs(newValue).format(CONFIG.MY_SQL_DATE_FORMAT);
+  const onDateChange = (newValue: Dayjs) => {
     // check if data-* attr 'start-date' or 'end-date'
-    let attributeName = "data-date-range-type";
     if (anchorEl?.getAttribute(attributeName) === "start-date") {
-      onChange({ ...dateRange, startDate: newDateValue });
+      onChange({ ...dateRange, startDate: newValue });
     }
     if (anchorEl?.getAttribute(attributeName) === "end-date") {
-      onChange({ ...dateRange, endDate: newDateValue });
+      let newStartDate = dateRange.startDate;
+      if (dateRange.startDate > newValue) {
+        newStartDate = newValue;
+      }
+      onChange({ ...dateRange, endDate: newValue, startDate: newStartDate });
     }
 
     setAnchorEl(null);
@@ -54,7 +58,9 @@ export const CustomDateRangePicker = ({
         data-date-range-type="start-date"
         onClick={isActive ? openDatePicker : () => {}}
       >
-        <TextDate>{dateMysqlToViewerFormat(dateRange.startDate)}</TextDate>
+        <TextDate>
+          {dayjs(dateRange.startDate).format(CONFIG.VIEWR_DATE_FORMAT)}
+        </TextDate>
       </Box>
 
       <div>{" -> "}</div>
@@ -65,7 +71,9 @@ export const CustomDateRangePicker = ({
         data-date-range-type="end-date"
         onClick={isActive ? openDatePicker : () => {}}
       >
-        <TextDate>{dateMysqlToViewerFormat(dateRange.endDate)}</TextDate>
+        <TextDate>
+          {dayjs(dateRange.endDate).format(CONFIG.VIEWR_DATE_FORMAT)}
+        </TextDate>{" "}
       </Box>
       {isActive && <IcBaselineArrowDropDown />}
       <Menu
@@ -73,7 +81,19 @@ export const CustomDateRangePicker = ({
         anchorEl={anchorEl}
         onClose={() => setAnchorEl(null)}
       >
-        <DateCalendar onChange={onDateChange} maxDate={dayjs()} />
+        <DateCalendar
+          value={
+            anchorEl?.getAttribute(attributeName) === "start-date"
+              ? dayjs(dateRange.startDate)
+              : dayjs(dateRange.endDate)
+          }
+          onChange={onDateChange}
+          maxDate={
+            anchorEl?.getAttribute(attributeName) === "start-date"
+              ? dayjs(dateRange.endDate)
+              : dayjs()
+          }
+        />
       </Menu>
     </Stack>
   );

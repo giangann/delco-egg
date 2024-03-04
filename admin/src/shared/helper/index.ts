@@ -48,7 +48,7 @@ export function toDayOrTomorrowOrYesterday(day: Date | string) {
   if (isToday) return "Hôm nay";
   if (isTomorrow) return "Ngày mai";
   if (isYesterday) return "Hôm qua";
-  return false;
+  return dateMysqlToViewerFormat(day as string);
 }
 
 export function commonDate() {

@@ -7,11 +7,13 @@ import {
   IcOutlineNavigateNext,
 } from "../../shared/icons/Icon";
 import {
+  RowStatisticStyled,
   StackAlignCenterJustifySpaceBetween,
   alignCenterSx,
 } from "../../styled/styled";
 import { BoxAnnotate } from "../../components/Box/BoxAnnotate";
 import { SLUG } from "../../shared/constants/slug";
+import { TodayOverview } from "./TodayOverview";
 
 export const Home = () => {
   return (
@@ -25,49 +27,7 @@ export const Home = () => {
           </Typography>
 
           {/* tổng quan: doanh thu + số trứng xuất + trung bình doanh thu/quả */}
-          <BoxStatistic title="Tổng quan">
-            <Box paddingLeft={0.25} marginTop={1.25}>
-              <RowStatisticStyled>
-                <StackAlignCenterJustifySpaceBetween>
-                  <Typography sx={{ fontWeight: 500, fontSize: 18 }}>
-                    Tổng doanh thu{": "}
-                    <span style={{ fontWeight: 650 }}>124,678,993 đ</span>
-                  </Typography>
-                  <IcOutlineNavigateNext />
-                </StackAlignCenterJustifySpaceBetween>
-              </RowStatisticStyled>
-
-              <RowStatisticStyled>
-                {" "}
-                <StackAlignCenterJustifySpaceBetween>
-                  <Typography sx={{ fontWeight: 500, fontSize: 18 }}>
-                    Tổng trứng xuất{": "}
-                    <span style={{ fontWeight: 650 }}>57,000 </span>quả
-                  </Typography>
-                  <IcOutlineNavigateNext />
-                </StackAlignCenterJustifySpaceBetween>{" "}
-              </RowStatisticStyled>
-
-              <Stack direction="row">
-                <Typography sx={{ fontWeight: 500, fontSize: 18 }}>
-                  Trung bình{": "}
-                  <span style={{ fontWeight: 650 }}>2143 đ/quả</span>
-                  {/* <span>{"so với hôm qua"}</span> */}
-                </Typography>
-                <Box sx={{ ...alignCenterSx }}>
-                  <Typography
-                    style={{ marginLeft: 8, fontWeight: 500, color: "green" }}
-                  >
-                    35đ
-                  </Typography>
-                  <IcBaselineArrowDropUp
-                    color="green"
-                    style={{ fontSize: 25 }}
-                  />
-                </Box>
-              </Stack>
-            </Box>
-          </BoxStatistic>
+          <TodayOverview/>
 
           {/* giá các mix */}
           <BoxStatistic
@@ -224,10 +184,3 @@ export const eggPrices = [
   },
 ];
 
-const RowStatisticStyled = styled(Box)(({ theme }) => ({
-  paddingLeft: "2px",
-  paddingTop: "4px",
-  paddingBottom: "4px",
-  borderBottom: `1px solid #000000${OPACITY_TO_HEX["10"]}`,
-  [theme.breakpoints.up("sm")]: {},
-}));

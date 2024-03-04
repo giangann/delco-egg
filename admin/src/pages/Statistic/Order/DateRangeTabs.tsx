@@ -1,9 +1,9 @@
 import { Box } from "@mui/material";
+import dayjs from "dayjs";
 import { CustomTab } from "../../../components/Tab/CustomTab";
 import { CustomTabs } from "../../../components/Tab/CustomTabs";
-import { commonDateWithMySqlFormat } from "../../../shared/helper";
 
-export const TimeRangeTabs = ({
+export const DateRangeTabs = ({
   onChange,
 }: {
   onChange: (newValue: any) => void;
@@ -15,32 +15,32 @@ export const TimeRangeTabs = ({
           <CustomTab
             tabIndex={0}
             value={{
-              startDate: commonDateWithMySqlFormat().today,
-              endDate: commonDateWithMySqlFormat().today,
+              startDate: dayjs(),
+              endDate: dayjs(),
             }}
             label="H.nay"
           />
           <CustomTab
             tabIndex={1}
             value={{
-              startDate: commonDateWithMySqlFormat().threeDaysBefore,
-              endDate: commonDateWithMySqlFormat().today,
+              startDate: dayjs().subtract(1, "day"),
+              endDate: dayjs(),
             }}
-            label="3 ngày"
+            label="H.qua"
           />
           <CustomTab
             tabIndex={2}
             value={{
-              startDate: commonDateWithMySqlFormat().sevenDaysBefore,
-              endDate: commonDateWithMySqlFormat().today,
+              startDate: dayjs().subtract(1, "week"),
+              endDate: dayjs(),
             }}
             label="1 tuần"
           />
           <CustomTab
             tabIndex={3}
             value={{
-              startDate: commonDateWithMySqlFormat().dateOneMonthBefore,
-              endDate: commonDateWithMySqlFormat().today,
+              startDate: dayjs().subtract(1, "month"),
+              endDate: dayjs(),
             }}
             label="1 tháng"
           />

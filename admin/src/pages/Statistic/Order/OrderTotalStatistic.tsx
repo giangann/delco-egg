@@ -13,10 +13,12 @@ import {
   StackAlignCenterJustifySpaceBetween,
 } from "../../../styled/styled";
 import { defaultDateRange } from "./OrderStatusStatistic";
-import { TimeRangeTabs } from "./TimeRangeTabs";
+import { DateRangeTabs } from "./DateRangeTabs";
 import { numberWithComma } from "../../../shared/helper";
 import { useNavigate } from "react-router-dom";
 import SCREEN_PATHS from "../../../shared/constants/screenPaths";
+import dayjs from "dayjs";
+import { CONFIG } from "../../../shared/constants/common";
 
 interface IOrderStatistic extends IOrderRow {
   total: number;
@@ -44,8 +46,10 @@ export const OrderTotalStatistic = () => {
       const response = await getApi<IOrderStatistic[]>(
         "order/statistic/by-total",
         {
-          start_date: dateRange.startDate,
-          end_date: dateRange.endDate,
+          start_date: dayjs(dateRange.startDate).format(
+            CONFIG.MY_SQL_DATE_FORMAT
+          ),
+          end_date: dayjs(dateRange.endDate).format(CONFIG.MY_SQL_DATE_FORMAT),
         }
       );
       if (response.success) setOrderList(response.data);
@@ -55,7 +59,7 @@ export const OrderTotalStatistic = () => {
   return (
     <BoxStatisticWithTimeRange
       title="Theo giá trị đơn hàng"
-      chooseTimeElement={<TimeRangeTabs onChange={onChange} />}
+      chooseTimeElement={<DateRangeTabs onChange={onChange} />}
     >
       <>
         <CustomDateRangePicker

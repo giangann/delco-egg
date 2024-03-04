@@ -29,6 +29,11 @@ const list = async (params: IOrderQueryParams) => {
     orderRepo.andWhere('order.status = :orderStatus', { orderStatus });
   }
 
+  const date = params.date;
+  if (date) {
+    orderRepo.andWhere('order.date = :date', { date });
+  }
+
   const listOrders = await orderRepo.getMany();
 
   return listOrders.map((order) => {

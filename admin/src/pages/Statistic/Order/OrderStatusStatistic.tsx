@@ -1,19 +1,20 @@
+import { Box } from "@mui/material";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { BoxStatisticWithTimeRange } from "../../../components/Box/BoxStatisticWithTimeRange";
 import {
   CustomDateRangePicker,
   IDateRange,
 } from "../../../components/DateRange/CustomDateRangePicker";
-import { TimeRangeTabs } from "./TimeRangeTabs";
-import { commonDateWithMySqlFormat } from "../../../shared/helper";
-import { Box, Typography } from "@mui/material";
-import { alignCenterSx } from "../../../styled/styled";
-import { OrderStatusStatisticDoughnut } from "./OrderStatusStatisticDoughnut";
 import { getApi } from "../../../lib/utils/fetch/fetchRequest";
+import { CONFIG } from "../../../shared/constants/common";
+import { alignCenterSx } from "../../../styled/styled";
+import { DateRangeTabs } from "./DateRangeTabs";
+import { OrderStatusStatisticDoughnut } from "./OrderStatusStatisticDoughnut";
 
 export const defaultDateRange = {
-  startDate: commonDateWithMySqlFormat().today,
-  endDate: commonDateWithMySqlFormat().today,
+  startDate: dayjs(),
+  endDate: dayjs(),
 };
 export const OrderStatusStatistic = () => {
   const [dateRange, setDateRange] = useState<IDateRange>(defaultDateRange);
@@ -36,8 +37,10 @@ export const OrderStatusStatistic = () => {
   useEffect(() => {
     async function fetchStatistic() {
       const response = await getApi<number[]>("order/statistic/by-status", {
-        start_date: dateRange.startDate,
-        end_date: dateRange.endDate,
+        start_date: dayjs(dateRange.startDate).format(
+          CONFIG.MY_SQL_DATE_FORMAT
+        ),
+        end_date: dayjs(dateRange.endDate).format(CONFIG.MY_SQL_DATE_FORMAT),
       });
 
       if (response.success) setDataSets(response.data);
@@ -48,7 +51,7 @@ export const OrderStatusStatistic = () => {
   return (
     <BoxStatisticWithTimeRange
       title="Theo trạng thái đơn hàng"
-      chooseTimeElement={<TimeRangeTabs onChange={onChange} />}
+      chooseTimeElement={<DateRangeTabs onChange={onChange} />}
     >
       <>
         <CustomDateRangePicker

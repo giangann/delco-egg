@@ -6,10 +6,15 @@ export interface IDetailById {
   id: number;
 }
 
-export interface IBaseStatisticParams {
+export interface IDate {
+  date: Date | string;
+}
+
+export interface IDateRange {
   startDate: Date | string;
   endDate: Date | string;
 }
+export interface IBaseStatisticParams extends Partial<IDateRange> {}
 
 export interface IBaseQueryParams {
   limit: number;
