@@ -10,8 +10,8 @@ const todayOverview: IController = async (req, res) => {
   try {
     let yesterday = req.query.yesterday as string;
     let orderListParams = {
-      limit: req.body.limit,
-      page: req.body.page,
+      limit: Number(req.query.limit as string),
+      page: Number(req.query.page as string),
       date: req.query.date as string,
       status: application.status.SUCCESS,
     };

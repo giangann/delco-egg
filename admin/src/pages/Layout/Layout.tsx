@@ -5,7 +5,6 @@ import { SocketContext } from "../../contexts/SocketContext";
 import useAuth from "../../hooks/useAuth";
 import { getApi, putApi } from "../../lib/utils/fetch/fetchRequest";
 import { INoti } from "../../shared/types/noti";
-import { Footer } from "./Footer";
 import { Header } from "./Header/Header";
 import NavBarBottom from "./NavBarBottom";
 
@@ -54,7 +53,6 @@ export const Layout = () => {
       >
         <Header />
         <Outlet />
-        <Footer />
         <NavBarBottom/>
       </NotiContext.Provider>
     </SocketContext.Provider>

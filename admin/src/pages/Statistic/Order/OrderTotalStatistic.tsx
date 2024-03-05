@@ -50,6 +50,7 @@ export const OrderTotalStatistic = () => {
             CONFIG.MY_SQL_DATE_FORMAT
           ),
           end_date: dayjs(dateRange.endDate).format(CONFIG.MY_SQL_DATE_FORMAT),
+          limit: `${3}`,
         }
       );
       if (response.success) setOrderList(response.data);
@@ -58,7 +59,7 @@ export const OrderTotalStatistic = () => {
   }, [dateRange]);
   return (
     <BoxStatisticWithTimeRange
-      title="Theo giá trị đơn hàng"
+      title="Top đơn hàng nhiều tiền"
       chooseTimeElement={<DateRangeTabs onChange={onChange} />}
     >
       <>

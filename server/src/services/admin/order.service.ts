@@ -34,6 +34,11 @@ const list = async (params: IOrderQueryParams) => {
     orderRepo.andWhere('order.date = :date', { date });
   }
 
+  const limit = params.limit;
+  if (limit) {
+    orderRepo.limit(limit);
+  }
+
   const listOrders = await orderRepo.getMany();
 
   return listOrders.map((order) => {

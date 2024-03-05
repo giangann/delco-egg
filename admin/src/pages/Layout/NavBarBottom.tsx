@@ -1,17 +1,13 @@
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import FolderIcon from "@mui/icons-material/Folder";
-import RestoreIcon from "@mui/icons-material/Restore";
+import HomeIcon from "@mui/icons-material/Home";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import { Paper, styled } from "@mui/material";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import * as React from "react";
-import { GREEN } from "../../styled/color";
-import HomeIcon from "@mui/icons-material/Home";
-import AnalyticsIcon from "@mui/icons-material/Analytics";
-import ListAltIcon from "@mui/icons-material/ListAlt";
-import QueryStatsIcon from "@mui/icons-material/QueryStats";
-import { SLUG } from "../../shared/constants/slug";
 import { useNavigate } from "react-router-dom";
+import { SLUG } from "../../shared/constants/slug";
+import { GREEN } from "../../styled/color";
 export default function NavBarBottom() {
   const [value, setValue] = React.useState("/");
   const navigate = useNavigate();
@@ -22,11 +18,11 @@ export default function NavBarBottom() {
 
   return (
     <Paper
-      sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
+      sx={{ position: "fixed", bottom: 0, left: 0, width:'100vw' }}
       elevation={3}
     >
       <BottomNavigation
-        sx={{ width: "100vw", backgroundColor: GREEN["500"], paddingY: 1 }}
+        sx={{ width: "100%", backgroundColor: GREEN["500"], paddingY: 1 }}
         value={value}
         showLabels
         onChange={handleChange}

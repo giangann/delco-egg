@@ -294,8 +294,8 @@ const orderStatisticByStatus: IController = async (req, res) => {
 const orderStatisticByTotal: IController = async (req, res) => {
   try {
     const successOrderListByTimeRange = await orderService.list({
-      limit: req.body.limit,
-      page: req.body.page,
+      limit: Number(req.query.limit as string),
+      page: Number(req.query.page as string),
       startDate: req.query.start_date as string,
       endDate: req.query.end_date as string,
       status: application.status.SUCCESS,

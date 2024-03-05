@@ -13,6 +13,7 @@ import {
   StackAlignCenterJustifySpaceBetween,
   alignCenterSx,
 } from "../../styled/styled";
+import { PageMobile } from "../../components/Page/PageMobile";
 
 type EggOrderListMobileProps = {
   myOrderList: IOrderRow[];
@@ -28,9 +29,7 @@ export const EggOrderListMobile = ({
       {!myOrderList || !myOrderList.length ? (
         <NoOrder />
       ) : (
-        <Box>
-          <Typography>Egg order list</Typography>
-
+        <PageMobile title="Danh sách đơn hàng">
           {myOrderList.map((order) => (
             <BoxWrapperOrder
               bgColor={`${colorByStatus(order.status)}${OPACITY_TO_HEX["10"]}`}
@@ -114,7 +113,7 @@ export const EggOrderListMobile = ({
               </Box>
             </BoxWrapperOrder>
           ))}
-        </Box>
+        </PageMobile>
       )}
     </>
   );
