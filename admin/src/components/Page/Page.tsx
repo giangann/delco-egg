@@ -21,7 +21,7 @@ export const Page = ({ title, children, onGoBack, onCreate }: PageProps) => {
   const { isMobile } = useDevice();
   return (
     <Container sx={{ paddingX: { xs: 1, sm: 3 } }}>
-      <Paper elevation={0} sx={{ paddingY: { xs: 0, sm: 2 }, mt: 3, mb:1.5}}>
+      <Paper elevation={0} sx={{ paddingY: { xs: 0, sm: 2 }, mt: 3, mb:isMobile? `${12 + 72}px`:1.5}}>
         <Box position="relative">
           <Box
             sx={{

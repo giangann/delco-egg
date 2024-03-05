@@ -10,6 +10,7 @@ import SCREEN_PATHS from "../../shared/constants/screenPaths";
 import { IOrderRow } from "../../shared/types/order";
 import { EggOrderListDesktop } from "./EggOrderListDesktop";
 import { EggOrderListMobile } from "./EggOrderListMobile";
+import { screenPathRemoveSlug } from "../../shared/helper";
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
@@ -20,11 +21,9 @@ export const EggOrderList = () => {
   const wsServer = useContext(SocketContext);
 
   const onViewDetail = ({ id }: IOrderRow) => {
-    let path = SCREEN_PATHS.APPLICATION.DETAIL;
-    let arrPathBySlash = path.split("/");
-    arrPathBySlash.pop();
-
-    let newPathWithoutSlug = arrPathBySlash.join("/");
+    let newPathWithoutSlug = screenPathRemoveSlug(
+      SCREEN_PATHS.APPLICATION.DETAIL
+    );
     navigate(`${newPathWithoutSlug}/${id}`);
   };
 

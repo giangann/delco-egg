@@ -10,6 +10,7 @@ type CustomTableWithFilterProps<TData extends UnknownObj> = {
   apiEndPoint: string;
   fields: StrictField<TData>[];
   createRoute?: string;
+  onViewDetail?: (row: TData) => void;
 };
 
 const defaultParams = {};
@@ -17,6 +18,7 @@ export const CustomTableWithFilter = <TData extends UnknownObj>({
   fields,
   apiEndPoint,
   createRoute,
+  onViewDetail
 }: CustomTableWithFilterProps<TData>) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [data, setData] = useState<TData[]>([]);
@@ -61,7 +63,7 @@ export const CustomTableWithFilter = <TData extends UnknownObj>({
           createRoute={createRoute}
         />
       </form>
-      <CustomTable fields={fields} data={data} />
+      <CustomTable fields={fields} data={data} onActionViewDetail={onViewDetail} />
     </>
   );
 };

@@ -34,6 +34,11 @@ const list = async (params: IOrderQueryParams) => {
     orderRepo.andWhere('order.date = :date', { date });
   }
 
+  const userId = params.user_id;
+  if (userId) {
+    orderRepo.andWhere('order.user_id = :userId', { userId });
+  }
+
   const limit = params.limit;
   if (limit) {
     orderRepo.limit(limit);

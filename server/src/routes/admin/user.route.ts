@@ -8,8 +8,11 @@ import userController from '../../controllers/admin/user.controller';
 const router = express.Router();
 
 router.get('/', userController.list);
+router.get('/:id', userController.detail);
 router.delete('/:id', userController.remove);
 router.put('/:id', userController.update);
 router.post('/create', userController.create);
+router.put('/reset-password/:userId', userController.resetPasswordDefault);
+router.get('/client-order-overview/:userId', userController.clientOrderOverview);
 
 export default router;

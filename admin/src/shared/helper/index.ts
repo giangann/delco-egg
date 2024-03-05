@@ -133,3 +133,23 @@ export function sumOfNumberArr(numberArr: number[]) {
 
   return res;
 }
+
+export function screenPathRemoveSlug(path: string) {
+  let arrPathBySlash = path.split("/");
+
+  let lastEl = arrPathBySlash.pop();
+  if (!lastEl?.includes(":")) return path; // if don't have slug, return origin path
+
+  let newPathWithoutSlug = arrPathBySlash.join("/");
+  return newPathWithoutSlug;
+}
+
+export function sumOfObject(obj: Record<string, number>): number {
+  let sum = 0;
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      sum += obj[key];
+    }
+  }
+  return sum;
+}

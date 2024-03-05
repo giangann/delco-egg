@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import { Page } from "../../components/Page/Page";
 import { CustomTableWithFilter } from "../../components/Table/CustomTableWithFilter";
 import { StrictField } from "../../components/Table/Customtable";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
+import { screenPathRemoveSlug } from "../../shared/helper";
 import { IUserList } from "../../shared/types/user";
 
 const fields: StrictField<IUserList>[] = [
@@ -32,12 +34,20 @@ const fields: StrictField<IUserList>[] = [
   },
 ];
 export const UserList = () => {
+  const navigate = useNavigate()
+  const onViewDetail = ({ id }: IUserList) => {
+    let newPathWithoutSlug = screenPathRemoveSlug(
+      SCREEN_PATHS.USER.DETAIL
+    );
+    navigate(`${newPathWithoutSlug}/${id}`);
+  };
   return (
     <Page title="Danh sách người dùng">
       <CustomTableWithFilter
         createRoute={SCREEN_PATHS.USER.CREATE}
         fields={fields}
         apiEndPoint="user"
+        onViewDetail={onViewDetail}
       />
     </Page>
   );

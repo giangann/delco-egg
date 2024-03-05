@@ -10,7 +10,7 @@ import { Layout } from "../pages/Layout/Layout";
 import { Login } from "../pages/Login/Login";
 import { MyProfile } from "../pages/Setting/MyProfile";
 import { UserCreateForm } from "../pages/UserManagement/UserCreateForm";
-import { UserInformation } from "../pages/UserManagement/UserInformation";
+import { ClientDetail } from "../pages/UserManagement/ClientDetail";
 import { UserList } from "../pages/UserManagement/UserList";
 import SCREEN_PATHS from "../shared/constants/screenPaths";
 import { ProtectedRoute } from "./ProtectedRoute";
@@ -65,7 +65,7 @@ const routes: RouteObject[] = [
       },
       {
         path: SCREEN_PATHS.USER.DETAIL,
-        element: <UserInformation />,
+        element: <ClientDetail />,
       },
       {
         path: SCREEN_PATHS.USER.CREATE,

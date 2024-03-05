@@ -17,7 +17,7 @@ export interface IOrder {
   notis: INoti[];
   status: number;
   createdAt?: string;
-  reason?:string
+  reason?: string;
 }
 
 export interface IOrderRow {
@@ -34,6 +34,7 @@ export interface IOrderRow {
 }
 
 export interface IOrderUserInfo {
+  id?: number;
   username: string;
   fullname: string;
   company_name: string;

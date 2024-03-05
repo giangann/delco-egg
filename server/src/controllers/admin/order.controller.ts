@@ -27,13 +27,19 @@ const list: IController = async (req, res) => {
   try {
     const limit = ApiUtility.getQueryParam(req, 'limit');
     const page = ApiUtility.getQueryParam(req, 'page');
+    const user_id = ApiUtility.getQueryParam(req,'user_id')
 
     let params: IOrderQueryParams = {
       limit,
       page,
+      user_id,
     };
 
-    const listOrder = await orderService.list(params);
+    let listOrder = await orderService.list(params);
+    listOrder = listOrder.map((order) => {
+      return { ...order, total: totalByOrderItems(order.items) };
+    });
+
     return ApiResponse.result(res, listOrder, httpStatusCodes.OK, null);
   } catch (e) {
     ApiResponse.exception(res, e);
@@ -294,10 +300,11 @@ const orderStatisticByStatus: IController = async (req, res) => {
 const orderStatisticByTotal: IController = async (req, res) => {
   try {
     const successOrderListByTimeRange = await orderService.list({
-      limit: Number(req.query.limit as string),
-      page: Number(req.query.page as string),
-      startDate: req.query.start_date as string,
-      endDate: req.query.end_date as string,
+      limit: ApiUtility.getQueryParam(req, 'limit'),
+      page: ApiUtility.getQueryParam(req, 'page'),
+      startDate: ApiUtility.getQueryParam(req, 'start_date'),
+      endDate: ApiUtility.getQueryParam(req, 'end_date'),
+      user_id: ApiUtility.getQueryParam(req, 'user_id'),
       status: application.status.SUCCESS,
     });
 
@@ -307,7 +314,7 @@ const orderStatisticByTotal: IController = async (req, res) => {
         total: totalByOrderItems(order.items),
       };
     });
-    const sortedData = sortOrderByTotal(statisticData)
+    const sortedData = sortOrderByTotal(statisticData);
 
     ApiResponse.result(res, sortedData, httpStatusCodes.OK);
   } catch (e) {
@@ -316,7 +323,7 @@ const orderStatisticByTotal: IController = async (req, res) => {
 };
 
 // helper function
-function totalByOrderItems(orderItems: IOrderDetail[]) {
+export function totalByOrderItems(orderItems: IOrderDetail[]) {
   let total = 0;
   for (let item of orderItems) {
     let totalOfItem = item.quantity * item.deal_price;
@@ -326,12 +333,12 @@ function totalByOrderItems(orderItems: IOrderDetail[]) {
 }
 
 // helper function
-interface IOrderStatistic extends IOrderRecord{
-  total: number
+interface IOrderStatistic extends IOrderRecord {
+  total: number;
 }
-function sortOrderByTotal (orderList: IOrderStatistic[]){
-  let sortedOrderList = orderList.sort((a,b)=>b.total - a.total)
-  return sortedOrderList
+function sortOrderByTotal(orderList: IOrderStatistic[]) {
+  let sortedOrderList = orderList.sort((a, b) => b.total - a.total);
+  return sortedOrderList;
 }
 export default {
   list,

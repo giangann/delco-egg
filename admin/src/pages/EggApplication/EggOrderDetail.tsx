@@ -20,6 +20,7 @@ import SCREEN_PATHS from "../../shared/constants/screenPaths";
 import {
   diffDateTimeWithNow,
   numberWithComma,
+  screenPathRemoveSlug,
   timeWithoutSecond,
   toDayOrTomorrowOrYesterday,
 } from "../../shared/helper";
@@ -157,7 +158,11 @@ export const EggOrderDetail = () => {
             <BoxWrapper>
               <Stack mb={1} direction={"row"} spacing={2} alignItems={"center"}>
                 <HeadingText> 3. Thông tin người đặt</HeadingText>
-                <FakeATag to="#">
+                <FakeATag
+                  to={`${screenPathRemoveSlug(SCREEN_PATHS.USER.DETAIL)}/${
+                    order.user?.id
+                  }`}
+                >
                   <Typography>{">> chi tiết"}</Typography>
                 </FakeATag>
               </Stack>

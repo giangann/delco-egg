@@ -17,6 +17,7 @@ export interface IUserProfile {
   fullname: string;
   phone_number: string;
   company_name?: string;
+  note?: string;
 }
 
 export interface IUserCreate {

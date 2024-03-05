@@ -19,8 +19,9 @@ import { useNavigate } from "react-router-dom";
 import SCREEN_PATHS from "../../../shared/constants/screenPaths";
 import dayjs from "dayjs";
 import { CONFIG } from "../../../shared/constants/common";
+import { NoOrderBox } from "../../../components/Box/NoOrderBox";
 
-interface IOrderStatistic extends IOrderRow {
+export interface IOrderStatistic extends IOrderRow {
   total: number;
 }
 export const OrderTotalStatistic = () => {
@@ -70,9 +71,7 @@ export const OrderTotalStatistic = () => {
         />
         <Box my={4}>
           {!orderList.length ? (
-            <Typography fontSize={18} textAlign={"center"} color={"red"}>
-              {"Không có đơn hàng trong khoảng thời gian"}
-            </Typography>
+            <NoOrderBox />
           ) : (
             orderList.map((order) => <Order order={order} />)
           )}

@@ -26,6 +26,10 @@ import ApiUtility from '../../utilities/api.utility';
 
 // Constants
 import constants from '../../constants';
+import orderService from '../../services/admin/order.service';
+import { IOrderEntity, IOrderQueryParams } from 'order.interface';
+import application from '../../constants/application';
+import { IOrderDetail } from 'order-detail.interface';
 
 const create: IController = async (req, res) => {
   try {
@@ -110,6 +114,73 @@ const detail: IController = async (req, res) => {
   }
 };
 
+const clientOrderOverview: IController = async (req, res) => {
+  try {
+    let params: IOrderQueryParams = {
+      user_id: parseInt(req.params.userId),
+      limit: null,
+      page: null,
+    };
+    const ordersOfClient = await orderService.list(params);
+
+    let status = {
+      success: 0,
+      waiting_approval: 0,
+      accepted: 0,
+      rejected: 0,
+      cancel: 0,
+    };
+    let total = 0;
+    ordersOfClient.forEach((order) => {
+      switch (order.status) {
+        case application.status.SUCCESS:
+          status.success += 1;
+          total += totalByOrderItems(order.items);
+          break;
+        case application.status.WAITING_APPROVAL:
+          status.waiting_approval += 1;
+          break;
+        case application.status.ACCEPTED:
+          status.accepted += 1;
+          break;
+        case application.status.REJECTED:
+          status.rejected += 1;
+          break;
+        case application.status.CANCELED:
+          status.cancel += 1;
+          break;
+        default:
+          break;
+      }
+    });
+
+    ApiResponse.result(res, { status, total }, httpStatusCodes.OK);
+  } catch (e) {
+    ApiResponse.exception(res, e);
+  }
+};
+
+// helper function
+export function totalByOrderItems(orderItems: IOrderDetail[]) {
+  let total = 0;
+  for (let item of orderItems) {
+    let totalOfItem = item.quantity * item.deal_price;
+    total += totalOfItem;
+  }
+  return total;
+}
+
+// helper function
+export function totalByAllOrder(orders: IOrderEntity[]) {
+  let totalOfAllSuccessOrders = 0;
+  for (let order of orders) {
+    if (order.status === application.status.SUCCESS) {
+      totalOfAllSuccessOrders += totalByOrderItems(order.items);
+    }
+  }
+  return totalOfAllSuccessOrders;
+}
+
 const update: IController = async (req, res) => {
   try {
     const params: IUpdateUser = {
@@ -173,6 +244,28 @@ const changePassword: IController = async (req, res) => {
           message: 'Mật khẩu hiện tại không đúng',
         },
       });
+  } catch (e) {
+    ApiResponse.exception(res, e);
+  }
+};
+
+const resetPasswordDefault: IController = async (req, res) => {
+  try {
+    const defaultPassword = '12345678';
+    const newPw = await Encryption.generateHash(defaultPassword, 10);
+
+    let params = {
+      user_id: parseInt(req.params.userId),
+      new_password: newPw,
+    };
+
+    console.log('params userid', params);
+
+    const updatedPassword = await userService.changePassword({
+      user_id: 2,
+      new_password: newPw,
+    });
+    ApiResponse.result(res, updatedPassword, httpStatusCodes.OK);
   } catch (e) {
     ApiResponse.exception(res, e);
   }
@@ -243,4 +336,6 @@ export default {
   list,
   remove,
   changePassword,
+  resetPasswordDefault,
+  clientOrderOverview,
 };
