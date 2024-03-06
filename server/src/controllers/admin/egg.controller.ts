@@ -89,6 +89,7 @@ const remove: IController = async (req, res) => {
   }
 };
 
+// helper function
 async function checkIsEggHaveInWaitingOrder(eggId: number) {
   const listWaitingOrder = await orderService.list({
     status: application.status.WAITING_APPROVAL,
@@ -103,23 +104,6 @@ async function checkIsEggHaveInWaitingOrder(eggId: number) {
     }
   }
   return false;
-}
-
-// helper function
-async function getEggIdInWaitingOrder() {
-  let eggIds: number[] = [];
-  const listWaitingOrder = await orderService.list({
-    status: application.status.WAITING_APPROVAL,
-    limit: null,
-    page: null,
-  });
-  listWaitingOrder.forEach((order) => {
-    order.items.forEach((item) => {
-      if (!eggIds.includes(item.egg_id)) {
-        eggIds.push(item.egg_id);
-      }
-    });
-  });
 }
 
 export default {

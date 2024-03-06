@@ -6,7 +6,8 @@ export interface IEggPriceQty {
   price_2?: number;
   price_3?: number;
   quantity?: number;
-  date?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface IUpdateEggPriceQty extends IEggPriceQty {}

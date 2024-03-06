@@ -8,7 +8,7 @@ import {
 import { Egg } from '../egg/egg.entity';
 
 // Entities
-@Entity('egg_price_qty')
+@Entity('egg_price_qty_history')
 export class EggPriceQty {
   // id, egg_id, price_1, price_2, price_3, quantity, date
 
@@ -21,6 +21,9 @@ export class EggPriceQty {
 
   @Column({ type: 'int', nullable: false, unique: true })
   egg_id: number;
+
+  @Column({ type: 'date', nullable: false })
+  date: string;
 
   @Column({ nullable: true })
   price_1: number;
