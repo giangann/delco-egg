@@ -1,11 +1,11 @@
 import express from 'express';
-import eggControlelr from '../../controllers/admin/egg.controlelr';
+import eggController from '../../controllers/admin/egg.controller';
 
 const eggRouter = express.Router();
 
-eggRouter.get('/', eggControlelr.list);
-eggRouter.post('/', eggControlelr.create);
-eggRouter.put('/:id', eggControlelr.update);
-eggRouter.delete('/:id', eggControlelr.remove);
+eggRouter.get('/', eggController.list);
+eggRouter.post('/', eggController.create);
+eggRouter.put('/:id', eggController.update);
+eggRouter.delete('/:id', eggController.remove);
 
 export default eggRouter;

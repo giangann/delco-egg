@@ -19,4 +19,7 @@ export class Egg extends BaseEntity {
 
   @Column({ nullable: false })
   weight: string;
+
+  @Column({ default: false })
+  isDeleted: boolean;
 }

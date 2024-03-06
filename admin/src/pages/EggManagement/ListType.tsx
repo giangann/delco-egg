@@ -60,7 +60,7 @@ export const ListType = () => {
   };
   useEffect(() => {
     async function getListEggType() {
-      const res = await getApi<IEggUpdate[]>("egg");
+      const res = await getApi<IEggUpdate[]>("egg",{ isDeleted: "0" });
       if (res.success) setListEggType(res.data);
     }
     getListEggType();

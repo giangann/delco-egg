@@ -19,7 +19,7 @@ export interface InterServerEvents {
 }
 
 export interface SocketData {
-  user: Omit<IUserRecord, 'password'>;
+  user?: Omit<IUserRecord, 'password'>;
 }
 
 export interface IWsServer

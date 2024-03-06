@@ -62,15 +62,15 @@ export const UpdateQuantity = () => {
     if (res.success) {
       setRerender(rerender + 1);
       toast.success("Cập nhật thành công!");
-    }else {
-      toast.error(res.error.message)
+    } else {
+      toast.error(res.error.message);
     }
     setOpenConfirmUpdateDialog(false);
   };
 
   const onNewRow = async () => {
     const currList = getValues().quantities;
-    const res = await getApi<IEgg[]>("egg");
+    const res = await getApi<IEgg[]>("egg", { isDeleted: "0" });
     if (res.success) {
       const ableListEgg = res.data.filter((egg: IEgg) =>
         currList.every((field) => field.egg_id !== egg.id)

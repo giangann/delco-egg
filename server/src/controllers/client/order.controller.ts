@@ -108,9 +108,7 @@ const create: IController = async (req, res) => {
         };
       },
     );
-    const notiToListAdmin = await orderNotiService.createMany(
-      listOrderNotiParams,
-    );
+    await orderNotiService.createMany(listOrderNotiParams);
 
     // realtime noti for all admin
     const listAdminRealTimeNotiParams = listAdmin.map((admin) => {
@@ -120,8 +118,6 @@ const create: IController = async (req, res) => {
       };
     });
     webSocketService.sendNotiToListUser(listAdminRealTimeNotiParams);
-
-    console.log(notiToListAdmin);
 
     ApiResponse.result(res, newOrder, httpStatusCodes.CREATED);
   } catch (e) {

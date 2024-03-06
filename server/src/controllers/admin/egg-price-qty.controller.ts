@@ -2,7 +2,7 @@ import IController from 'IController';
 import { IUpdateEggPriceQty } from 'egg-price-qty.interface';
 import eggPriceQtyService from '../../services/admin/egg-price-qty.service';
 import ApiResponse from '../../utilities/api-response.utility';
-
+import ApiUtility from '../../utilities/api.utility';
 import httpStatusCodes from 'http-status-codes';
 
 const list: IController = async (req, res) => {
@@ -31,18 +31,23 @@ const updateDayPrice: IController = async (req, res) => {
   try {
     const newPrices: IUpdateEggPriceQty[] = req.body;
 
-    newPrices.forEach(async (price) => {
-      let params: IUpdateEggPriceQty = {
-        egg_id: price.egg_id,
-        price_1: price.price_1,
-        price_2: price.price_2,
-        price_3: price.price_3,
-      };
+    const newPricesUpdated = await Promise.all(
+      newPrices.map((price) => {
+        let params: IUpdateEggPriceQty = {
+          egg_id: price.egg_id,
+          price_1: price.price_1,
+          price_2: price.price_2,
+          price_3: price.price_3,
+        };
+        return eggPriceQtyService.update(params);
+      }),
+    );
 
-      await eggPriceQtyService.update(params);
-    });
-
-    return ApiResponse.result(res, newPrices, httpStatusCodes.OK);
+    return ApiResponse.result(
+      res,
+      newPricesUpdated,
+      httpStatusCodes.OK,
+    );
   } catch (e) {
     ApiResponse.exception(res, e);
   }

@@ -1,9 +1,11 @@
-import { ICreateEgg, IUpdateEgg } from 'egg.interface';
+import { ICreateEgg, IEggListParams, IUpdateEgg } from 'egg.interface';
 import { Egg } from '../../entities/egg/egg.entity';
 import { getRepository } from 'typeorm';
 import { StringError } from '../../errors/string.error';
 import DateTimeUtility from '../../utilities/date-time.utility';
 import { IDeleteById } from 'common.interface';
+
+const where = { isDeleted: false };
 
 const create = async (params: ICreateEgg) => {
   const egg = new Egg();
@@ -28,8 +30,12 @@ const update = async (params: IUpdateEgg) => {
   );
 };
 
-const list = async () => {
-  return await getRepository(Egg).find();
+const list = async (params?: IEggListParams) => {
+  return await getRepository(Egg).find(params);
+};
+
+const listNotDeleted = async () => {
+  return await getRepository(Egg).find(where);
 };
 
 const remove = async (params: IDeleteById) => {
@@ -39,14 +45,17 @@ const remove = async (params: IDeleteById) => {
   if (!egg) {
     throw new StringError('Egg is not existed');
   }
-  return await getRepository(Egg).delete({ ...query });
+
+  const markAsDeletedRow = await getRepository(Egg).update(query, {
+    isDeleted: true,
+  });
+  return markAsDeletedRow;
 };
-
-
 
 export default {
   create,
   update,
   list,
   remove,
+  listNotDeleted,
 };

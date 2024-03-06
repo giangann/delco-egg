@@ -14,9 +14,16 @@ const TriangleByBorder = styled(Box, {
 }));
 
 ------------------------------------------------------LIST BUG----------------------------------------------------------
-1. [Admin] /thong-ke/don-dat-trung: DatePicker => don't display current date choose
+1. [Server] Fix type/interface for entites with following rules:
+    a. in db: nullable don't need a default value
+    b. IRecord: alias with database, if field in db have default value 
+          -> required in type and if isnullable => partial in type
+    c. ICreate: field have default value or nullable can be partial
+    d. IUpdate: partial<ICreate> & {id: number}
 2. [Client] 'tao moi don hang': chua validate egg quantity > in stock egg quantity
 3. [Admin + CLient] 'goBack từ detail về list': không phải lúc nào cũng đi từ list => detail
 nên cần check xem: nếu từ tên miền khác hoặc list đến detail thì goback về list.
                     nếu từ cùng tên miền nhưng k phải list đến detail thì goback -1
-
+4. [Server] Update entities => return entity as expectd and don't just return some 
+    field affectedRows or generatedMap like now:
+    https://github.com/typeorm/typeorm/issues/2660#:~:text=const%20updateResult%3A%20UpdateResult%20%3D%20await%20entityManager.createQueryBuilder().update(Photo%2C%20photo).whereEntity(photo).returning(%5B%22id%22%2C%20%22createdAt%22%2C%20%22updatedAt%22%5D).updateEntity(true).execute()%3B
