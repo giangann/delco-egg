@@ -15,3 +15,9 @@ export interface IEggPriceQtyHistoryEntity
   extends IEggPriceQtyHistoryRecord {
   egg: IEggEntity;
 }
+
+export interface IEggPriceQtyHistoryCreate
+  extends IEggPriceQtyHistoryRecord {}
+
+export interface IEggPriceQtyHistoryUpdate
+  extends IEggPriceQtyHistoryCreate {}

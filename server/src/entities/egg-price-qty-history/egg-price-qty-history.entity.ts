@@ -9,7 +9,7 @@ import { Egg } from '../egg/egg.entity';
 
 // Entities
 @Entity('egg_price_qty_history')
-export class EggPriceQty {
+export class EggPriceQtyHistory {
   // id, egg_id, price_1, price_2, price_3, quantity, date
 
   @PrimaryGeneratedColumn({ type: 'int' })

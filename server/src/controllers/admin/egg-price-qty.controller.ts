@@ -4,6 +4,8 @@ import eggPriceQtyService from '../../services/admin/egg-price-qty.service';
 import ApiResponse from '../../utilities/api-response.utility';
 import ApiUtility from '../../utilities/api.utility';
 import httpStatusCodes from 'http-status-codes';
+import eggPriceQtyHistoryService from '../../services/admin/egg-price-qty-history.service';
+import DateTimeUtility from '../../utilities/date-time.utility';
 
 const list: IController = async (req, res) => {
   try {
@@ -43,6 +45,8 @@ const updateDayPrice: IController = async (req, res) => {
       }),
     );
 
+    await updateHistoryTable(newPrices)
+
     return ApiResponse.result(
       res,
       newPricesUpdated,
@@ -58,49 +62,85 @@ const updateDayQuantity: IController = async (req, res) => {
     const newQtys: IUpdateEggPriceQty[] = req.body;
     const currQtys: IUpdateEggPriceQty[] = await eggPriceQtyService.list();
 
-    const addQtys = findExcludeElements(currQtys, newQtys);
-    const removeQtys = findExcludeElements(newQtys, currQtys);
-    const updateQtys = findSameElements(currQtys, newQtys);
+    let updateCurrTableRes = updateCurrentTable(newQtys, currQtys);
+    let updateHistoryTableRes = updateHistoryTable(newQtys)
 
-    // update egg_id that haved before
-    if (updateQtys.length) {
-      updateQtys.forEach(async (qty) => {
-        let params: IUpdateEggPriceQty = {
-          egg_id: qty.egg_id,
-          quantity: qty.quantity,
-        };
-        await eggPriceQtyService.update(params);
-      });
-    }
-
-    // create new rows that egg_id don't have before
-    if (addQtys.length) {
-      addQtys.forEach(async (qty) => {
-        let params: IUpdateEggPriceQty = {
-          egg_id: qty.egg_id,
-          quantity: qty.quantity,
-        };
-        await eggPriceQtyService.create(params);
-      });
-    }
-
-    // delete current rows that don't have in new data
-    if (removeQtys.length) {
-      removeQtys.forEach(async (qty) => {
-        await eggPriceQtyService.remove({ egg_id: qty.egg_id });
-      });
-    }
-
-    let result = {
-      addQtys,
-      removeQtys,
-      updateQtys,
-    };
-    return ApiResponse.result(res, result, httpStatusCodes.OK);
+    return ApiResponse.result(
+      res,
+      updateCurrTableRes,
+      httpStatusCodes.OK,
+    );
   } catch (e) {
     ApiResponse.exception(res, e);
   }
 };
+
+// helper function
+async function updateCurrentTable(
+  newQtys: IUpdateEggPriceQty[],
+  currQtys: IUpdateEggPriceQty[],
+) {
+  const addQtys = findExcludeElements(currQtys, newQtys);
+  const removeQtys = findExcludeElements(newQtys, currQtys);
+  const updateQtys = findSameElements(currQtys, newQtys);
+
+  // update egg_id that haved before
+  if (updateQtys.length) {
+    updateQtys.forEach(async (qty) => {
+      let params: IUpdateEggPriceQty = {
+        egg_id: qty.egg_id,
+        quantity: qty.quantity,
+      };
+      await eggPriceQtyService.update(params);
+    });
+  }
+
+  // create new rows that egg_id don't have before
+  if (addQtys.length) {
+    addQtys.forEach(async (qty) => {
+      let params: IUpdateEggPriceQty = {
+        egg_id: qty.egg_id,
+        quantity: qty.quantity,
+      };
+      await eggPriceQtyService.create(params);
+    });
+  }
+
+  // delete current rows that don't have in new data
+  if (removeQtys.length) {
+    removeQtys.forEach(async (qty) => {
+      await eggPriceQtyService.remove({ egg_id: qty.egg_id });
+    });
+  }
+  return {
+    addQtys,
+    removeQtys,
+    updateQtys,
+  };
+}
+
+async function updateHistoryTable(newQtys: IUpdateEggPriceQty[]) {
+  const dateTomorrow = DateTimeUtility.getDateAfterNDay(1);
+  const tomorrowDatas = await eggPriceQtyHistoryService.list({
+    date: dateTomorrow,
+  });
+
+  if (tomorrowDatas.length === 0) {
+    for (let row of newQtys) {
+      await eggPriceQtyHistoryService.create({
+        ...row,
+        date: dateTomorrow,
+      });
+    }
+  } else {
+    for (let row of newQtys) {
+      await eggPriceQtyHistoryService.update({
+        ...row,
+        date: dateTomorrow,
+      });
+    }
+  }
+}
 
 // return array that array1+array = array2
 const findExcludeElements = (
