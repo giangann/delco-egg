@@ -2,9 +2,16 @@ import IController from 'IController';
 import httpStatusCode from 'http-status-codes';
 import { IOrderDetail } from 'order-detail.interface';
 import { IOrderEntity } from 'order.interface';
+import { IEggPriceQtyHistoryRecord } from 'egg-price-qty-history.interface';
+
 import application from '../../constants/application';
 import orderService from '../../services/admin/order.service';
 import ApiResponse from '../../utilities/api-response.utility';
+import ApiUtility from '../../utilities/api.utility';
+import eggPriceQtyHistoryService from '../../services/admin/egg-price-qty-history.service';
+import DateTimeUtility from '../../utilities/date-time.utility';
+import eggService from '../../services/admin/egg.service';
+import { IEggListParams } from 'egg.interface';
 
 const todayOverview: IController = async (req, res) => {
   try {
@@ -79,6 +86,110 @@ function quantityByOrderItems(orderItems: IOrderDetail[]) {
   return quantity;
 }
 
+const getEggPriceQtyHistory: IController = async (req, res) => {
+  try {
+    let date = ApiUtility.getQueryParam(req, 'date');
+    let startDate = ApiUtility.getQueryParam(req, 'start_date');
+    let endDate = ApiUtility.getQueryParam(req, 'end_date');
+    let isDeleted = ApiUtility.getQueryParam(req, 'isDeleted');
+
+
+    // startDate = '2024-03-04';
+    // endDate = '2024-03-07';
+    // date = '2024-03-06';
+
+    if (startDate || endDate) {
+      date = null;
+    }
+
+    console.log('startDate',startDate, 'endDate',endDate)
+    let historyTableData = await eggPriceQtyHistoryService.list({
+      date,
+      startDate,
+      endDate,
+    });
+
+    // get eggs
+    let params: IEggListParams = {};
+    if (isDeleted) params.isDeleted = isDeleted;
+    let eggs = await eggService.list(params);
+
+    // calculate labels and datasets
+    let labels: string[] = getDateLabels(historyTableData, 'DESC');
+
+    // calculate datasets
+    // datasets is array of object
+    // each object have to 2 field: label and data[]
+    // each elements of data array is number calculate from async helper function
+    let datasetsPromise = eggs.map(async (egg) => {
+      let dataPromise = labels.map(async (date) => {
+        return await getEggPriceInDate(egg.id, date);
+      });
+      let data = await Promise.all(dataPromise);
+      return { label: egg.type_name, data };
+    });
+
+    let datasets = await Promise.all(datasetsPromise);
+
+    ApiResponse.result(res, { labels, datasets }, httpStatusCode.OK);
+  } catch (e) {
+    ApiResponse.exception(res, e);
+  }
+};
+
+// helper function
+async function getEggPriceInDate(egg_id: number, date: string) {
+  let eggPricesInDate = await eggPriceQtyHistoryService.list({ date });
+
+  for (let row of eggPricesInDate) {
+    if (row.egg_id === egg_id) {
+      return row.price_1;
+    }
+  }
+  return null;
+}
+
+// helper function
+function getDateLabels(
+  data: IEggPriceQtyHistoryRecord[],
+  sort?: 'ASC' | 'DESC',
+) {
+  let labels: string[] = [];
+  for (let row of data) {
+    if (!labels.includes(row.date)) {
+      labels.push(row.date);
+    }
+  }
+  if (sort === 'DESC') return labels.sort((a, b) => compareDate(a, b));
+
+  // default is ascending, same with sort='ASC'
+  labels.sort();
+
+  return labels;
+}
+
+// helper function
+function compareDate(date1: string, date2: string) {
+  if (date1 >= date2) return -1;
+  else return 1;
+}
+const getEggPriceQtyByDate: IController = async (req, res) => {
+  try {
+    const date = ApiUtility.getQueryParam(req, 'date');
+    const yesterday = ApiUtility.getQueryParam(req, 'yesterday');
+
+    let data = await eggPriceQtyHistoryService.list({ date });
+    let yesterdayData = await eggPriceQtyHistoryService.list({
+      date: yesterday,
+    });
+
+    ApiResponse.result(res, data, httpStatusCode.OK);
+  } catch (e) {
+    ApiResponse.exception(res, e);
+  }
+};
+
 export default {
   todayOverview,
+  getEggPriceQtyHistory,
 };

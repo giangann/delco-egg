@@ -45,7 +45,7 @@ const updateDayPrice: IController = async (req, res) => {
       }),
     );
 
-    await updateHistoryTable(newPrices)
+    await updateHistoryTable(newPrices);
 
     return ApiResponse.result(
       res,
@@ -63,7 +63,7 @@ const updateDayQuantity: IController = async (req, res) => {
     const currQtys: IUpdateEggPriceQty[] = await eggPriceQtyService.list();
 
     let updateCurrTableRes = updateCurrentTable(newQtys, currQtys);
-    let updateHistoryTableRes = updateHistoryTable(newQtys)
+    let updateHistoryTableRes = updateHistoryTable(newQtys);
 
     return ApiResponse.result(
       res,
@@ -128,8 +128,12 @@ async function updateHistoryTable(newQtys: IUpdateEggPriceQty[]) {
   if (tomorrowDatas.length === 0) {
     for (let row of newQtys) {
       await eggPriceQtyHistoryService.create({
-        ...row,
+        egg_id: row.egg_id,
         date: dateTomorrow,
+        price_1: row.price_1,
+        price_2: row.price_2,
+        price_3: row.price_3,
+        quantity: row.quantity,
       });
     }
   } else {

@@ -1,3 +1,4 @@
+import { IBaseQueryParams, IBaseStatisticParams } from 'common.interface';
 import { IEggEntity } from 'egg.interface';
 
 export interface IEggPriceQtyHistoryRecord {
@@ -15,6 +16,10 @@ export interface IEggPriceQtyHistoryEntity
   extends IEggPriceQtyHistoryRecord {
   egg: IEggEntity;
 }
+
+export interface IEggPriceQtyHistoryListParams
+  extends Partial<IEggPriceQtyHistoryRecord>,
+    Partial<IBaseStatisticParams> {}
 
 export interface IEggPriceQtyHistoryCreate
   extends IEggPriceQtyHistoryRecord {}

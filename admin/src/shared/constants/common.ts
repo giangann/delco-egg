@@ -107,3 +107,18 @@ export const CONFIG = {
   MY_SQL_TIME_FORMAT: "HH:mm:ss",
   VIEWR_DATE_FORMAT: "DD/MM/YYYY",
 };
+
+export const CHART_COLORS = {
+  BORDER: [
+    "rgb(255, 99, 132)",
+    "rgb(53, 162, 235)",
+    "rgba(255, 206, 86, 0.75)",
+    'rgba(153, 102, 255)',
+  ],
+  BG: [
+    "rgba(255, 99, 132, 0.5)",
+    "rgba(53, 162, 235, 0.5)",
+    "rgba(255, 206, 86, 0.5)",
+    'rgba(153, 102, 255, 0.5)',
+  ],
+};

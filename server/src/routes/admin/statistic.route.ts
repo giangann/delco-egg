@@ -8,4 +8,9 @@ statisticRouter.get(
   statisticController.todayOverview,
 );
 
+statisticRouter.get(
+  '/egg-price-qty-history',
+  statisticController.getEggPriceQtyHistory,
+);
+
 export default statisticRouter;

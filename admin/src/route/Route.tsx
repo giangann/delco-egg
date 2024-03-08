@@ -20,6 +20,7 @@ import { Manage } from "../pages/Management/Manage";
 import { EggManage } from "../pages/Management/EggManage";
 import { Statistic } from "../pages/Statistic/Statistic";
 import { OrderStatistic } from "../pages/Statistic/Order/OrderStatistic";
+import { EggStatistic } from "../pages/Statistic/Egg/EggStatistic";
 
 const routes: RouteObject[] = [
   {
@@ -99,10 +100,10 @@ const routes: RouteObject[] = [
         path: SCREEN_PATHS.STATISTIC.APPLICATION,
         element: <OrderStatistic />,
       },
-      // {
-      //   path: SCREEN_PATHS.STATISTIC.EGG,
-      //   element: <UserStatistic />,
-      // },
+      {
+        path: SCREEN_PATHS.STATISTIC.EGG,
+        element: <EggStatistic />,
+      },
       {
         path: SCREEN_PATHS.STATISTIC.USER,
         element: <UserStatistic />,

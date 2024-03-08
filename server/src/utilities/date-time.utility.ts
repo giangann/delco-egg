@@ -10,6 +10,10 @@ export default class DateTimeUtility {
   static getDateAfterNDay(nDays: number) {
     return moment(Date.now()).add(nDays, 'day').format('YYYY-MM-DD');
   }
+  static sqlFormatToViewer(date:string){
+    let arr = date.split('-')
+    return arr.reverse().join('-')
+  }
   // static dateToTime(isoFormat){
   //   return moment(new Date(isoFormat)).toDate()
   // }

@@ -27,3 +27,5 @@ nên cần check xem: nếu từ tên miền khác hoặc list đến detail th�
 4. [Server] Update entities => return entity as expectd and don't just return some 
     field affectedRows or generatedMap like now:
     https://github.com/typeorm/typeorm/issues/2660#:~:text=const%20updateResult%3A%20UpdateResult%20%3D%20await%20entityManager.createQueryBuilder().update(Photo%2C%20photo).whereEntity(photo).returning(%5B%22id%22%2C%20%22createdAt%22%2C%20%22updatedAt%22%5D).updateEntity(true).execute()%3B
+
+5. explain promise.all

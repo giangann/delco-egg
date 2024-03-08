@@ -1,6 +1,6 @@
 import {
   IEggPriceQtyHistoryCreate,
-  IEggPriceQtyHistoryRecord,
+  IEggPriceQtyHistoryListParams,
   IEggPriceQtyHistoryUpdate,
 } from 'egg-price-qty-history.interface';
 import { getRepository } from 'typeorm';
@@ -16,8 +16,40 @@ const create = async (params: IEggPriceQtyHistoryCreate) => {
   return createdData;
 };
 
-const list = async (params: Partial<IEggPriceQtyHistoryRecord>) => {
-  return await getRepository(EggPriceQtyHistory).find(params);
+const list = async (params: IEggPriceQtyHistoryListParams) => {
+  console.log('params', params)
+  const repo = getRepository(EggPriceQtyHistory).createQueryBuilder(
+    'egg_price_qty_history',
+  );
+  repo.leftJoinAndSelect('egg_price_qty_history.egg', 'egg');
+
+  const eggId = params.egg_id;
+  if (eggId) {
+    repo.andWhere('egg_price_qty_history.egg_id =:eggId', { eggId });
+  }
+
+  const date = params.date;
+  if (date) {
+    repo.andWhere('egg_price_qty_history.date =:date', { date });
+  }
+
+  const startDate = params.startDate;
+  if (startDate) {
+    repo.andWhere('egg_price_qty_history.date >= :startDate', {
+      startDate,
+    });
+  }
+
+  const endDate = params.endDate;
+  if (endDate) {
+    repo.andWhere('egg_price_qty_history.date <= :endDate', {
+      endDate,
+    });
+  }
+
+  const data = await repo.getMany();
+
+  return data;
 };
 
 const update = async (params: IEggPriceQtyHistoryUpdate) => {

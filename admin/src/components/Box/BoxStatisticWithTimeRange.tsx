@@ -1,4 +1,4 @@
-import { Box, Typography, styled } from "@mui/material";
+import { Box, BoxProps, Typography, styled } from "@mui/material";
 import { Stack } from "@mui/system";
 import { OPACITY_TO_HEX } from "../../shared/constants/common";
 import { GREEN } from "../../styled/color";
@@ -7,6 +7,7 @@ type BoxStatisticProps = {
   rightElementInTitleRow?: React.ReactNode;
   title: string | React.ReactNode;
   children: React.ReactNode;
+  boxProps?: BoxProps
 };
 
 export interface TimeRange {
@@ -17,10 +18,11 @@ export const BoxStatisticWithTimeRange = ({
   title,
   rightElementInTitleRow,
   children,
+  boxProps,
   chooseTimeElement,
 }: BoxStatisticProps & TimeRange) => {
   return (
-    <BoxWrapperStyled>
+    <BoxWrapperStyled {...boxProps}>
       <Box>
         <StackAlignCenterJustifySpaceBetween px={1.25}>
           <Stack>
