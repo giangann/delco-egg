@@ -88,23 +88,11 @@ function quantityByOrderItems(orderItems: IOrderDetail[]) {
 
 const getEggPriceQtyHistory: IController = async (req, res) => {
   try {
-    let date = ApiUtility.getQueryParam(req, 'date');
     let startDate = ApiUtility.getQueryParam(req, 'start_date');
     let endDate = ApiUtility.getQueryParam(req, 'end_date');
     let isDeleted = ApiUtility.getQueryParam(req, 'isDeleted');
 
-
-    // startDate = '2024-03-04';
-    // endDate = '2024-03-07';
-    // date = '2024-03-06';
-
-    if (startDate || endDate) {
-      date = null;
-    }
-
-    console.log('startDate',startDate, 'endDate',endDate)
     let historyTableData = await eggPriceQtyHistoryService.list({
-      date,
       startDate,
       endDate,
     });
@@ -192,4 +180,5 @@ const getEggPriceQtyByDate: IController = async (req, res) => {
 export default {
   todayOverview,
   getEggPriceQtyHistory,
+  getEggPriceQtyByDate,
 };

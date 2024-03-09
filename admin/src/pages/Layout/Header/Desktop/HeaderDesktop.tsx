@@ -57,7 +57,7 @@ export const HeaderDesktop = () => {
             </LinkCustom>
           </BoxItem>
 
-          <BoxItem flexBasis={"70%"}>
+          <BoxItem flexBasis={{ sm: "50%", md: "70%" }}>
             <StackAlignCenterJustifySpaceBetween>
               <Stack
                 alignItems={"center"}

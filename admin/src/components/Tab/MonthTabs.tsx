@@ -34,14 +34,6 @@ export const MonthTabs = ({
         label="Tháng trước"
       />{" "}
       <CustomTab
-        tabIndex={3}
-        value={{
-          start_date: dayjs().subtract(2, "month").startOf("month"),
-          end_date: dayjs().subtract(2, "month").endOf("month"),
-        }}
-        label="2 tháng trc"
-      />
-      <CustomTab
         tabIndex={4}
         value={{ start_date: null, end_date: null }}
         label="Khác"

@@ -8,7 +8,7 @@ export const BoxAnnotate = ({ color, fieldName }: BoxAnnotateProps) => {
   return (
     <Stack direction={'row'} alignItems={"center"} spacing={0.5}>
       <BoxColor bgColor={color} />
-      <Typography>{fieldName}</Typography>
+      <Typography fontSize={18}>{fieldName}</Typography>
     </Stack>
   );
 };

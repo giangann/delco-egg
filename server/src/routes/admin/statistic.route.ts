@@ -12,5 +12,9 @@ statisticRouter.get(
   '/egg-price-qty-history',
   statisticController.getEggPriceQtyHistory,
 );
+statisticRouter.get(
+  '/egg-price-qty-by-date',
+  statisticController.getEggPriceQtyByDate,
+);
 
 export default statisticRouter;
