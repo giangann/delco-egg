@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getApi } from "../../lib/utils/fetch/fetchRequest";
 import { numberWithComma, sumOfObject } from "../../shared/helper";
+import { defaultDateRange } from "../Statistic/Order/OrderStatusStatistic";
+import dayjs from "dayjs";
+import { CONFIG } from "../../shared/constants/common";
+import { MonthTabs } from "../../components/Tab/MonthTabs";
 
 type TOrderOverview = {
   status: {
@@ -13,6 +17,7 @@ type TOrderOverview = {
     cancel: number;
   };
   total: number;
+  quantity: number;
 };
 
 const orderOverviewDefault = {
@@ -24,20 +29,37 @@ const orderOverviewDefault = {
     cancel: 0,
   },
   total: 0,
+  quantity: 0,
 };
+
 export const ClientDetailOrderOverview = () => {
   const [orderOverview, setOrderOverview] =
     useState<TOrderOverview>(orderOverviewDefault);
+  const [dateRange, setDateRange] = useState({
+    start_date: null,
+    end_date: null,
+  });
+  const onDateRangeChange = (newValue: any) => {
+    setDateRange(newValue);
+  };
   const params = useParams();
   useEffect(() => {
     async function fetchOrderOverview() {
       const response = await getApi<TOrderOverview>(
-        `user/client-order-overview/${params.id}`
+        `user/client-order-overview/${params.id}`,
+        {
+          start_date: dateRange.start_date
+            ? dayjs(dateRange.start_date).format(CONFIG.MY_SQL_DATE_FORMAT)
+            : "",
+          end_date: dateRange.end_date
+            ? dayjs(dateRange.end_date).format(CONFIG.MY_SQL_DATE_FORMAT)
+            : "",
+        }
       );
       if (response.success) setOrderOverview(response.data);
     }
     fetchOrderOverview();
-  }, []);
+  }, [dateRange]);
   return (
     <Paper elevation={4} sx={{ padding: 2 }}>
       <Stack
@@ -48,12 +70,23 @@ export const ClientDetailOrderOverview = () => {
         <BoxTitle>{"Thống kê đơn hàng"}</BoxTitle>
       </Stack>
       <Grid container>
-        <Grid item xs={12} sm={12}>
+        <Grid item xs={12}>
+          <MonthTabs onChange={onDateRangeChange} />
+        </Grid>
+        <Grid item xs={6} sm={3}>
           <BoxContent>
             <BoxFieldName>{"Tổng giá trị đã mua"}</BoxFieldName>
             <BoxFieldValue>{`${numberWithComma(
               orderOverview.total
             )} đ`}</BoxFieldValue>
+          </BoxContent>
+        </Grid>
+        <Grid item xs={6} sm={3}>
+          <BoxContent>
+            <BoxFieldName>{"Tổng số trứng đã mua"}</BoxFieldName>
+            <BoxFieldValue>{`${numberWithComma(
+              orderOverview.quantity
+            )} quả`}</BoxFieldValue>
           </BoxContent>
         </Grid>
         <Grid item xs={6} sm={3}>
@@ -85,17 +118,13 @@ export const ClientDetailOrderOverview = () => {
         <Grid item xs={6} sm={3}>
           <BoxContent>
             <BoxFieldName>Bị từ chối</BoxFieldName>
-            <BoxFieldValue>
-              {orderOverview.status.rejected}
-            </BoxFieldValue>
+            <BoxFieldValue>{orderOverview.status.rejected}</BoxFieldValue>
           </BoxContent>
         </Grid>
         <Grid item xs={6} sm={3}>
           <BoxContent>
             <BoxFieldName>Đã hủy</BoxFieldName>
-            <BoxFieldValue>
-              {orderOverview.status.cancel}
-            </BoxFieldValue>
+            <BoxFieldValue>{orderOverview.status.cancel}</BoxFieldValue>
           </BoxContent>
         </Grid>
       </Grid>

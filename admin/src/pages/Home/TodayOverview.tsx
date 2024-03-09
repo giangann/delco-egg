@@ -1,23 +1,20 @@
 import { Box, Stack, Typography } from "@mui/material";
-import {
-  IcBaselineArrowDropUp,
-  IcOutlineNavigateNext,
-} from "../../shared/icons/Icon";
+import dayjs, { Dayjs } from "dayjs";
+import { useEffect, useState } from "react";
+import { BoxStatisticWithTimeRange } from "../../components/Box/BoxStatisticWithTimeRange";
+import { NoOrderBox } from "../../components/Box/NoOrderBox";
+import { ProfitAndLossBox } from "../../components/Box/ProfitAndLossBox";
+import { CustomDatePicker } from "../../components/DateRange/CustomDatePicker";
+import { getApi } from "../../lib/utils/fetch/fetchRequest";
+import { CONFIG } from "../../shared/constants/common";
+import { numberWithComma } from "../../shared/helper";
+import { IcOutlineNavigateNext } from "../../shared/icons/Icon";
 import {
   RowStatisticStyled,
   StackAlignCenterJustifySpaceBetween,
-  alignCenterSx,
 } from "../../styled/styled";
-import { useEffect, useState } from "react";
-import { getApi } from "../../lib/utils/fetch/fetchRequest";
-import { numberWithComma } from "../../shared/helper";
-import dayjs, { Dayjs } from "dayjs";
-import { CONFIG } from "../../shared/constants/common";
-import { BoxStatisticWithTimeRange } from "../../components/Box/BoxStatisticWithTimeRange";
-import { CustomDatePicker } from "../../components/DateRange/CustomDatePicker";
 import { DateTabs } from "./DateTabs";
-import { NoOrderBox } from "../../components/Box/NoOrderBox";
-import { ProfitAndLossBox } from "../../components/Box/ProfitAndLossBox";
+import { useDevice } from "../../hooks/useDevice";
 
 type TOverview = {
   sumTotal: number;

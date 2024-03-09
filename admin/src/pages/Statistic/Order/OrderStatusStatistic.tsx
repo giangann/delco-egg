@@ -9,7 +9,7 @@ import {
 import { getApi } from "../../../lib/utils/fetch/fetchRequest";
 import { CONFIG } from "../../../shared/constants/common";
 import { alignCenterSx } from "../../../styled/styled";
-import { DateRangeTabs } from "./DateRangeTabs";
+import { DateRangeTabs } from "../../../components/Tab/DateRangeTabs";
 import { OrderStatusStatisticDoughnut } from "./OrderStatusStatisticDoughnut";
 
 export const defaultDateRange = {

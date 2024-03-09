@@ -18,8 +18,8 @@ export const TabContext = createContext<TTabContext>({
   tabsRef: null,
   getMap: () => new Map(),
   activeTabIndex: 0,
-  onTabClick: (newTabIndex: number) => {},
-  onChange: (newValue: any) => {},
+  onTabClick: () => {},
+  onChange: () => {},
 });
 
 export const CustomTabs = ({ onChange, children }: CustomTabsProps) => {

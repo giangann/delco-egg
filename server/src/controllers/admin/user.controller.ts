@@ -30,6 +30,7 @@ import orderService from '../../services/admin/order.service';
 import { IOrderEntity, IOrderQueryParams } from 'order.interface';
 import application from '../../constants/application';
 import { IOrderDetail } from 'order-detail.interface';
+import eggService from '../../services/admin/egg.service';
 
 const create: IController = async (req, res) => {
   try {
@@ -57,7 +58,6 @@ const create: IController = async (req, res) => {
 };
 
 const login: IController = async (req, res) => {
-  console.log('login');
   try {
     const params: ILoginUser = {
       username: req.body.username,
@@ -114,13 +114,84 @@ const detail: IController = async (req, res) => {
   }
 };
 
+const clientOrderEggStatistic: IController = async (req, res) => {
+  try {
+    let params = {
+      user_id: parseInt(req.params.userId),
+    };
+    // get all eggs, even egg is deleted
+    const eggs = await eggService.list();
+
+    // get all orders
+    const orders = await orderService.list({
+      user_id: params.user_id,
+      limit: null,
+      page: null,
+    });
+
+    let labels: string[] = [];
+    let qtyDatas: number[] = [];
+    let totalDatas: number[] = [];
+
+    // loop through eggs,
+    // get type_name as label
+    // calculate total and qty of each egg
+    for (let egg of eggs) {
+      // get label
+      labels.push(egg.type_name);
+
+      // calculate total and qty
+      let sumQty = 0;
+      let sumTotal = 0;
+      for (let order of orders) {
+        let { total, quantity } = getSumTotalAndQtyByEggInOrder(
+          order,
+          egg.id,
+        );
+        sumQty += quantity;
+        sumTotal += total;
+      }
+      qtyDatas.push(sumQty);
+      totalDatas.push(sumTotal);
+    }
+
+    ApiResponse.result(res, { labels, qtyDatas, totalDatas });
+  } catch (e) {
+    ApiResponse.exception(res, e);
+  }
+};
+
+// helper function
+function getSumTotalAndQtyByEggInOrder(
+  order: IOrderEntity,
+  egg_id: number,
+) {
+  let qty = 0;
+  let total = 0;
+  for (let item of order.items) {
+    if (
+      item.egg_id === egg_id &&
+      order.status === application.status.SUCCESS
+    ) {
+      qty += item.quantity;
+      total += item.deal_price * item.quantity;
+    }
+  }
+  return { quantity: qty, total: total };
+}
+
 const clientOrderOverview: IController = async (req, res) => {
   try {
     let params: IOrderQueryParams = {
       user_id: parseInt(req.params.userId),
+      startDate: ApiUtility.getQueryParam(req, 'start_date'),
+      endDate: ApiUtility.getQueryParam(req, 'end_date'),
       limit: null,
       page: null,
     };
+    // params.startDate = '2024-01-01';
+    // params.endDate = '2024-03-09';
+
     const ordersOfClient = await orderService.list(params);
 
     let status = {
@@ -130,12 +201,15 @@ const clientOrderOverview: IController = async (req, res) => {
       rejected: 0,
       cancel: 0,
     };
-    let total = 0;
+    let sumTotal = 0;
+    let sumQuantity = 0;
     ordersOfClient.forEach((order) => {
       switch (order.status) {
         case application.status.SUCCESS:
           status.success += 1;
-          total += totalByOrderItems(order.items);
+          let { total, quantity } = totalByOrderItems(order.items);
+          sumTotal += total;
+          sumQuantity += quantity;
           break;
         case application.status.WAITING_APPROVAL:
           status.waiting_approval += 1;
@@ -154,7 +228,11 @@ const clientOrderOverview: IController = async (req, res) => {
       }
     });
 
-    ApiResponse.result(res, { status, total }, httpStatusCodes.OK);
+    ApiResponse.result(
+      res,
+      { status, total: sumTotal, quantity: sumQuantity },
+      httpStatusCodes.OK,
+    );
   } catch (e) {
     ApiResponse.exception(res, e);
   }
@@ -163,11 +241,13 @@ const clientOrderOverview: IController = async (req, res) => {
 // helper function
 export function totalByOrderItems(orderItems: IOrderDetail[]) {
   let total = 0;
+  let quantity = 0;
   for (let item of orderItems) {
     let totalOfItem = item.quantity * item.deal_price;
     total += totalOfItem;
+    quantity += item.quantity;
   }
-  return total;
+  return { total, quantity };
 }
 
 // helper function
@@ -175,7 +255,8 @@ export function totalByAllOrder(orders: IOrderEntity[]) {
   let totalOfAllSuccessOrders = 0;
   for (let order of orders) {
     if (order.status === application.status.SUCCESS) {
-      totalOfAllSuccessOrders += totalByOrderItems(order.items);
+      let { total } = totalByOrderItems(order.items);
+      totalOfAllSuccessOrders += total;
     }
   }
   return totalOfAllSuccessOrders;
@@ -259,12 +340,7 @@ const resetPasswordDefault: IController = async (req, res) => {
       new_password: newPw,
     };
 
-    console.log('params userid', params);
-
-    const updatedPassword = await userService.changePassword({
-      user_id: 2,
-      new_password: newPw,
-    });
+    const updatedPassword = await userService.changePassword(params);
     ApiResponse.result(res, updatedPassword, httpStatusCodes.OK);
   } catch (e) {
     ApiResponse.exception(res, e);
@@ -338,4 +414,5 @@ export default {
   changePassword,
   resetPasswordDefault,
   clientOrderOverview,
+  clientOrderEggStatistic,
 };

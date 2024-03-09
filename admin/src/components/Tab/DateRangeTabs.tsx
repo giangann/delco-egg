@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import dayjs from "dayjs";
-import { CustomTab } from "../../../components/Tab/CustomTab";
-import { CustomTabs } from "../../../components/Tab/CustomTabs";
+import { CustomTab } from "./CustomTab";
+import { CustomTabs } from "./CustomTabs";
 
 export const DateRangeTabs = ({
   onChange,

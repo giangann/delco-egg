@@ -8,7 +8,7 @@ import {
 } from "../../../components/DateRange/CustomDateRangePicker";
 import { getApi } from "../../../lib/utils/fetch/fetchRequest";
 import { CONFIG } from "../../../shared/constants/common";
-import { DateRangeTabs } from "../Order/DateRangeTabs";
+import { DateRangeTabs } from "../../../components/Tab/DateRangeTabs";
 import { defaultDateRange } from "../Order/OrderStatusStatistic";
 import { EggPriceHistoryChart, TChart } from "./EggPriceHistoryChart";
 

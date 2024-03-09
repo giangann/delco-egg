@@ -1,21 +1,13 @@
-import { Box, Stack, Typography, styled } from "@mui/material";
-import { BoxStatistic } from "../../components/Box/BoxStatistic";
-import { OPACITY_TO_HEX } from "../../shared/constants/common";
+import { Box, Grid, Typography, styled } from "@mui/material";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
-import {
-  IcBaselineArrowDropUp,
-  IcOutlineNavigateNext,
-} from "../../shared/icons/Icon";
-import {
-  RowStatisticStyled,
-  StackAlignCenterJustifySpaceBetween,
-  alignCenterSx,
-} from "../../styled/styled";
-import { BoxAnnotate } from "../../components/Box/BoxAnnotate";
 import { SLUG } from "../../shared/constants/slug";
+import { EggPricesBlock } from "./EggPricesBlock";
 import { TodayOverview } from "./TodayOverview";
+import { useDevice } from "../../hooks/useDevice";
+import { Page } from "../../components/Page/Page";
 
 export const Home = () => {
+  const { isMobile } = useDevice();
   return (
     <>
       <Box height={200} width="100%" sx={{ backgroundColor: "white", mb: 1.5 }}>
@@ -26,91 +18,34 @@ export const Home = () => {
             Xin chào, <span style={{ fontWeight: 600 }}>Admin Lê Hường !</span>
           </Typography>
 
-          {/* tổng quan: doanh thu + số trứng xuất + trung bình doanh thu/quả */}
-          <TodayOverview/>
+          {isMobile ? (
+            <>
+              {/* tổng quan: doanh thu + số trứng xuất + trung bình doanh thu/quả */}
+              <TodayOverview />
 
-          {/* giá các mix */}
-          <BoxStatistic
-            rightElementInTitleRow={
-              <Box sx={{ ...alignCenterSx }}>
-                <Typography
-                  style={{ marginLeft: 8, fontWeight: 500, color: "green" }}
-                >
-                  35đ
-                </Typography>
-                <IcBaselineArrowDropUp color="green" style={{ fontSize: 25 }} />
-              </Box>
-            }
-            title="Giá trứng hôm nay"
-          >
-            <Box marginTop={1.25}>
-              <Stack direction={"row"} spacing={3} ml={7}>
-                <BoxAnnotate color="black" fieldName="Delco" />
-                <BoxAnnotate color="purple" fieldName="Thị trường" />
-                <BoxAnnotate color="blue" fieldName="CP" />
-              </Stack>
-              {[1, 2, 3, 4].map((item) => (
-                <RowStatisticStyled>
-                  <StackAlignCenterJustifySpaceBetween>
-                    <Typography sx={{ fontWeight: 500, fontSize: 18 }}>
-                      Mix {item}
-                      {":"}
-                      <span style={{ marginLeft: 12, fontWeight: 650 }}>
-                        2300 đ
-                      </span>
-                      <span
-                        style={{
-                          marginLeft: 12,
-                          fontWeight: 650,
-                          color: "purple",
-                        }}
-                      >
-                        2300 đ
-                      </span>
-                      <span
-                        style={{
-                          marginLeft: 12,
-                          fontWeight: 650,
-                          color: "blue",
-                        }}
-                      >
-                        2300 đ
-                      </span>
-                    </Typography>
-                    <IcOutlineNavigateNext />
-                  </StackAlignCenterJustifySpaceBetween>
-                </RowStatisticStyled>
-              ))}
-            </Box>
-          </BoxStatistic>
+              {/* giá các mix */}
+              <EggPricesBlock />
+            </>
+          ) : (
+            <Page title="">
+              <Grid container>
+                <Grid item sm={6}>
+                  {/* tổng quan: doanh thu + số trứng xuất + trung bình doanh thu/quả */}
+                  <TodayOverview />
+                </Grid>
+
+                <Grid item sm={6}>
+                  {/* giá các mix */}
+                  <EggPricesBlock />
+                </Grid>
+              </Grid>
+            </Page>
+          )}
         </Box>
       </Box>
     </>
   );
 };
-
-const TitleText = styled(Typography)(({ theme }) => ({
-  color: "green",
-  fontSize: 24,
-  fontWeight: 900,
-  textAlign: "center",
-  [theme.breakpoints.up("sm")]: {},
-}));
-
-// const UnitText = styled(Typography)(({ theme }) => ({
-//   color: "green",
-//   fontSize: 16,
-//   fontWeight: 500,
-//   textAlign: "center",
-//   [theme.breakpoints.up("sm")]: {},
-// }));
-
-const TypeText = styled(Typography)(({ theme }) => ({
-  fontSize: 18,
-  fontWeight: 700,
-  textAlign: "center",
-  [theme.breakpoints.up("sm")]: {},
-}));
 
 // const PriceText = styled(Typography)(({ theme }) => ({
 //   fontSize: 20,
@@ -183,4 +118,3 @@ export const eggPrices = [
     price: 2600,
   },
 ];
-

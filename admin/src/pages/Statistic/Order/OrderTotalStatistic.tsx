@@ -13,7 +13,7 @@ import {
   StackAlignCenterJustifySpaceBetween,
 } from "../../../styled/styled";
 import { defaultDateRange } from "./OrderStatusStatistic";
-import { DateRangeTabs } from "./DateRangeTabs";
+import { DateRangeTabs } from "../../../components/Tab/DateRangeTabs";
 import { numberWithComma } from "../../../shared/helper";
 import { useNavigate } from "react-router-dom";
 import SCREEN_PATHS from "../../../shared/constants/screenPaths";

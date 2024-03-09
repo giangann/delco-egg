@@ -8,6 +8,7 @@ import { ClientDetailAccount } from "./ClientDetailAccount";
 import { ClientDetailInformation } from "./ClientDetailInformation";
 import { ClientDetailOrderOverview } from "./ClientDetailOrderOverview";
 import { ClientDetailRecentOrder } from "./ClientDetailRecentOrder";
+import { ClientDetailEggStatistic } from "./ClientDetailEggStatistic";
 
 // user infor, account and reset password
 export const ClientDetail = () => {
@@ -19,7 +20,7 @@ export const ClientDetail = () => {
       const response = await getApi<IUserProfile>(`user/${params?.id}`);
       if (response.success) setClient(response.data);
     }
-    fetchClient()
+    fetchClient();
   }, []);
   return (
     <Page title="Chi tiết người dùng">
@@ -37,6 +38,14 @@ export const ClientDetail = () => {
           <Grid item xs={12}>
             <ClientDetailOrderOverview />
           </Grid>
+
+          <Grid item xs={12} sm={4}>
+            <ClientDetailEggStatistic />
+          </Grid>
+
+          {/* <Grid item xs={12}>
+            <ClientDetailEggStatistic />
+          </Grid> */}
 
           <Grid item xs={12}>
             <ClientDetailRecentOrder />
