@@ -1,10 +1,10 @@
-import { Box, Grid, Paper, Stack, Typography, styled } from "@mui/material";
+import { Grid, Paper, Stack, Typography, styled } from "@mui/material";
 import { Page } from "../../components/Page/Page";
-import { Item, items } from "../Home/Home";
-import { LinkCustom } from "../../styled/styled";
-import { GREEN } from "../../styled/color";
 import { useDevice } from "../../hooks/useDevice";
 import { IcBaselineAddCircleOutline } from "../../shared/icons/Icon";
+import { GREEN } from "../../styled/color";
+import { LinkCustom } from "../../styled/styled";
+import { Item, items } from "../Home/Home";
 
 export const Manage = () => {
   const { isMobile } = useDevice();

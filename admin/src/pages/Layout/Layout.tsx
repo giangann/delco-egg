@@ -8,6 +8,7 @@ import { INoti } from "../../shared/types/noti";
 import { Header } from "./Header/Header";
 import NavBarBottom from "./NavBarBottom";
 import { useDevice } from "../../hooks/useDevice";
+import { Box } from "@mui/material";
 
 // WHEN HAVE TIME, PLEASE FIX THIS DIRTY CODE :((
 export const Layout = () => {
@@ -55,7 +56,13 @@ export const Layout = () => {
       >
         <Header />
         <Outlet />
-        {isMobile && <NavBarBottom />}
+
+        {isMobile && (
+          <>
+            <NavBarBottom />
+            <Box sx={{ height: "62px" }} />
+          </>
+        )}
       </NotiContext.Provider>
     </SocketContext.Provider>
   );

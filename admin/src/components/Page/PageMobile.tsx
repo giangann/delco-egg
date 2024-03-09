@@ -24,7 +24,7 @@ export const PageMobile = ({
   onCreate,
 }: PageProps) => {
   return (
-    <Box sx={{ mb: `${12 + 72}px` }}>
+    <Box sx={{ mb: 2 }}>
       <Box position="relative">
         <Box
           sx={{
@@ -42,7 +42,9 @@ export const PageMobile = ({
             </Button>
           )}
         </Box>
-        <PageTitleText mt={2} mb={2}>{title}</PageTitleText>
+        <PageTitleText mt={2} mb={2}>
+          {title}
+        </PageTitleText>
         {onCreate && (
           <FlexDefaultBox my={3} justifyContent={"center"}>
             <ButtonResponsive

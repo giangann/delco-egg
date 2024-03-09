@@ -5,6 +5,7 @@ import { EggPricesBlock } from "./EggPricesBlock";
 import { TodayOverview } from "./TodayOverview";
 import { useDevice } from "../../hooks/useDevice";
 import { Page } from "../../components/Page/Page";
+import useAuth from "../../hooks/useAuth";
 
 export const Home = () => {
   const { isMobile } = useDevice();
@@ -12,11 +13,7 @@ export const Home = () => {
     <>
       <Box height={200} width="100%" sx={{ backgroundColor: "white", mb: 1.5 }}>
         <Box sx={{ padding: 0 }}>
-          <Typography
-            sx={{ fontWeight: 500, fontSize: 20, py: 1, paddingLeft: 1.5 }}
-          >
-            Xin chào, <span style={{ fontWeight: 600 }}>Admin Lê Hường !</span>
-          </Typography>
+         {isMobile && <Hello/>}
 
           {isMobile ? (
             <>
@@ -27,8 +24,8 @@ export const Home = () => {
               <EggPricesBlock />
             </>
           ) : (
-            <Page title="">
-              <Grid container>
+            <Page title="Tổng quan">
+              <Grid container spacing={4}>
                 <Grid item sm={6}>
                   {/* tổng quan: doanh thu + số trứng xuất + trung bình doanh thu/quả */}
                   <TodayOverview />
@@ -44,6 +41,15 @@ export const Home = () => {
         </Box>
       </Box>
     </>
+  );
+};
+
+const Hello = () => {
+  const { user } = useAuth();
+  return (
+    <Typography sx={{ fontWeight: 500, fontSize: 20, py: 1, paddingLeft: 1.5 }}>
+      Xin chào, <span style={{ fontWeight: 600 }}>{user?.fullname}</span>
+    </Typography>
   );
 };
 

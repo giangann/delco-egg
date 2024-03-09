@@ -23,7 +23,7 @@ export default function NavBarBottom() {
       elevation={3}
     >
       <BottomNavigation
-        sx={{ width: "100%", backgroundColor: GREEN["500"], paddingY: 1 }}
+        sx={{ width: "100%", backgroundColor: GREEN["500"], paddingY: 0.5 }}
         value={value}
         showLabels
         onChange={handleChange}

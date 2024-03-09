@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Paper, Stack, Typography } from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 import { BoxStatisticWithTimeRange } from "../../components/Box/BoxStatisticWithTimeRange";
@@ -34,6 +34,7 @@ export const TodayOverview = () => {
   const [overview, setOverview] = useState<TOverview>(defaultData);
   const [isChooseDateActive, setIsChooseDateActive] = useState(false);
   const isNoSuccessOrder = overview.sumTotal === 0 && overview.sumQty === 0;
+  const { isMobile } = useDevice();
 
   const onDatePickerChange = (newDate: Dayjs) => {
     setDate(newDate);
@@ -62,23 +63,28 @@ export const TodayOverview = () => {
     fetchOverviewData();
   }, [date]);
   return (
-    <BoxStatisticWithTimeRange
-      chooseTimeElement={<DateTabs onChange={onDateTabsChange} />}
-      title="Tổng quan"
-    >
-      <>
-        <CustomDatePicker
-          date={date}
-          onChange={onDatePickerChange}
-          isActive={isChooseDateActive}
-        />
-        {isNoSuccessOrder ? (
-          <NoOrderBox />
-        ) : (
-          <OverviewTable overview={overview} date={date} />
-        )}
-      </>
-    </BoxStatisticWithTimeRange>
+    <Paper elevation={isMobile ? 0 : 4}>
+      <BoxStatisticWithTimeRange
+        chooseTimeElement={<DateTabs onChange={onDateTabsChange} />}
+        title="Tổng quan"
+        boxProps={{
+          sx: { backgroundColor: isMobile ? "" : "white !important" },
+        }}
+      >
+        <>
+          <CustomDatePicker
+            date={date}
+            onChange={onDatePickerChange}
+            isActive={isChooseDateActive}
+          />
+          {isNoSuccessOrder ? (
+            <NoOrderBox />
+          ) : (
+            <OverviewTable overview={overview} date={date} />
+          )}
+        </>
+      </BoxStatisticWithTimeRange>
+    </Paper>
   );
 };
 

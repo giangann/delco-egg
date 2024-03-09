@@ -9,16 +9,21 @@ import {
 import { useState } from "react";
 import { IcBaselineArrowDropDown } from "../../../../shared/icons/Icon";
 import { BACKGROUND_COLOR, GREEN } from "../../../../styled/color";
-import { LinkCustom } from "../../../../styled/styled";
+import {
+  LinkCustom,
+  StackAlignCenterJustifySpaceBetween,
+} from "../../../../styled/styled";
 import { Item, items } from "../../../Home/Home";
 import { NotificationMenu } from "./NotificationMenu";
 import { UserProfileMenu } from "../UserProfileMenu";
 import { useLocation } from "react-router-dom";
 import { OPACITY_TO_HEX } from "../../../../shared/constants/common";
+import useAuth from "../../../../hooks/useAuth";
 
 const DEFAULT_POS = -1;
 export const HeaderDesktop = () => {
   const [pos, setPos] = useState(DEFAULT_POS);
+  const { user } = useAuth();
 
   const onCloseSubMenu = () => {
     setPos(DEFAULT_POS);
@@ -53,50 +58,60 @@ export const HeaderDesktop = () => {
           </BoxItem>
 
           <BoxItem flexBasis={"70%"}>
-            <Stack
-              alignItems={"center"}
-              justifyContent={"flex-start"}
-              direction={"row"}
-              spacing={{ sm: 1, md: 2, lg: 3 }}
-            >
-              {items.map((item, index) => {
-                let active = false;
-                if (item.path == location.pathname || location.pathname.includes(item.path)) active = true
-                
-                return (
-                  <LinkCustom
-                    key={index}
-                    to={item.path}
-                    onMouseEnter={() => {
-                      setPos(index);
-                    }}
-                    onMouseLeave={() => {
-                      setPos(DEFAULT_POS);
-                    }}
-                  >
-                    <ItemBox active={active} component={"div"}>
-                      <Stack direction="row">
-                        <ItemText>{item.text}</ItemText>
-                        {item?.children && (
-                          <IcBaselineArrowDropDown
-                            fontSize={20}
-                            color="white"
+            <StackAlignCenterJustifySpaceBetween>
+              <Stack
+                alignItems={"center"}
+                justifyContent={"flex-start"}
+                direction={"row"}
+                spacing={{ sm: 1, md: 2, lg: 3 }}
+              >
+                {items.map((item, index) => {
+                  let active = false;
+                  if (
+                    item.path == location.pathname ||
+                    location.pathname.includes(item.path)
+                  )
+                    active = true;
+
+                  return (
+                    <LinkCustom
+                      key={index}
+                      to={item.path}
+                      onMouseEnter={() => {
+                        setPos(index);
+                      }}
+                      onMouseLeave={() => {
+                        setPos(DEFAULT_POS);
+                      }}
+                    >
+                      <ItemBox active={active} component={"div"}>
+                        <Stack direction="row">
+                          <ItemText>{item.text}</ItemText>
+                          {item?.children && (
+                            <IcBaselineArrowDropDown
+                              fontSize={20}
+                              color="white"
+                            />
+                          )}
+                        </Stack>
+                      </ItemBox>
+                      <Box position={"relative"}>
+                        {item?.children && index === pos && (
+                          <SubHeader
+                            items={item.children}
+                            onClose={onCloseSubMenu}
                           />
                         )}
-                      </Stack>
-                    </ItemBox>
-                    <Box position={"relative"}>
-                      {item?.children && index === pos && (
-                        <SubHeader
-                          items={item.children}
-                          onClose={onCloseSubMenu}
-                        />
-                      )}
-                    </Box>
-                  </LinkCustom>
-                );
-              })}
-            </Stack>
+                      </Box>
+                    </LinkCustom>
+                  );
+                })}
+              </Stack>
+
+              <Typography sx={{ color: "white", fontWeight: 500 }}>
+                {user?.fullname}
+              </Typography>
+            </StackAlignCenterJustifySpaceBetween>
           </BoxItem>
 
           <BoxItem>
@@ -130,7 +145,11 @@ const SubHeader = ({ items, onClose }: SubHeaderProps) => {
     >
       {items.map((item) => {
         let active = false;
-        if (item.path == location.pathname || location.pathname.includes(item.path)) active = true
+        if (
+          item.path == location.pathname ||
+          location.pathname.includes(item.path)
+        )
+          active = true;
 
         return (
           <LinkCustom to={item.path}>
@@ -172,9 +191,11 @@ const ItemBox = styled(Box, {
 
   "&:hover": { border: "1px solid white" },
   // border: `1px solid ${BACKGROUND_COLOR["HEADER"]}`,
-  border: active ? "1px solid white" : `1px solid ${GREEN["900"]}${OPACITY_TO_HEX['0']}`,
+  border: active
+    ? "1px solid white"
+    : `1px solid ${GREEN["900"]}${OPACITY_TO_HEX["0"]}`,
 
-  padding: '2px 4px',
+  padding: "2px 4px",
   textOverflow: "ellipsis",
   overflow: "hidden",
   whiteSpace: "nowrap",
