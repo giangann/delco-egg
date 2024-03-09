@@ -7,15 +7,17 @@ import { getApi, putApi } from "../../lib/utils/fetch/fetchRequest";
 import { INoti } from "../../shared/types/noti";
 import { Header } from "./Header/Header";
 import NavBarBottom from "./NavBarBottom";
+import { useDevice } from "../../hooks/useDevice";
 
 // WHEN HAVE TIME, PLEASE FIX THIS DIRTY CODE :((
 export const Layout = () => {
   const [listNoti, setListNoti] = useState<INoti[]>([]);
   const { user } = useAuth();
   const wsServer = useContext(SocketContext);
+  const { isMobile } = useDevice();
 
   const refetchListNoti = () => {
-    fetchListNoti()
+    fetchListNoti();
   };
   const maskAsRead = async (notiId: number) => {
     const updateResult = await putApi<INoti>(`noti/${notiId}`);
@@ -53,7 +55,7 @@ export const Layout = () => {
       >
         <Header />
         <Outlet />
-        <NavBarBottom/>
+        {isMobile && <NavBarBottom />}
       </NotiContext.Provider>
     </SocketContext.Provider>
   );

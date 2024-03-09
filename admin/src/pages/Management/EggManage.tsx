@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Page } from "../../components/Page/Page";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
 import {
-    RowStatisticStyled,
-    StackAlignCenterJustifySpaceBetween,
+  RowStatisticStyled,
+  StackAlignCenterJustifySpaceBetween,
 } from "../../styled/styled";
 
 export const EggManage = () => {
@@ -12,9 +12,9 @@ export const EggManage = () => {
   return (
     <Page title="Quản lý trứng">
       {eggManageItems.map((item) => (
-        <RowStatisticStyled onClick={()=>navigate(item.path)}>
+        <RowStatisticStyled mt={2} onClick={() => navigate(item.path)}>
           <StackAlignCenterJustifySpaceBetween>
-            <Typography>{item.text} </Typography>
+            <Typography fontSize={18}>{item.text} </Typography>
             <div>{">>"}</div>
           </StackAlignCenterJustifySpaceBetween>
         </RowStatisticStyled>
@@ -25,19 +25,19 @@ export const EggManage = () => {
 
 const eggManageItems = [
   {
-    path: SCREEN_PATHS.EGG.UPDATE_PRICE,
+    path: SCREEN_PATHS.MANAGE.EGG.UPDATE_PRICE,
     text: "Cập nhật giá trứng",
   },
   {
-    path: SCREEN_PATHS.EGG.UPDATE_QUANTITY,
+    path: SCREEN_PATHS.MANAGE.EGG.UPDATE_QUANTITY,
     text: "Cập nhật số lượng trứng",
   },
   {
-    path: SCREEN_PATHS.EGG.LIST_TYPE,
+    path: SCREEN_PATHS.MANAGE.EGG.LIST,
     text: "Danh sách loại trứng",
   },
   {
-    path: SCREEN_PATHS.EGG.CREATE_TYPE,
+    path: SCREEN_PATHS.MANAGE.EGG.CREATE,
     text: "Tạo mới loại trứng",
   },
 ];

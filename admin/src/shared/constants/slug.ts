@@ -1,8 +1,10 @@
 export const SLUG = {
   GENRE: "/the-loai/",
-  COLLECTION: "/danh-sach/",
   AUTHOR: "/tac-gia/",
   // ---------------------------------------------------
+  CREATE:'/tao-moi',
+  DETAIL:'/chi-tiet',
+  LIST: "/danh-sach",
   APPLICATION: "/don-dat-trung",
   USER: "/user",
   EGG: "/trung",

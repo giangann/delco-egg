@@ -34,17 +34,17 @@ const fields: StrictField<IUserList>[] = [
   },
 ];
 export const UserList = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const onViewDetail = ({ id }: IUserList) => {
     let newPathWithoutSlug = screenPathRemoveSlug(
-      SCREEN_PATHS.USER.DETAIL
+      SCREEN_PATHS.MANAGE.USER.DETAIL
     );
     navigate(`${newPathWithoutSlug}/${id}`);
   };
   return (
     <Page title="Danh sách người dùng">
       <CustomTableWithFilter
-        createRoute={SCREEN_PATHS.USER.CREATE}
+        createRoute={SCREEN_PATHS.MANAGE.USER.CREATE}
         fields={fields}
         apiEndPoint="user"
         onViewDetail={onViewDetail}

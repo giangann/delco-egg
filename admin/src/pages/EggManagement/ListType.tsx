@@ -60,7 +60,7 @@ export const ListType = () => {
   };
   useEffect(() => {
     async function getListEggType() {
-      const res = await getApi<IEggUpdate[]>("egg",{ isDeleted: "0" });
+      const res = await getApi<IEggUpdate[]>("egg", { isDeleted: "0" });
       if (res.success) setListEggType(res.data);
     }
     getListEggType();
@@ -68,7 +68,7 @@ export const ListType = () => {
   return (
     <Page
       title="Danh sách các loại trứng"
-      onCreate={() => navigate(SCREEN_PATHS.EGG.CREATE_TYPE)}
+      onCreate={() => navigate(SCREEN_PATHS.MANAGE.EGG.CREATE)}
     >
       {listEggType?.length && (
         <>

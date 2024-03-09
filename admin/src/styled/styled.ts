@@ -75,6 +75,7 @@ export const RowStatisticStyled = styled(Box)(({ theme }) => ({
   paddingLeft: "2px",
   paddingTop: "4px",
   paddingBottom: "4px",
+  cursor:'pointer',
   borderBottom: `1px solid #000000${OPACITY_TO_HEX["10"]}`,
   [theme.breakpoints.up("sm")]: {},
 }));

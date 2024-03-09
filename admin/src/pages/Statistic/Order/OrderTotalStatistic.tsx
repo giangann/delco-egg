@@ -84,7 +84,7 @@ export const OrderTotalStatistic = () => {
 const Order = ({ order }: { order: IOrderStatistic }) => {
   const navigate = useNavigate();
   const onViewDetail = (id: number | string) => {
-    let path = SCREEN_PATHS.APPLICATION.DETAIL;
+    let path = SCREEN_PATHS.MANAGE.APPLICATION.DETAIL;
     let arrPathBySlash = path.split("/");
     arrPathBySlash.pop();
 

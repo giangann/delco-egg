@@ -12,7 +12,7 @@ export const Manage = () => {
   return (
     <Page title="Quản lý">
       <Grid container spacing={{ xs: 1.5, sm: 2 }} mb={2}>
-        {items.map((item: Item, index: number) => (
+        {items[0].children!.map((item: Item, index: number) => (
           <Grid item xs={6} sm={3} key={index}>
             <LinkCustom to={item.path}>
               <Paper

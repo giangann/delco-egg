@@ -31,7 +31,7 @@ export const NotificationMenu = () => {
   };
   const handleNotiClick = (orderId: number) => {
     handleClose();
-    let path = SCREEN_PATHS.APPLICATION.DETAIL;
+    let path = SCREEN_PATHS.MANAGE.APPLICATION.DETAIL;
     let arrPathBySlash = path.split("/");
     arrPathBySlash.pop();
 
@@ -75,7 +75,7 @@ type NotiItemProps = {
   handleNotiClick: (orderId: number) => void;
 } & INoti;
 const NotiItem = ({
-handleNotiClick,
+  handleNotiClick,
   from_user,
   createdAt,
   content,

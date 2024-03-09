@@ -39,7 +39,7 @@ export const UserCreateForm = () => {
   const onSumbit = async (value: IUserCreate) => {
     const res = await postApi("user/create", value);
     if (res.success) toast.success("Tạo mới thành công");
-    else toast.error(res.error.message)
+    else toast.error(res.error.message);
   };
   const onDefaultPWChange = () => {
     setUseDefaultPW(!useDefaultPW);
@@ -111,7 +111,7 @@ export const UserCreateForm = () => {
         <BoxFlexEnd sx={{ marginTop: { xs: 2, sm: 1 } }}>
           <ButtonResponsive
             onClick={() => {
-              navigate(SCREEN_PATHS.USER.LIST);
+              navigate(SCREEN_PATHS.MANAGE.USER.LIST);
             }}
             variant="outlined"
             startIcon={

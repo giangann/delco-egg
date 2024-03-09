@@ -30,7 +30,7 @@ export const CreateNewType = () => {
   };
 
   const onGoBack = () => {
-    navigate(SCREEN_PATHS.EGG.LIST_TYPE);
+    navigate(SCREEN_PATHS.MANAGE.EGG.LIST);
   };
   return (
     <Page title="Tạo loại trứng mới">

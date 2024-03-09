@@ -22,7 +22,7 @@ export const EggOrderList = () => {
 
   const onViewDetail = ({ id }: IOrderRow) => {
     let newPathWithoutSlug = screenPathRemoveSlug(
-      SCREEN_PATHS.APPLICATION.DETAIL
+      SCREEN_PATHS.MANAGE.APPLICATION.DETAIL
     );
     navigate(`${newPathWithoutSlug}/${id}`);
   };

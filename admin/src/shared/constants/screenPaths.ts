@@ -17,7 +17,6 @@ const SCREEN_PATHS = {
   PROJECT: "/project",
   REPORT: "/report",
   PERMISSION: "/permission",
-  LIST_BOOK_BY_COLLECTION: `${SLUG.COLLECTION}:slug`,
   LIST_BOOK_BY_GENRE: `${SLUG.GENRE}:slug`,
   BOOK: "/:slug",
   BOOK_DETAIL: "/:slug/:detail",
@@ -42,11 +41,31 @@ const SCREEN_PATHS = {
     UPDATE_QUANTITY: `${SLUG.EGG}/cap-nhat-so-luong`,
     UPDATE_TYPE: `${SLUG.EGG}/cap-nhat-mix`,
   },
+  MANAGE: {
+    USER: {
+      CREATE: `${SLUG.MANAGE}${SLUG.USER}${SLUG.CREATE}`,
+      LIST: `${SLUG.MANAGE}${SLUG.USER}${SLUG.LIST}`,
+      DETAIL: `${SLUG.MANAGE}${SLUG.USER}${SLUG.DETAIL}/:id`,
+    },
+    EGG: {
+      INDEX:`${SLUG.MANAGE}${SLUG.EGG}`,
+      LIST: `${SLUG.MANAGE}${SLUG.EGG}${SLUG.LIST}`,
+      CREATE: `${SLUG.MANAGE}${SLUG.EGG}${SLUG.CREATE}`,
+      UPDATE_PRICE: `${SLUG.MANAGE}${SLUG.EGG}/cap-nhat-gia`,
+      UPDATE_QUANTITY: `${SLUG.MANAGE}${SLUG.EGG}/cap-nhat-so-luong`,
+      UPDATE_TYPE: `${SLUG.MANAGE}${SLUG.EGG}/cap-nhat-mix`,
+    },
+    APPLICATION: {
+      CREATE: `${SLUG.MANAGE}${SLUG.APPLICATION}${SLUG.CREATE}`,
+      LIST: `${SLUG.MANAGE}${SLUG.APPLICATION}${SLUG.LIST}`,
+      DETAIL: `${SLUG.MANAGE}${SLUG.APPLICATION}${SLUG.DETAIL}/:id`,
+    },
+  },
   STATISTIC: {
-    REVENUE: `${SLUG.STATISTIC}/${SLUG.REVENUE}`,
-    APPLICATION: `${SLUG.STATISTIC}/${SLUG.APPLICATION}`,
-    EGG: `${SLUG.STATISTIC}/${SLUG.EGG}`,
-    USER: `${SLUG.STATISTIC}/${SLUG.USER}`,
+    REVENUE: `${SLUG.STATISTIC}${SLUG.REVENUE}`,
+    APPLICATION: `${SLUG.STATISTIC}${SLUG.APPLICATION}`,
+    EGG: `${SLUG.STATISTIC}${SLUG.EGG}`,
+    USER: `${SLUG.STATISTIC}${SLUG.USER}`,
   },
 };
 

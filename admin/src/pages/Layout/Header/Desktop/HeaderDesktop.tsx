@@ -13,6 +13,8 @@ import { LinkCustom } from "../../../../styled/styled";
 import { Item, items } from "../../../Home/Home";
 import { NotificationMenu } from "./NotificationMenu";
 import { UserProfileMenu } from "../UserProfileMenu";
+import { useLocation } from "react-router-dom";
+import { OPACITY_TO_HEX } from "../../../../shared/constants/common";
 
 const DEFAULT_POS = -1;
 export const HeaderDesktop = () => {
@@ -21,6 +23,9 @@ export const HeaderDesktop = () => {
   const onCloseSubMenu = () => {
     setPos(DEFAULT_POS);
   };
+
+  const location = useLocation();
+  console.log(location);
   return (
     <Box
       sx={{
@@ -36,63 +41,61 @@ export const HeaderDesktop = () => {
             height: 70,
           }}
         >
-          <BoxItem flexBasis={{ sm: "20%", md: "30%", lg: "40%" }}>
+          <BoxItem flexBasis={{ sm: "30%", md: "20%", lg: "20%" }}>
             <LinkCustom to="/">
               <Typography
                 variant="h1"
                 style={{ color: "white", fontWeight: 900, fontSize: 24 }}
               >
-                Delco Egg
+                Delco Egg Admin
               </Typography>
             </LinkCustom>
           </BoxItem>
 
-          <BoxItem flexBasis={"50%"}>
-            <Stack direction={"row"} spacing={{ sm: 1, md: 2, lg: 3 }}>
-              {items.map((item, index) => (
-                <LinkCustom
-                  key={index}
-                  to={item.path}
-                  onMouseEnter={() => {
-                    setPos(index);
-                  }}
-                  onMouseLeave={() => {
-                    setPos(DEFAULT_POS);
-                  }}
-                >
-                  <Box
-                    component={"div"}
-                    sx={{
-                      width: "100%",
-                      cursor: "pointer",
-                      boxSizing: "border-box",
-                      "&:hover": { border: "1px solid white" },
-                      border: `1px solid ${BACKGROUND_COLOR["HEADER"]}`,
-                      px: 0.5,
-                      py: 0.25,
-                      textOverflow: "ellipsis",
-                      overflow: "hidden",
-                      whiteSpace: "nowrap",
-                      transition: "all 0.5s",
+          <BoxItem flexBasis={"70%"}>
+            <Stack
+              alignItems={"center"}
+              justifyContent={"flex-start"}
+              direction={"row"}
+              spacing={{ sm: 1, md: 2, lg: 3 }}
+            >
+              {items.map((item, index) => {
+                let active = false;
+                if (item.path == location.pathname || location.pathname.includes(item.path)) active = true
+                
+                return (
+                  <LinkCustom
+                    key={index}
+                    to={item.path}
+                    onMouseEnter={() => {
+                      setPos(index);
+                    }}
+                    onMouseLeave={() => {
+                      setPos(DEFAULT_POS);
                     }}
                   >
-                    <Stack direction="row">
-                      <ItemText>{item.text}</ItemText>
-                      {item?.children && (
-                        <IcBaselineArrowDropDown fontSize={20} color="white" />
+                    <ItemBox active={active} component={"div"}>
+                      <Stack direction="row">
+                        <ItemText>{item.text}</ItemText>
+                        {item?.children && (
+                          <IcBaselineArrowDropDown
+                            fontSize={20}
+                            color="white"
+                          />
+                        )}
+                      </Stack>
+                    </ItemBox>
+                    <Box position={"relative"}>
+                      {item?.children && index === pos && (
+                        <SubHeader
+                          items={item.children}
+                          onClose={onCloseSubMenu}
+                        />
                       )}
-                    </Stack>
-                  </Box>
-                  <Box position={"relative"}>
-                    {item?.children && index === pos && (
-                      <SubHeader
-                        items={item.children}
-                        onClose={onCloseSubMenu}
-                      />
-                    )}
-                  </Box>
-                </LinkCustom>
-              ))}
+                    </Box>
+                  </LinkCustom>
+                );
+              })}
             </Stack>
           </BoxItem>
 
@@ -125,31 +128,18 @@ const SubHeader = ({ items, onClose }: SubHeaderProps) => {
         zIndex: 1,
       }}
     >
-      {items.map((item) => (
-        <LinkCustom to={item.path}>
-          <Box
-            component={"div"}
-            sx={{
-              width: "100%",
-              cursor: "pointer",
-              boxSizing: "border-box",
-              "&:hover": { border: "1px solid white" },
-              // border: `1px solid ${BACKGROUND_COLOR["HEADER"]}`,
-              border: `1px solid ${GREEN["900"]}`,
+      {items.map((item) => {
+        let active = false;
+        if (item.path == location.pathname || location.pathname.includes(item.path)) active = true
 
-              px: 0.5,
-              py: 0.25,
-              textOverflow: "ellipsis",
-              overflow: "hidden",
-              whiteSpace: "nowrap",
-              transition: "all 0.25s",
-            }}
-            onClick={onClose}
-          >
-            <ItemText>{item.text}</ItemText>
-          </Box>
-        </LinkCustom>
-      ))}
+        return (
+          <LinkCustom to={item.path}>
+            <ItemBox active={active} component={"div"} onClick={onClose}>
+              <ItemText>{item.text}</ItemText>
+            </ItemBox>
+          </LinkCustom>
+        );
+      })}
     </Paper>
   );
 };
@@ -160,14 +150,35 @@ const BoxItem = styled(Box)({
 
 const ItemText = styled(Typography)(({ theme }) => ({
   color: "whitesmoke",
-  fontSize: 16,
+  fontSize: 20,
+  fontWeight: 500,
   [theme.breakpoints.down("xl")]: {
-    fontSize: 15,
+    fontSize: 18,
   },
   [theme.breakpoints.down("lg")]: {
-    fontSize: 14,
+    fontSize: 18,
   },
   [theme.breakpoints.down("md")]: {
-    fontSize: 14,
+    fontSize: 18,
   },
+}));
+
+const ItemBox = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "active",
+})<{ active: boolean }>(({ active, theme }) => ({
+  width: "100%",
+  cursor: "pointer",
+  boxSizing: "border-box",
+
+  "&:hover": { border: "1px solid white" },
+  // border: `1px solid ${BACKGROUND_COLOR["HEADER"]}`,
+  border: active ? "1px solid white" : `1px solid ${GREEN["900"]}${OPACITY_TO_HEX['0']}`,
+
+  padding: '2px 4px',
+  textOverflow: "ellipsis",
+  overflow: "hidden",
+  whiteSpace: "nowrap",
+  transition: "all 0.25s",
+
+  [theme.breakpoints.down("xl")]: {},
 }));

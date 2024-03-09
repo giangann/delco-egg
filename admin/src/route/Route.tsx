@@ -37,39 +37,39 @@ const routes: RouteObject[] = [
         element: <Home />,
       },
       {
-        path: SCREEN_PATHS.APPLICATION.LIST,
+        path: SCREEN_PATHS.MANAGE.APPLICATION.LIST,
         element: <EggOrderList />,
       },
       {
-        path: SCREEN_PATHS.APPLICATION.DETAIL,
+        path: SCREEN_PATHS.MANAGE.APPLICATION.DETAIL,
         element: <EggOrderDetail />,
       },
       {
-        path: SCREEN_PATHS.EGG.LIST_TYPE,
+        path: SCREEN_PATHS.MANAGE.EGG.LIST,
         element: <ListType />,
       },
       {
-        path: SCREEN_PATHS.EGG.CREATE_TYPE,
+        path: SCREEN_PATHS.MANAGE.EGG.CREATE,
         element: <CreateNewType />,
       },
       {
-        path: SCREEN_PATHS.EGG.UPDATE_PRICE,
+        path: SCREEN_PATHS.MANAGE.EGG.UPDATE_PRICE,
         element: <UpdatePrice />,
       },
       {
-        path: SCREEN_PATHS.EGG.UPDATE_QUANTITY,
+        path: SCREEN_PATHS.MANAGE.EGG.UPDATE_QUANTITY,
         element: <UpdateQuantity />,
       },
       {
-        path: SCREEN_PATHS.USER.LIST,
+        path: SCREEN_PATHS.MANAGE.USER.LIST,
         element: <UserList />,
       },
       {
-        path: SCREEN_PATHS.USER.DETAIL,
+        path: SCREEN_PATHS.MANAGE.USER.DETAIL,
         element: <ClientDetail />,
       },
       {
-        path: SCREEN_PATHS.USER.CREATE,
+        path: SCREEN_PATHS.MANAGE.USER.CREATE,
         element: <UserCreateForm />,
       },
       {
@@ -83,7 +83,7 @@ const routes: RouteObject[] = [
         element: <Manage />,
       },
       {
-        path: `${SLUG.MANAGE}/${SLUG.EGG}`,
+        path: SCREEN_PATHS.MANAGE.EGG.INDEX,
         element: <EggManage />,
       },
 

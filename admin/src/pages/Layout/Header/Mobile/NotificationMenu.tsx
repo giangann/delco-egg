@@ -30,7 +30,7 @@ export const NotificationMenu = () => {
   };
   const handleNotiClick = async (orderId: number) => {
     onCloseDrawer();
-    let path = SCREEN_PATHS.APPLICATION.DETAIL;
+    let path = SCREEN_PATHS.MANAGE.APPLICATION.DETAIL;
     let arrPathBySlash = path.split("/");
     arrPathBySlash.pop();
 

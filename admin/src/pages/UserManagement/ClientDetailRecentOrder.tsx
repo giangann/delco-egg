@@ -31,7 +31,7 @@ export const ClientDetailRecentOrder = () => {
     <Paper elevation={4} sx={{ padding: 2 }}>
       <StackAlignCenterJustifySpaceBetween>
         <BoxTitle>{"Đơn hàng gần đây"}</BoxTitle>
-        <FakeATag to={`${SCREEN_PATHS.APPLICATION.LIST}`}>
+        <FakeATag to={`${SCREEN_PATHS.MANAGE.APPLICATION.LIST}`}>
           <Typography>{">> xem thêm"}</Typography>
         </FakeATag>
       </StackAlignCenterJustifySpaceBetween>
@@ -50,7 +50,7 @@ export const ClientDetailRecentOrder = () => {
 const Order = ({ order }: { order: IOrderStatistic }) => {
   const navigate = useNavigate();
   const onViewDetail = (id: number | string) => {
-    let path = SCREEN_PATHS.APPLICATION.DETAIL;
+    let path = SCREEN_PATHS.MANAGE.APPLICATION.DETAIL;
     let arrPathBySlash = path.split("/");
     arrPathBySlash.pop();
 

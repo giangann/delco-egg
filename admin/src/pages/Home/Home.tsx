@@ -58,37 +58,121 @@ export type Item = {
   text: string;
   children?: Item[];
 };
+// export const items: Item[] = [
+//   {
+//     path: SCREEN_PATHS.MANAGE.APPLICATION.LIST,
+//     text: "Quản lý đơn hàng",
+//   },
+//   {
+//     path: `${SLUG.MANAGE}/${SLUG.EGG}`,
+//     text: "Quản lý trứng",
+//     children: [
+//       {
+//         path: SCREEN_PATHS.MANAGE.EGG.UPDATE_PRICE,
+//         text: "Cập nhật giá trứng",
+//       },
+//       {
+//         path: SCREEN_PATHS.MANAGE.EGG.UPDATE_QUANTITY,
+//         text: "Cập nhật số lượng trứng",
+//       },
+//       {
+//         path: SCREEN_PATHS.MANAGE.EGG.LIST,
+//         text: "Danh sách loại trứng",
+//       },
+//       {
+//         path: SCREEN_PATHS.MANAGE.EGG.CREATE,
+//         text: "Tạo mới loại trứng",
+//       },
+//     ],
+//   },
+//   {
+//     path: `${SLUG.STATISTIC}`,
+//     text: "Thống kê",
+//     children: [
+//       // {
+//       //   path: SCREEN_PATHS.STATISTIC.REVENUE,
+//       //   text: "Thống kê doanh thu",
+//       // },
+//       {
+//         path: SCREEN_PATHS.STATISTIC.APPLICATION,
+//         text: "Thống kê đơn hàng",
+//       },
+//       {
+//         path: SCREEN_PATHS.STATISTIC.EGG,
+//         text: "Thống kê trứng",
+//       },
+//       {
+//         path: SCREEN_PATHS.STATISTIC.USER,
+//         text: "Thống kê người dùng",
+//       },
+//     ],
+//   },
+
+//   {
+//     path: SCREEN_PATHS.MANAGE.USER.LIST,
+//     text: "Quản lý người dùng",
+//   },
+// ];
+
 export const items: Item[] = [
   {
-    path: SCREEN_PATHS.APPLICATION.LIST,
-    text: "Quản lý đơn hàng",
-  },
-  {
-    path: `${SLUG.MANAGE}/${SLUG.EGG}`,
-    text: "Quản lý trứng",
+    path: `${SLUG.MANAGE}`,
+    text: "Quản lý",
     children: [
       {
-        path: SCREEN_PATHS.EGG.UPDATE_PRICE,
-        text: "Cập nhật giá trứng",
+        path: SCREEN_PATHS.MANAGE.APPLICATION.LIST,
+        text: "Quản lý đơn hàng",
       },
       {
-        path: SCREEN_PATHS.EGG.UPDATE_QUANTITY,
-        text: "Cập nhật số lượng trứng",
+        path: SCREEN_PATHS.MANAGE.EGG.INDEX,
+        text: "Quản lý trứng",
+        children: [
+          {
+            path: SCREEN_PATHS.MANAGE.EGG.UPDATE_PRICE,
+            text: "Cập nhật giá trứng",
+          },
+          {
+            path: SCREEN_PATHS.MANAGE.EGG.UPDATE_QUANTITY,
+            text: "Cập nhật số lượng trứng",
+          },
+          {
+            path: SCREEN_PATHS.MANAGE.EGG.LIST,
+            text: "Danh sách loại trứng",
+          },
+          {
+            path: SCREEN_PATHS.MANAGE.EGG.CREATE,
+            text: "Tạo mới loại trứng",
+          },
+        ],
       },
       {
-        path: SCREEN_PATHS.EGG.LIST_TYPE,
-        text: "Danh sách loại trứng",
-      },
-      {
-        path: SCREEN_PATHS.EGG.CREATE_TYPE,
-        text: "Tạo mới loại trứng",
+        path: SCREEN_PATHS.MANAGE.USER.LIST,
+        text: "Quản lý người dùng",
       },
     ],
   },
 
   {
-    path: SCREEN_PATHS.USER.LIST,
-    text: "Quản lý người dùng",
+    path: `${SLUG.STATISTIC}`,
+    text: "Thống kê",
+    children: [
+      // {
+      //   path: SCREEN_PATHS.STATISTIC.REVENUE,
+      //   text: "Thống kê doanh thu",
+      // },
+      {
+        path: SCREEN_PATHS.STATISTIC.APPLICATION,
+        text: "Thống kê đơn hàng",
+      },
+      {
+        path: SCREEN_PATHS.STATISTIC.EGG,
+        text: "Thống kê trứng",
+      },
+      {
+        path: SCREEN_PATHS.STATISTIC.USER,
+        text: "Thống kê người dùng",
+      },
+    ],
   },
 ];
 

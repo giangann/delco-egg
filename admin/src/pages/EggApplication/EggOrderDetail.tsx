@@ -36,7 +36,7 @@ export const EggOrderDetail = () => {
   const [order, setOrder] = useState<IOrder | null>(null);
   const navigate = useNavigate();
   const goBackList = () => {
-    navigate(SCREEN_PATHS.APPLICATION.LIST);
+    navigate(SCREEN_PATHS.MANAGE.APPLICATION.LIST);
   };
 
   const triggerRefetch = () => {
@@ -159,9 +159,9 @@ export const EggOrderDetail = () => {
               <Stack mb={1} direction={"row"} spacing={2} alignItems={"center"}>
                 <HeadingText> 3. Thông tin người đặt</HeadingText>
                 <FakeATag
-                  to={`${screenPathRemoveSlug(SCREEN_PATHS.USER.DETAIL)}/${
-                    order.user?.id
-                  }`}
+                  to={`${screenPathRemoveSlug(
+                    SCREEN_PATHS.MANAGE.USER.DETAIL
+                  )}/${order.user?.id}`}
                 >
                   <Typography>{">> chi tiết"}</Typography>
                 </FakeATag>
