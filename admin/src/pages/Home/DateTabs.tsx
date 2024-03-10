@@ -3,10 +3,12 @@ import dayjs from "dayjs";
 import { CustomTab } from "../../components/Tab/CustomTab";
 import { CustomTabs } from "../../components/Tab/CustomTabs";
 
+export const OTHER_DATE_TAB_INDEX = 2;
+
 export const DateTabs = ({
   onChange,
 }: {
-  onChange: (newValue: any) => void;
+  onChange: (newValue: any, newTabIndex?: number) => void;
 }) => {
   return (
     <Box my={1}>
@@ -18,7 +20,11 @@ export const DateTabs = ({
             value={dayjs().subtract(1, "day")}
             label="Hôm qua"
           />
-          <CustomTab tabIndex={2} value={null} label="Khác" />
+          <CustomTab
+            tabIndex={OTHER_DATE_TAB_INDEX}
+            value={dayjs().subtract(2, "day")}
+            label="Khác"
+          />
         </>
       </CustomTabs>
     </Box>

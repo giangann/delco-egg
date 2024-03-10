@@ -23,7 +23,6 @@ export const CustomDatePicker = ({
   };
 
   const onDateChange = (newValue: Dayjs) => {
-    console.log(newValue)
     onChange(newValue)
     setAnchorEl(null);
   };

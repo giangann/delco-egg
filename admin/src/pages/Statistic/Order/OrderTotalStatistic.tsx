@@ -20,6 +20,7 @@ import SCREEN_PATHS from "../../../shared/constants/screenPaths";
 import dayjs from "dayjs";
 import { CONFIG } from "../../../shared/constants/common";
 import { NoOrderBox } from "../../../components/Box/NoOrderBox";
+import { useDevice } from "../../../hooks/useDevice";
 
 export interface IOrderStatistic extends IOrderRow {
   total: number;
@@ -27,6 +28,7 @@ export interface IOrderStatistic extends IOrderRow {
 export const OrderTotalStatistic = () => {
   const [dateRange, setDateRange] = useState<IDateRange>(defaultDateRange);
   const [orderList, setOrderList] = useState<IOrderStatistic[]>([]);
+  const { isMobile } = useDevice();
 
   const [isChooseDateRangeActive, setIsChooseDateRangeActive] = useState(false);
   const onChange = (newValue: IDateRange) => {
@@ -51,7 +53,7 @@ export const OrderTotalStatistic = () => {
             CONFIG.MY_SQL_DATE_FORMAT
           ),
           end_date: dayjs(dateRange.endDate).format(CONFIG.MY_SQL_DATE_FORMAT),
-          limit: `${3}`,
+          limit: `${5}`,
         }
       );
       if (response.success) setOrderList(response.data);
@@ -60,6 +62,7 @@ export const OrderTotalStatistic = () => {
   }, [dateRange]);
   return (
     <BoxStatisticWithTimeRange
+      boxProps={{ sx: { backgroundColor: isMobile ? "" : "white" } }}
       title="Top đơn hàng nhiều tiền"
       chooseTimeElement={<DateRangeTabs onChange={onChange} />}
     >

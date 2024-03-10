@@ -17,7 +17,6 @@ export const ProfitAndLossBox = ({
   const [open, setOpen] = useState(false);
   let color;
   let arrowRotate = 0;
-  console.log("box value", value);
   if (value === 0) {
     color = "orange";
     arrowRotate = 90;

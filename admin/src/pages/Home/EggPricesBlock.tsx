@@ -10,7 +10,7 @@ import {
   alignCenterSx,
 } from "../../styled/styled";
 import { BoxStatisticWithTimeRange } from "../../components/Box/BoxStatisticWithTimeRange";
-import { DateTabs } from "./DateTabs";
+import { DateTabs, OTHER_DATE_TAB_INDEX } from "./DateTabs";
 import dayjs, { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 import { useDevice } from "../../hooks/useDevice";
@@ -26,13 +26,11 @@ export const EggPricesBlock = () => {
   const { isMobile } = useDevice();
   const [eggPrices, setEggPrices] = useState<IEggPrice[]>([]);
 
-  const onDateTabsChange = (newDate: Dayjs | null) => {
-    if (newDate) {
-      setDate(newDate);
-      setIsChooseDateActive(false);
-    } else {
-      setIsChooseDateActive(true);
-    }
+  const onDateTabsChange = (newDate: Dayjs, newTabIndex?: number) => {
+    if (newTabIndex === OTHER_DATE_TAB_INDEX) setIsChooseDateActive(true);
+    else setIsChooseDateActive(false);
+
+    setDate(newDate);
   };
   const onDatePickerChange = (newDate: Dayjs) => {
     setDate(newDate);

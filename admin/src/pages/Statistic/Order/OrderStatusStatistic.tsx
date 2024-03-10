@@ -1,15 +1,16 @@
-import { Box } from "@mui/material";
-import dayjs from "dayjs";
+import { Box, Grid } from "@mui/material";
+import dayjs, { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 import { BoxStatisticWithTimeRange } from "../../../components/Box/BoxStatisticWithTimeRange";
+import { CustomMonthPicker } from "../../../components/DateRange/CustomMonthPicker";
 import {
-  CustomDateRangePicker,
-  IDateRange,
-} from "../../../components/DateRange/CustomDateRangePicker";
+  MonthTabs,
+  OTHER_MONTH_TAB_INDEX,
+} from "../../../components/Tab/MonthTabs";
+import { useDevice } from "../../../hooks/useDevice";
 import { getApi } from "../../../lib/utils/fetch/fetchRequest";
 import { CONFIG } from "../../../shared/constants/common";
 import { alignCenterSx } from "../../../styled/styled";
-import { DateRangeTabs } from "../../../components/Tab/DateRangeTabs";
 import { OrderStatusStatisticDoughnut } from "./OrderStatusStatisticDoughnut";
 
 export const defaultDateRange = {
@@ -17,52 +18,59 @@ export const defaultDateRange = {
   endDate: dayjs(),
 };
 export const OrderStatusStatistic = () => {
-  const [dateRange, setDateRange] = useState<IDateRange>(defaultDateRange);
+  const [dayMonth, setDayMonth] = useState<Dayjs | null>(null);
+  const [showMonthPicker, setShowMonthPicker] = useState(false);
   const [dataSets, setDataSets] = useState<number[]>([]);
-  const [isChooseDateRangeActive, setIsChooseDateRangeActive] = useState(false);
-  const onChange = (newValue: IDateRange) => {
-    if (newValue.endDate && newValue.startDate) {
-      setIsChooseDateRangeActive(false);
-      setDateRange(newValue);
-    } else {
-      setDateRange(defaultDateRange);
-      setIsChooseDateRangeActive(true);
-    }
-  };
+  const { isMobile } = useDevice();
+  const onTabChange = (newValue: Dayjs | null, tabIndex?: number) => {
+    if (tabIndex === OTHER_MONTH_TAB_INDEX) setShowMonthPicker(true);
+    else setShowMonthPicker(false);
 
-  const onDateRangeChange = (newValue: IDateRange) => {
-    setDateRange(newValue);
+    setDayMonth(newValue);
+  };
+  const onMonthChange = (newValue: Dayjs) => {
+    setDayMonth(newValue);
   };
 
   useEffect(() => {
     async function fetchStatistic() {
       const response = await getApi<number[]>("order/statistic/by-status", {
-        start_date: dayjs(dateRange.startDate).format(
-          CONFIG.MY_SQL_DATE_FORMAT
-        ),
-        end_date: dayjs(dateRange.endDate).format(CONFIG.MY_SQL_DATE_FORMAT),
+        start_date: dayMonth
+          ? dayjs(dayMonth).startOf("month").format(CONFIG.MY_SQL_DATE_FORMAT)
+          : "",
+        end_date: dayMonth
+          ? dayjs(dayMonth).endOf("month").format(CONFIG.MY_SQL_DATE_FORMAT)
+          : "",
       });
 
       if (response.success) setDataSets(response.data);
     }
     fetchStatistic();
-  }, [dateRange]);
+  }, [dayMonth]);
 
   return (
     <BoxStatisticWithTimeRange
+      boxProps={{ sx: { backgroundColor: isMobile ? "" : "white" } }}
       title="Theo trạng thái đơn hàng"
-      chooseTimeElement={<DateRangeTabs onChange={onChange} />}
+      chooseTimeElement={<MonthTabs onChange={onTabChange} />}
     >
       <>
-        <CustomDateRangePicker
-          onChange={onDateRangeChange}
-          dateRange={dateRange}
-          isActive={isChooseDateRangeActive}
+        <CustomMonthPicker
+          onChange={onMonthChange}
+          date={dayMonth}
+          isActive={showMonthPicker}
         />
 
         {/* Doughnut bar with 5 fields of status */}
-        <Box sx={{ ...alignCenterSx, my: 4 }}>
-          <OrderStatusStatisticDoughnut data={dataSets} />
+        <Box sx={{ my: 4 }}>
+          <Grid container>
+            {/* <Grid item xs={12} sm={6}> */}
+              {/* <OrderStatusStatisticDoughnut data={dataSets} /> */}
+            {/* </Grid> */}
+            <Grid item xs={12} sm={12}>
+              <OrderStatusStatisticDoughnut data={dataSets} />
+            </Grid>
+          </Grid>
         </Box>
       </>
     </BoxStatisticWithTimeRange>

@@ -13,7 +13,7 @@ import {
   RowStatisticStyled,
   StackAlignCenterJustifySpaceBetween,
 } from "../../styled/styled";
-import { DateTabs } from "./DateTabs";
+import { DateTabs, OTHER_DATE_TAB_INDEX } from "./DateTabs";
 import { useDevice } from "../../hooks/useDevice";
 
 type TOverview = {
@@ -40,13 +40,11 @@ export const TodayOverview = () => {
     setDate(newDate);
   };
 
-  const onDateTabsChange = (newDate: Dayjs | null) => {
-    if (newDate) {
-      setDate(newDate);
-      setIsChooseDateActive(false);
-    } else {
-      setIsChooseDateActive(true);
-    }
+  const onDateTabsChange = (newDate: Dayjs, newTabIndex?: number) => {
+    if (newTabIndex === OTHER_DATE_TAB_INDEX) setIsChooseDateActive(true);
+    else setIsChooseDateActive(false);
+
+    setDate(newDate);
   };
 
   useEffect(() => {
@@ -97,7 +95,7 @@ const OverviewTable = ({
 }) => {
   return (
     <Box marginTop={1.25}>
-      <RowStatisticStyled>
+      <RowStatisticStyled sx={{ my: 1 }}>
         <StackAlignCenterJustifySpaceBetween>
           <Typography sx={{ fontWeight: 500, fontSize: 18 }}>
             Tổng doanh thu{": "}
@@ -109,8 +107,7 @@ const OverviewTable = ({
         </StackAlignCenterJustifySpaceBetween>
       </RowStatisticStyled>
 
-      <RowStatisticStyled>
-        {" "}
+      <RowStatisticStyled sx={{ my: 1 }}>
         <StackAlignCenterJustifySpaceBetween>
           <Typography sx={{ fontWeight: 500, fontSize: 18 }}>
             Tổng trứng xuất{": "}
@@ -123,20 +120,23 @@ const OverviewTable = ({
         </StackAlignCenterJustifySpaceBetween>{" "}
       </RowStatisticStyled>
 
-      <Stack direction="row" spacing={1}>
-        <Typography sx={{ fontWeight: 500, fontSize: 18 }}>
-          Trung bình{": "}
-          <span style={{ fontWeight: 650 }}>{overview.toDayAverage} đ/quả</span>
-          {/* <span>{"so với hôm qua"}</span> */}
-        </Typography>
-        <ProfitAndLossBox
-          value={Number(overview.diffAvg)}
-          suffix="đ"
-          toolTipText={`So với ${dayjs(date)
-            .subtract(1, "day")
-            .format(CONFIG.VIEWR_DATE_FORMAT)}`}
-        />
-      </Stack>
+      <RowStatisticStyled sx={{ my: 1 }}>
+        <Stack direction="row" spacing={1}>
+          <Typography sx={{ fontWeight: 500, fontSize: 18 }}>
+            Trung bình{": "}
+            <span style={{ fontWeight: 650 }}>
+              {overview.toDayAverage} đ/quả
+            </span>
+          </Typography>
+          <ProfitAndLossBox
+            value={Number(overview.diffAvg)}
+            suffix="đ"
+            toolTipText={`So với ${dayjs(date)
+              .subtract(1, "day")
+              .format(CONFIG.VIEWR_DATE_FORMAT)}`}
+          />
+        </Stack>
+      </RowStatisticStyled>
     </Box>
   );
 };

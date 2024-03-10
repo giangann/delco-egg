@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 import { Page } from "../../../components/Page/Page";
 import { PageMobile } from "../../../components/Page/PageMobile";
 import { useDevice } from "../../../hooks/useDevice";
@@ -18,11 +18,15 @@ export const OrderStatistic = () => {
         <Page title="Thống kê đơn hàng">
           <Grid container spacing={2}>
             <Grid item sm={6}>
-              <OrderStatusStatistic />
+              <Paper elevation={isMobile ? 0 : 4}>
+                <OrderStatusStatistic />
+              </Paper>
             </Grid>
 
             <Grid item sm={6}>
-              <OrderTotalStatistic />
+              <Paper elevation={isMobile ? 0 : 4}>
+                <OrderTotalStatistic />
+              </Paper>
             </Grid>
           </Grid>
         </Page>

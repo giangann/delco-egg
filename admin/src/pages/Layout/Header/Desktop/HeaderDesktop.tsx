@@ -30,7 +30,6 @@ export const HeaderDesktop = () => {
   };
 
   const location = useLocation();
-  console.log(location);
   return (
     <Box
       sx={{
