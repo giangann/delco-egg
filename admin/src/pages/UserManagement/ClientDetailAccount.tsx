@@ -1,10 +1,4 @@
-import {
-  Box,
-  Button,
-  Paper,
-  Typography,
-  styled
-} from "@mui/material";
+import { Box, Button, Paper, Typography, styled } from "@mui/material";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -12,6 +6,9 @@ import { ConfirmDialog } from "../../components/Dialog/ConfirmDialog";
 import { putApi } from "../../lib/utils/fetch/fetchRequest";
 import { IUserLogin } from "../../shared/types/user";
 import {
+  BoxFieldName,
+  BoxFieldValue,
+  BoxTitle,
   StackAlignCenterJustifySpaceBetween,
   TextButton,
 } from "../../styled/styled";
@@ -32,13 +29,13 @@ export const ClientDetailAccount = ({
       <StackAlignCenterJustifySpaceBetween>
         <BoxTitle>{"Tài khoản"}</BoxTitle>
 
-        <EditButton
+        <Button
           onClick={() => setOpenDialog(true)}
           color="warning"
           variant="outlined"
         >
           <TextButton>Reset mật khẩu</TextButton>
-        </EditButton>
+        </Button>
       </StackAlignCenterJustifySpaceBetween>
       <BoxContent>
         <BoxFieldName>Tên đăng nhập</BoxFieldName>
@@ -69,31 +66,7 @@ export const ClientDetailAccount = ({
     </Paper>
   );
 };
-const BoxTitle = styled(Typography)(({ theme }) => ({
-  fontWeight: 700,
-  fontSize: 18,
-  marginBottom: 16,
-  [theme.breakpoints.up("sm")]: {},
-}));
 const BoxContent = styled(Box)(({ theme }) => ({
   marginBottom: 8,
-  [theme.breakpoints.up("sm")]: {},
-}));
-
-const BoxFieldName = styled(Typography)(({ theme }) => ({
-  fontSize: 15,
-  opacity: 0.9,
-  [theme.breakpoints.up("sm")]: {},
-}));
-
-const BoxFieldValue = styled(Typography)(({ theme }) => ({
-  fontWeight: 500,
-  opacity: 0.9,
-
-  [theme.breakpoints.up("sm")]: {},
-}));
-
-const EditButton = styled(Button)(({ theme }) => ({
-  // color:grey['300'],
   [theme.breakpoints.up("sm")]: {},
 }));

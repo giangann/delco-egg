@@ -1,12 +1,13 @@
-import { Box, Grid, Paper, Stack, Typography, styled } from "@mui/material";
+import { Box, Grid, Paper, Stack, styled } from "@mui/material";
+import dayjs, { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { MonthTabs, OTHER_MONTH_TAB_INDEX } from "../../components/Tab/MonthTabs";
 import { getApi } from "../../lib/utils/fetch/fetchRequest";
-import { numberWithComma, sumOfObject } from "../../shared/helper";
-import { defaultDateRange } from "../Statistic/Order/OrderStatusStatistic";
-import dayjs from "dayjs";
 import { CONFIG } from "../../shared/constants/common";
-import { MonthTabs } from "../../components/Tab/MonthTabs";
+import { numberWithComma, sumOfObject } from "../../shared/helper";
+import { BoxFieldName, BoxFieldValue, BoxTitle } from "../../styled/styled";
+import { CustomMonthPicker } from "../../components/DateRange/CustomMonthPicker";
 
 type TOrderOverview = {
   status: {
@@ -35,12 +36,17 @@ const orderOverviewDefault = {
 export const ClientDetailOrderOverview = () => {
   const [orderOverview, setOrderOverview] =
     useState<TOrderOverview>(orderOverviewDefault);
-  const [dateRange, setDateRange] = useState({
-    start_date: null,
-    end_date: null,
-  });
-  const onDateRangeChange = (newValue: any) => {
-    setDateRange(newValue);
+  const [dayMonth, setDayMonth] = useState<Dayjs | null>(null);
+  const [showMonthPicker, setShowMonthPicker] = useState(false);
+  const onMonthChange = (newValue: Dayjs) => {
+    setDayMonth(newValue);
+  };
+
+  const onTabChange = (newValue: Dayjs | null, tabIndex?: number) => {
+    if (tabIndex === OTHER_MONTH_TAB_INDEX) setShowMonthPicker(true);
+    else setShowMonthPicker(false);
+
+    setDayMonth(newValue);
   };
   const params = useParams();
   useEffect(() => {
@@ -48,18 +54,18 @@ export const ClientDetailOrderOverview = () => {
       const response = await getApi<TOrderOverview>(
         `user/client-order-overview/${params.id}`,
         {
-          start_date: dateRange.start_date
-            ? dayjs(dateRange.start_date).format(CONFIG.MY_SQL_DATE_FORMAT)
+          start_date: dayMonth
+            ? dayjs(dayMonth).startOf("month").format(CONFIG.MY_SQL_DATE_FORMAT)
             : "",
-          end_date: dateRange.end_date
-            ? dayjs(dateRange.end_date).format(CONFIG.MY_SQL_DATE_FORMAT)
+          end_date: dayMonth
+            ? dayjs(dayMonth).endOf("month").format(CONFIG.MY_SQL_DATE_FORMAT)
             : "",
         }
       );
       if (response.success) setOrderOverview(response.data);
     }
     fetchOrderOverview();
-  }, [dateRange]);
+  }, [dayMonth]);
   return (
     <Paper elevation={4} sx={{ padding: 2 }}>
       <Stack
@@ -69,11 +75,20 @@ export const ClientDetailOrderOverview = () => {
       >
         <BoxTitle>{"Thống kê đơn hàng"}</BoxTitle>
       </Stack>
+      <Box ml={-1} mb={1}>
+        <MonthTabs onChange={onTabChange} />
+      </Box>
+
+      <Box mb={2}>
+        <CustomMonthPicker
+          onChange={onMonthChange}
+          date={dayMonth}
+          isActive={showMonthPicker}
+        />
+      </Box>
+
       <Grid container>
-        <Grid item xs={12}>
-          <MonthTabs onChange={onDateRangeChange} />
-        </Grid>
-        <Grid item xs={6} sm={3}>
+        <Grid item xs={12} sm={3}>
           <BoxContent>
             <BoxFieldName>{"Tổng giá trị đã mua"}</BoxFieldName>
             <BoxFieldValue>{`${numberWithComma(
@@ -81,7 +96,7 @@ export const ClientDetailOrderOverview = () => {
             )} đ`}</BoxFieldValue>
           </BoxContent>
         </Grid>
-        <Grid item xs={6} sm={3}>
+        <Grid item xs={12} sm={3}>
           <BoxContent>
             <BoxFieldName>{"Tổng số trứng đã mua"}</BoxFieldName>
             <BoxFieldValue>{`${numberWithComma(
@@ -109,7 +124,7 @@ export const ClientDetailOrderOverview = () => {
         </Grid>{" "}
         <Grid item xs={6} sm={3}>
           <BoxContent>
-            <BoxFieldName>Đang chờ phê duyệt</BoxFieldName>
+            <BoxFieldName>Chờ phê duyệt</BoxFieldName>
             <BoxFieldValue>
               {orderOverview.status.waiting_approval}
             </BoxFieldValue>
@@ -132,26 +147,7 @@ export const ClientDetailOrderOverview = () => {
   );
 };
 
-const BoxTitle = styled(Typography)(({ theme }) => ({
-  fontWeight: 700,
-  fontSize: 18,
-  marginBottom: 16,
-  [theme.breakpoints.up("sm")]: {},
-}));
 const BoxContent = styled(Box)(({ theme }) => ({
   marginBottom: 8,
-  [theme.breakpoints.up("sm")]: {},
-}));
-
-const BoxFieldName = styled(Typography)(({ theme }) => ({
-  fontSize: 15,
-  opacity: 0.9,
-  [theme.breakpoints.up("sm")]: {},
-}));
-
-const BoxFieldValue = styled(Typography)(({ theme }) => ({
-  fontWeight: 500,
-  opacity: 0.9,
-
   [theme.breakpoints.up("sm")]: {},
 }));

@@ -20,7 +20,7 @@ export const CustomTab = forwardRef(
         active={isActive}
         onClick={() => {
           onTabClick(tabIndex);
-          onChange(value);
+          onChange(value, tabIndex);
         }}
         tabIndex={tabIndex}
         ref={(node) => {
@@ -39,16 +39,18 @@ export const CustomTab = forwardRef(
 const TabStyled = styled("div", {
   shouldForwardProp: (props) => props !== "active",
 })<{ active: boolean }>(({ active, theme }) => ({
-  cursor:'pointer',
+  cursor: "pointer",
   opacity: 1,
   padding: "3px 10px",
-  [theme.breakpoints.up("sm")]: {},
+  [theme.breakpoints.up("sm")]: {
+    padding: "3px 10px",
+  },
 }));
 
 const TabText = styled(Typography, {
   shouldForwardProp: (props) => props !== "active",
 })<{ active: boolean }>(({ active, theme }) => ({
-  fontSize:18,
+  fontSize: 18,
   fontWeight: active ? 550 : 450,
   opacity: active ? 1 : 0.8,
   [theme.breakpoints.up("sm")]: {},

@@ -35,6 +35,32 @@ export const InputErrorText = styled(Typography)(({ theme }) => ({
   },
 }));
 
+export const BoxTitle = styled(Typography)(({ theme }) => ({
+  fontWeight: 700,
+  fontSize: 18,
+  marginBottom: 16,
+  [theme.breakpoints.up("sm")]: {
+    fontSize: 20,
+    fontWeight: 600,
+  },
+}));
+export const BoxFieldName = styled(Typography)(({ theme }) => ({
+  fontSize: 17,
+  opacity: 0.9,
+  [theme.breakpoints.up("sm")]: {
+    fontSize: 18,
+  },
+}));
+
+export const BoxFieldValue = styled(Typography)(({ theme }) => ({
+  fontSize: 17,
+  fontWeight: 500,
+  opacity: 0.9,
+  [theme.breakpoints.up("sm")]: {
+    fontSize: 18,
+  },
+}));
+
 // Box
 export const BoxAbsoluteFull = styled(Box)({
   position: "absolute",
@@ -75,7 +101,7 @@ export const RowStatisticStyled = styled(Box)(({ theme }) => ({
   paddingLeft: "2px",
   paddingTop: "4px",
   paddingBottom: "4px",
-  cursor:'pointer',
+  cursor: "pointer",
   borderBottom: `1px solid #000000${OPACITY_TO_HEX["10"]}`,
   [theme.breakpoints.up("sm")]: {},
 }));
@@ -118,4 +144,3 @@ export const ButtonResponsive = styled(Button)(({ theme }) => ({
     padding: "6px 16px",
   },
 }));
-

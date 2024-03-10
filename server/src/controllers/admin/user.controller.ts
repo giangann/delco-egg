@@ -118,13 +118,15 @@ const clientOrderEggStatistic: IController = async (req, res) => {
   try {
     let params = {
       user_id: parseInt(req.params.userId),
+      startDate: ApiUtility.getQueryParam(req, 'start_date'),
+      endDate: ApiUtility.getQueryParam(req, 'end_date'),
     };
     // get all eggs, even egg is deleted
     const eggs = await eggService.list();
 
     // get all orders
     const orders = await orderService.list({
-      user_id: params.user_id,
+      ...params,
       limit: null,
       page: null,
     });

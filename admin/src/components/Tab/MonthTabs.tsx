@@ -1,41 +1,20 @@
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { CustomTab } from "./CustomTab";
 import { CustomTabs } from "./CustomTabs";
 
+export const OTHER_MONTH_TAB_INDEX = 3;
 export const MonthTabs = ({
   onChange,
 }: {
-  onChange: (newValue: any) => void;
+  onChange: (newValue: Dayjs | null, tabIndex?: number) => void;
 }) => {
   return (
     <CustomTabs onChange={onChange}>
+      <CustomTab tabIndex={0} value={null} label="Tất cả" />
+      <CustomTab tabIndex={1} value={dayjs()} label="Tháng này" />
       <CustomTab
-        tabIndex={0}
-        value={{
-          start_date: null,
-          end_date: null,
-        }}
-        label="Tất cả"
-      />
-      <CustomTab
-        tabIndex={1}
-        value={{
-          start_date: dayjs().startOf("month"),
-          end_date: dayjs(),
-        }}
-        label="Tháng này"
-      />
-      <CustomTab
-        tabIndex={2}
-        value={{
-          start_date: dayjs().subtract(1, "month").startOf("month"),
-          end_date: dayjs().subtract(1, "month").endOf("month"),
-        }}
-        label="Tháng trước"
-      />{" "}
-      <CustomTab
-        tabIndex={4}
-        value={{ start_date: null, end_date: null }}
+        tabIndex={OTHER_MONTH_TAB_INDEX}
+        value={dayjs().subtract(1, "month")}
         label="Khác"
       />
     </CustomTabs>

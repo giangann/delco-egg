@@ -1,13 +1,12 @@
 import {
   Box,
-  Button,
   Grid,
   Paper,
   Stack,
-  Typography,
-  styled,
+  styled
 } from "@mui/material";
 import { IUserProfile } from "../../shared/types/user";
+import { BoxFieldName, BoxFieldValue, BoxTitle } from "../../styled/styled";
 export const ClientDetailInformation = ({
   fullname,
   phone_number,
@@ -48,10 +47,7 @@ export const ClientDetailInformation = ({
         <Grid item xs={12} sm={6}>
           <BoxContent>
             <BoxFieldName>Ghi chú</BoxFieldName>
-            <BoxFieldValue>
-              {note ||
-                "Chưa có ghi chú"}
-            </BoxFieldValue>
+            <BoxFieldValue>{note || "Chưa có ghi chú"}</BoxFieldValue>
           </BoxContent>
         </Grid>
       </Grid>
@@ -59,26 +55,7 @@ export const ClientDetailInformation = ({
   );
 };
 
-const BoxTitle = styled(Typography)(({ theme }) => ({
-  fontWeight: 700,
-  fontSize: 18,
-  marginBottom: 16,
-  [theme.breakpoints.up("sm")]: {},
-}));
 const BoxContent = styled(Box)(({ theme }) => ({
   marginBottom: 8,
-  [theme.breakpoints.up("sm")]: {},
-}));
-
-const BoxFieldName = styled(Typography)(({ theme }) => ({
-  fontSize: 15,
-  opacity: 0.9,
-  [theme.breakpoints.up("sm")]: {},
-}));
-
-const BoxFieldValue = styled(Typography)(({ theme }) => ({
-  fontWeight: 500,
-  opacity: 0.9,
-
   [theme.breakpoints.up("sm")]: {},
 }));

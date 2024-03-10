@@ -12,7 +12,7 @@ type TTabContext = {
   getMap: () => Map<number, HTMLDivElement>;
   activeTabIndex: number;
   onTabClick: (newTabIndex: number) => void;
-  onChange: (newValue: any) => void;
+  onChange: (newValue: any, newTabIndex?: number) => void;
 };
 export const TabContext = createContext<TTabContext>({
   tabsRef: null,
@@ -90,13 +90,13 @@ export const CustomTabs = ({ onChange, children }: CustomTabsProps) => {
         >
           <Box
             sx={{
-              position:'absolute',
+              position: "absolute",
               transition: "all 0.5s",
               transform: `translateX(${lineOffsetX}px)`,
               width: `${lineWidth}px`,
               height: "2px",
-              backgroundColor: `${GREEN['500']}`,
-              bottom:0,
+              backgroundColor: `${GREEN["500"]}`,
+              bottom: 0,
             }}
           />
         </Box>
