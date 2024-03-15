@@ -21,6 +21,8 @@ import { IEgg } from "../../shared/types/egg";
 import { IEggQty } from "../../shared/types/egg-price-qty";
 import { GREEN } from "../../styled/color";
 import { BoxFlexEnd, alignCenterSx } from "../../styled/styled";
+import dayjs from "dayjs";
+import { CONFIG } from "../../shared/constants/common";
 
 const actionGrid = {
   xs: 2,
@@ -50,14 +52,18 @@ export const UpdateQuantity = () => {
   });
 
   const onSubmit = async (value: { quantities: IEggQty[] }) => {
-    const data = value.quantities
-      .filter((el) => el.egg_id)
-      .map((el) => {
-        return {
-          ...el,
-          quantity: parseInt(el.quantity as unknown as string),
-        };
-      });
+    const data = {
+      ...value,
+      quantities: value.quantities
+        .filter((el) => el.egg_id)
+        .map((el) => {
+          return {
+            ...el,
+            quantity: parseInt(el.quantity as unknown as string),
+          };
+        }),
+      date: dayjs().format(CONFIG.MY_SQL_DATE_FORMAT),
+    };
     const res = await postApi("egg-price-qty/update-day-quantity", data);
     if (res.success) {
       setRerender(rerender + 1);

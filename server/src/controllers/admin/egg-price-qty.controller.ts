@@ -32,20 +32,26 @@ const update: IController = async (req, res) => {
 const updateDayPrice: IController = async (req, res) => {
   try {
     const newPrices: IUpdateEggPriceQty[] = req.body;
+    let newPriceParams = newPrices.map((price) => {
+      return {
+        egg_id: price.egg_id,
+        price_1: price.price_1,
+        price_2: price.price_2,
+        price_3: price.price_3,
+        quantity: price.quantity,
+      };
+    });
 
     const newPricesUpdated = await Promise.all(
-      newPrices.map((price) => {
-        let params: IUpdateEggPriceQty = {
-          egg_id: price.egg_id,
-          price_1: price.price_1,
-          price_2: price.price_2,
-          price_3: price.price_3,
-        };
+      newPriceParams.map((params) => {
         return eggPriceQtyService.update(params);
       }),
     );
 
-    await updateHistoryTable(newPrices);
+    await updateHistoryTable(
+      newPriceParams,
+      DateTimeUtility.getCurrentDate(),
+    );
 
     return ApiResponse.result(
       res,
@@ -59,11 +65,12 @@ const updateDayPrice: IController = async (req, res) => {
 
 const updateDayQuantity: IController = async (req, res) => {
   try {
-    const newQtys: IUpdateEggPriceQty[] = req.body;
-    const currQtys: IUpdateEggPriceQty[] = await eggPriceQtyService.list();
+    let date = req.body.date;
+    let newQtys: IUpdateEggPriceQty[] = req.body.quantities;
+    let currQtys: IUpdateEggPriceQty[] = await eggPriceQtyService.list();
 
     let updateCurrTableRes = updateCurrentTable(newQtys, currQtys);
-    let updateHistoryTableRes = updateHistoryTable(newQtys);
+    await updateHistoryTable(newQtys, date);
 
     return ApiResponse.result(
       res,
@@ -119,29 +126,32 @@ async function updateCurrentTable(
   };
 }
 
-async function updateHistoryTable(newQtys: IUpdateEggPriceQty[]) {
-  const dateTomorrow = DateTimeUtility.getDateAfterNDay(1);
-  const tomorrowDatas = await eggPriceQtyHistoryService.list({
-    date: dateTomorrow,
+async function updateHistoryTable(
+  newPriceQtys: IUpdateEggPriceQty[],
+  date?: string,
+) {
+  const targetDateDatas = await eggPriceQtyHistoryService.list({
+    date: date,
   });
 
-  if (tomorrowDatas.length === 0) {
-    for (let row of newQtys) {
-      await eggPriceQtyHistoryService.create({
-        egg_id: row.egg_id,
-        date: dateTomorrow,
-        price_1: row.price_1,
-        price_2: row.price_2,
-        price_3: row.price_3,
-        quantity: row.quantity,
-      });
+  let createOrUpdateParams = newPriceQtys.map((row) => {
+    return {
+      egg_id: row.egg_id,
+      date: date,
+      price_1: row.price_1,
+      price_2: row.price_2,
+      price_3: row.price_3,
+      quantity: row.quantity,
+    };
+  });
+
+  if (targetDateDatas.length === 0) {
+    for (let param of createOrUpdateParams) {
+      await eggPriceQtyHistoryService.create(param);
     }
   } else {
-    for (let row of newQtys) {
-      await eggPriceQtyHistoryService.update({
-        ...row,
-        date: dateTomorrow,
-      });
+    for (let param of createOrUpdateParams) {
+      await eggPriceQtyHistoryService.update(param);
     }
   }
 }

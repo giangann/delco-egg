@@ -2,7 +2,10 @@ import IController from 'IController';
 import httpStatusCode from 'http-status-codes';
 import { IOrderDetail } from 'order-detail.interface';
 import { IOrderEntity } from 'order.interface';
-import { IEggPriceQtyHistoryRecord } from 'egg-price-qty-history.interface';
+import {
+  IEggPriceQtyHistoryRecord,
+  IEggPriceQtyHistoryEntity,
+} from 'egg-price-qty-history.interface';
 
 import application from '../../constants/application';
 import orderService from '../../services/admin/order.service';
@@ -176,6 +179,30 @@ const getEggPriceQtyByDate: IController = async (req, res) => {
     ApiResponse.exception(res, e);
   }
 };
+
+// helper function
+function comparePrice(
+  todayPrice: IEggPriceQtyHistoryEntity[],
+  yesterdayPrice: IEggPriceQtyHistoryEntity[],
+) {
+  let diffPrice: {};
+
+  // loop throw each row of todayPrice and yesterdayPrice
+  for (let iPrice of todayPrice) {
+    for (let jPrice of yesterdayPrice) {
+      if (iPrice.egg_id === jPrice.egg_id) {
+        // compare 3 price of each type
+        let diffP1 = iPrice.price_1 - jPrice.price_1;
+        let diffP2 = jPrice.price_2 - jPrice.price_2;
+        let diffP3 = jPrice.price_3 - jPrice.price_3;
+        // diffPrice[`${iPrice.egg_id}` as any] = [diffP1, diffP2, diffP3];
+      }
+    }
+  }
+
+  for (let price of todayPrice) {
+  }
+}
 
 export default {
   todayOverview,

@@ -54,7 +54,7 @@ const list = async (params: IEggPriceQtyHistoryListParams) => {
 
 const update = async (params: IEggPriceQtyHistoryUpdate) => {
   return await getRepository(EggPriceQtyHistory).update(
-    { egg_id: params.egg_id },
+    { egg_id: params.egg_id, date:params.date },
     {
       ...params,
       createdAt: DateTimeUtility.getCurrentTimeStamp(),
