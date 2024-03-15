@@ -27,7 +27,7 @@ const list: IController = async (req, res) => {
   try {
     const limit = ApiUtility.getQueryParam(req, 'limit');
     const page = ApiUtility.getQueryParam(req, 'page');
-    const user_id = ApiUtility.getQueryParam(req,'user_id')
+    const user_id = ApiUtility.getQueryParam(req, 'user_id');
 
     let params: IOrderQueryParams = {
       limit,
@@ -299,8 +299,9 @@ const orderStatisticByStatus: IController = async (req, res) => {
 
 const orderStatisticByTotal: IController = async (req, res) => {
   try {
+    let limit = ApiUtility.getQueryParam(req, 'limit');
     const successOrderListByTimeRange = await orderService.list({
-      limit: ApiUtility.getQueryParam(req, 'limit'),
+      limit: null,
       page: ApiUtility.getQueryParam(req, 'page'),
       startDate: ApiUtility.getQueryParam(req, 'start_date'),
       endDate: ApiUtility.getQueryParam(req, 'end_date'),
@@ -308,14 +309,18 @@ const orderStatisticByTotal: IController = async (req, res) => {
       status: application.status.SUCCESS,
     });
 
-    const statisticData = successOrderListByTimeRange.map((order) => {
+    let statisticData = successOrderListByTimeRange.map((order) => {
       return {
         ...order,
         total: totalByOrderItems(order.items),
       };
     });
-    const sortedData = sortOrderByTotal(statisticData);
 
+    let sortedData = sortOrderByTotal(statisticData);
+
+    if (limit) {
+      sortedData = sortedData.slice(0, limit);
+    }
     ApiResponse.result(res, sortedData, httpStatusCodes.OK);
   } catch (e) {
     ApiResponse.error(res, httpStatusCodes.BAD_REQUEST, e);

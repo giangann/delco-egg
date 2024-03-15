@@ -40,12 +40,12 @@ const list = async (params: IOrderQueryParams) => {
     orderRepo.andWhere('order.user_id = :userId', { userId });
   }
 
+  let listOrders = await orderRepo.getMany();
+
   const limit = params.limit;
   if (limit) {
-    orderRepo.limit(limit);
+    listOrders = listOrders.slice(0,limit)
   }
-
-  const listOrders = await orderRepo.getMany();
 
   return listOrders.map((order) => {
     return {

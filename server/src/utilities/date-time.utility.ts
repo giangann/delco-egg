@@ -5,7 +5,7 @@ export default class DateTimeUtility {
     return moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
   }
   static getCurrentDate() {
-    return moment(Date.now()).add(1, 'day').format('YYYY-MM-DD');
+    return moment(Date.now()).format('YYYY-MM-DD');
   }
   static getDateAfterNDay(nDays: number) {
     return moment(Date.now()).add(nDays, 'day').format('YYYY-MM-DD');
