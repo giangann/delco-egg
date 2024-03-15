@@ -17,7 +17,6 @@ const create = async (params: IEggPriceQtyHistoryCreate) => {
 };
 
 const list = async (params: IEggPriceQtyHistoryListParams) => {
-  console.log('params', params)
   const repo = getRepository(EggPriceQtyHistory).createQueryBuilder(
     'egg_price_qty_history',
   );

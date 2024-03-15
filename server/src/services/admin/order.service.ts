@@ -10,7 +10,6 @@ import { Order } from '../../entities/order/order.entity';
 import { StringError } from '../../errors/string.error';
 
 const list = async (params: IOrderQueryParams) => {
-  console.log('order list params',params)
   const orderRepo = getRepository(Order).createQueryBuilder('order');
 
   orderRepo.leftJoinAndSelect('order.items', 'item');

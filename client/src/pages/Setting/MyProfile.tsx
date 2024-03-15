@@ -166,7 +166,6 @@ const UserInfo = () => {
   });
 
   const onUpdateUserInfo = async (info: TUserUpdate) => {
-    console.log(info);
     const updateInfoResponse = await putApi("me", info);
     if (updateInfoResponse.success) {
       toast.success("Cập nhật thành công");
