@@ -42,6 +42,7 @@ const TabStyled = styled("div", {
   cursor: "pointer",
   opacity: 1,
   padding: "3px 10px",
+  flexShrink: 0,
   [theme.breakpoints.up("sm")]: {
     padding: "3px 10px",
   },

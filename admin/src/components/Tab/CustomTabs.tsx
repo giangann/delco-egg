@@ -1,4 +1,4 @@
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, styled } from "@mui/material";
 import { Ref, createContext, useEffect, useRef, useState } from "react";
 import { OPACITY_TO_HEX } from "../../shared/constants/common";
 import { GREEN } from "../../styled/color";
@@ -78,29 +78,43 @@ export const CustomTabs = ({ onChange, children }: CustomTabsProps) => {
       }}
     >
       <Stack>
-        <Stack direction={"row"}>{children}</Stack>
-        <Box
-          sx={{
-            marginTop: 0.5,
-            position: "relative",
-            width: "100%",
-            height: "1px",
-            backgroundColor: `#000000${OPACITY_TO_HEX["10"]}`,
-          }}
-        >
-          <Box
-            sx={{
-              position: "absolute",
-              transition: "all 0.5s",
-              transform: `translateX(${lineOffsetX}px)`,
-              width: `${lineWidth}px`,
-              height: "2px",
-              backgroundColor: `${GREEN["500"]}`,
-              bottom: 0,
-            }}
-          />
-        </Box>
+        <ScrollableBox>
+          <Stack direction={"row"}>{children}</Stack>
+          <StyledDecoration lineOffsetX={lineOffsetX} lineWidth={lineWidth} />
+        </ScrollableBox>
+        <StyledLine />
       </Stack>
     </TabContext.Provider>
   );
 };
+
+const StyledLine = styled(Box)(({ theme }) => ({
+  position: "relative",
+  width: "100%",
+  height: "1px",
+  backgroundColor: `#000000${OPACITY_TO_HEX["10"]}`,
+  [theme.breakpoints.up("sm")]: {},
+}));
+
+const StyledDecoration = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "lineOffsetX" && prop !== "lineWidth",
+})<{ lineOffsetX: number; lineWidth: number }>(
+  ({ theme, lineOffsetX, lineWidth }) => ({
+    transition: "all 0.5s",
+    transform: `translateX(${lineOffsetX}px)`,
+    width: `${lineWidth}px`,
+    height: "2px",
+    backgroundColor: `${GREEN["500"]}`,
+    [theme.breakpoints.up("sm")]: {},
+  })
+);
+
+const ScrollableBox = styled(Box)(({ theme }) => ({
+  overflowX: "scroll",
+  "&::-webkit-scrollbar": {
+    display: "none",
+  },
+  msOverflowStyle:'none',
+  scrollbarWidth:'none',
+  [theme.breakpoints.up("sm")]: {},
+}));

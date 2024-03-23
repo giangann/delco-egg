@@ -14,6 +14,7 @@ import {
   alignCenterSx,
 } from "../../styled/styled";
 import { PageMobile } from "../../components/Page/PageMobile";
+import { FilterList } from "./FilterList";
 
 type EggOrderListMobileProps = {
   myOrderList: IOrderRow[];
@@ -30,6 +31,7 @@ export const EggOrderListMobile = ({
         <NoOrder />
       ) : (
         <PageMobile title="Danh sách đơn hàng">
+          <FilterList/>
           {myOrderList.map((order) => (
             <BoxWrapperOrder
               bgColor={`${colorByStatus(order.status)}${OPACITY_TO_HEX["10"]}`}
