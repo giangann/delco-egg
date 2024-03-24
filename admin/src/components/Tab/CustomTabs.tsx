@@ -4,6 +4,7 @@ import { OPACITY_TO_HEX } from "../../shared/constants/common";
 import { GREEN } from "../../styled/color";
 
 type CustomTabsProps = {
+  defaultTabIndex?: number;
   onChange: (newValue: any) => void;
   children: React.ReactNode;
 };
@@ -22,9 +23,15 @@ export const TabContext = createContext<TTabContext>({
   onChange: () => {},
 });
 
-export const CustomTabs = ({ onChange, children }: CustomTabsProps) => {
+export const CustomTabs = ({
+  defaultTabIndex,
+  onChange,
+  children,
+}: CustomTabsProps) => {
   const tabsRef = useRef<Map<number, HTMLDivElement> | null>(null);
-  const [activeTabIndex, setActiveTabIndex] = useState<number>(0);
+  const [activeTabIndex, setActiveTabIndex] = useState<number>(
+    defaultTabIndex || 0
+  );
   const [lineWidth, setLineWidth] = useState<number>(0);
   const [lineOffsetX, setLineOffsetX] = useState<number>(0);
 
@@ -40,6 +47,7 @@ export const CustomTabs = ({ onChange, children }: CustomTabsProps) => {
     setActiveTabIndex(newTabIndex);
 
     const newTab = getTabByTabIndex(newTabIndex);
+    newTab?.scrollIntoView({ behavior: "smooth", block: "center" });
     setLineWidth(newTab?.offsetWidth as number);
     setLineOffsetX(getOffsetXByTabIndex(newTabIndex));
   };
@@ -114,7 +122,7 @@ const ScrollableBox = styled(Box)(({ theme }) => ({
   "&::-webkit-scrollbar": {
     display: "none",
   },
-  msOverflowStyle:'none',
-  scrollbarWidth:'none',
+  msOverflowStyle: "none",
+  scrollbarWidth: "none",
   [theme.breakpoints.up("sm")]: {},
 }));

@@ -8,6 +8,7 @@ import {
 import { getRepository } from 'typeorm';
 import { Order } from '../../entities/order/order.entity';
 import { StringError } from '../../errors/string.error';
+import application from '../../constants/application';
 
 const list = async (params: IOrderQueryParams) => {
   const orderRepo = getRepository(Order).createQueryBuilder('order');
@@ -25,7 +26,7 @@ const list = async (params: IOrderQueryParams) => {
   }
 
   const orderStatus = params.status;
-  if (orderStatus) {
+  if (Object.values(application.status).includes(orderStatus)) {
     orderRepo.andWhere('order.status = :orderStatus', { orderStatus });
   }
 
@@ -43,7 +44,7 @@ const list = async (params: IOrderQueryParams) => {
 
   const limit = params.limit;
   if (limit) {
-    listOrders = listOrders.slice(0,limit)
+    listOrders = listOrders.slice(0, limit);
   }
 
   return listOrders.map((order) => {

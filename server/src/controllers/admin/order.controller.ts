@@ -28,11 +28,13 @@ const list: IController = async (req, res) => {
     const limit = ApiUtility.getQueryParam(req, 'limit');
     const page = ApiUtility.getQueryParam(req, 'page');
     const user_id = ApiUtility.getQueryParam(req, 'user_id');
-
+    const status = parseInt(ApiUtility.getQueryParam(req, 'status'))
+    console.log('query status', status)
     let params: IOrderQueryParams = {
       limit,
       page,
       user_id,
+      status
     };
 
     let listOrder = await orderService.list(params);
