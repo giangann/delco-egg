@@ -16,7 +16,7 @@ export default class ApiUtility {
     if (req.headers.cookie) {
       const results = req.headers.cookie.split(';');
       const filtered = results.filter((result: string) => {
-        return result.startsWith(`${key}=`);
+        return result.includes(`${key}=`);
       });
 
       if (filtered.length > 0) {
