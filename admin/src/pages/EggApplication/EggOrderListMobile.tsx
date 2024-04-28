@@ -15,27 +15,30 @@ import {
 } from "../../styled/styled";
 import { PageMobile } from "../../components/Page/PageMobile";
 import { FilterList } from "./FilterList";
+import { useContext } from "react";
+import { OrderListContext } from "../../contexts/OrderListContext";
 
-type EggOrderListMobileProps = {
-  myOrderList: IOrderRow[];
-  onViewDetail: (row: IOrderRow) => void;
-};
-
-export const EggOrderListMobile = ({
-  myOrderList,
-  onViewDetail,
-}: EggOrderListMobileProps) => {
+export const EggOrderListMobile = () => {
   return (
     <PageMobile title="Danh sách đơn hàng">
       <FilterList />
-      {!myOrderList || !myOrderList.length ? (
+      <OrderList />
+    </PageMobile>
+  );
+};
+
+const OrderList = () => {
+  const { orderList, onViewDetail } = useContext(OrderListContext);
+  return (
+    <Box>
+      {!orderList || !orderList.length ? (
         <NoOrder />
       ) : (
-        myOrderList.map((order) => (
+        orderList.map((order) => (
           <Order order={order} onViewDetail={onViewDetail} />
         ))
       )}
-    </PageMobile>
+    </Box>
   );
 };
 
@@ -139,9 +142,9 @@ const NoOrder = () => {
   );
 };
 
-const TextKey = styled(Typography)(({ theme }) => ({
-  [theme.breakpoints.up("sm")]: {},
-}));
+// const TextKey = styled(Typography)(({ theme }) => ({
+//   [theme.breakpoints.up("sm")]: {},
+// }));
 const BoxWrapperOrder = styled(Box, {
   shouldForwardProp: (prop) => prop !== "bgColor",
 })<{ bgColor: string }>(({ bgColor }) => ({

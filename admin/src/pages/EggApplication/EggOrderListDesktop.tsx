@@ -4,24 +4,19 @@ import utc from "dayjs/plugin/utc";
 import { Page } from "../../components/Page/Page";
 import { BoxByStatus } from "../../components/Table/BoxByStatus";
 import {
-    CustomTable,
-    DefaultBodyText,
-    StrictField,
+  CustomTable,
+  DefaultBodyText,
+  StrictField,
 } from "../../components/Table/Customtable";
 import { toDayOrTomorrowOrYesterday } from "../../shared/helper";
 import { IOrderRow } from "../../shared/types/order";
+import { useContext } from "react";
+import { OrderListContext } from "../../contexts/OrderListContext";
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
-type EggOrderListDesktopProps = {
-  myOrderList: IOrderRow[];
-  onViewDetail: (row: IOrderRow) => void;
-};
-
-export const EggOrderListDesktop = ({
-  onViewDetail,
-  myOrderList,
-}: EggOrderListDesktopProps) => {
+export const EggOrderListDesktop = () => {
+  const { orderList, onViewDetail } = useContext(OrderListContext);
   const fields: StrictField<IOrderRow>[] = [
     {
       header: "Người tạo",
@@ -70,7 +65,7 @@ export const EggOrderListDesktop = ({
     <Page title="Danh sách đơn trứng">
       <CustomTable
         fields={fields}
-        data={myOrderList}
+        data={orderList}
         onActionViewDetail={onViewDetail}
       />
     </Page>

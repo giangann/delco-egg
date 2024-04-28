@@ -3,10 +3,7 @@ import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  OrderListParamsContext,
-  OrderParams,
-} from "../../contexts/OrderListParamsContext";
+import { OrderListContext, OrderParams } from "../../contexts/OrderListContext";
 import { SocketContext } from "../../contexts/SocketContext";
 import { useDevice } from "../../hooks/useDevice";
 import { getApi } from "../../lib/utils/fetch/fetchRequest";
@@ -23,7 +20,7 @@ dayjs.extend(utc);
 // layout by device
 // filter bar
 export const EggOrderList = () => {
-  const [myOrderList, setMyOrderList] = useState<IOrderRow[]>([]);
+  const [orderList, setOrderList] = useState<IOrderRow[]>([]);
   const { isMobile } = useDevice();
   const [params, setParams] = useState<OrderParams>({
     status: isMobile ? ORDER_STATUS.WAITING_APPROVAL : null,
@@ -51,7 +48,7 @@ export const EggOrderList = () => {
       "order",
       params as unknown as Record<string, string>
     );
-    if (res.success) setMyOrderList(res.data);
+    if (res.success) setOrderList(res.data);
   }, [params]);
 
   useEffect(() => {
@@ -69,23 +66,15 @@ export const EggOrderList = () => {
   }, []);
 
   return (
-    <OrderListParamsContext.Provider
+    <OrderListContext.Provider
       value={{
         params: params,
         setParams: onSetParams,
+        onViewDetail,
+        orderList,
       }}
     >
-      {isMobile ? (
-        <EggOrderListMobile
-          myOrderList={myOrderList}
-          onViewDetail={onViewDetail}
-        />
-      ) : (
-        <EggOrderListDesktop
-          myOrderList={myOrderList}
-          onViewDetail={onViewDetail}
-        />
-      )}
-    </OrderListParamsContext.Provider>
+      {isMobile ? <EggOrderListMobile /> : <EggOrderListDesktop />}
+    </OrderListContext.Provider>
   );
 };
