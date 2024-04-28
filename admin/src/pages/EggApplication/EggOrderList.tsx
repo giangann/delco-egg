@@ -24,9 +24,11 @@ dayjs.extend(utc);
 // filter bar
 export const EggOrderList = () => {
   const [myOrderList, setMyOrderList] = useState<IOrderRow[]>([]);
-  const [params, setParams] = useState<OrderParams>({ status: ORDER_STATUS.WAITING_APPROVAL });
-  const navigate = useNavigate();
   const { isMobile } = useDevice();
+  const [params, setParams] = useState<OrderParams>({
+    status: isMobile ? ORDER_STATUS.WAITING_APPROVAL : null,
+  });
+  const navigate = useNavigate();
   const wsServer = useContext(SocketContext);
 
   const onViewDetail = ({ id }: IOrderRow) => {
@@ -45,7 +47,10 @@ export const EggOrderList = () => {
   };
 
   const fetchMyListOrder = useCallback(async () => {
-    const res = await getApi<IOrderRow[]>("order",params as unknown as Record<string, string>);
+    const res = await getApi<IOrderRow[]>(
+      "order",
+      params as unknown as Record<string, string>
+    );
     if (res.success) setMyOrderList(res.data);
   }, [params]);
 
