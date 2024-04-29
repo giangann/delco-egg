@@ -26,9 +26,11 @@ const todayOverview: IController = async (req, res) => {
       status: application.status.SUCCESS,
     };
     // get order today with success status
-    const todayOrderList = await orderService.list(orderListParams);
+    const { response: todayOrderList } = await orderService.list(
+      orderListParams,
+    );
     // get order yesterday with success status
-    const yesterdayOrderList = await orderService.list({
+    const { response: yesterdayOrderList } = await orderService.list({
       ...orderListParams,
       date: yesterday,
     });

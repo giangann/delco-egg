@@ -9,6 +9,7 @@ import { getRepository } from 'typeorm';
 import { Order } from '../../entities/order/order.entity';
 import { StringError } from '../../errors/string.error';
 import application from '../../constants/application';
+import ApiUtility from '../../utilities/api.utility';
 
 const list = async (params: IOrderQueryParams) => {
   const orderRepo = getRepository(Order).createQueryBuilder('order');
@@ -41,13 +42,19 @@ const list = async (params: IOrderQueryParams) => {
   }
 
   let listOrders = await orderRepo.getMany();
+  const total = listOrders.length;
 
   const limit = params.limit;
+  const page = params.page;
   if (limit) {
-    listOrders = listOrders.slice(0, limit);
+    if (page) {
+      listOrders = listOrders.slice(limit * (page - 1), limit * page);
+    } else {
+      listOrders = listOrders.slice(0, limit);
+    }
   }
 
-  return listOrders.map((order) => {
+  const response = listOrders.map((order) => {
     return {
       ...order,
       username: order.user.username,
@@ -56,6 +63,10 @@ const list = async (params: IOrderQueryParams) => {
       company_name: order.user.company_name,
     };
   });
+
+  const pagiRes = ApiUtility.getPagination(total, limit, page);
+
+  return { response, pagination: pagiRes.pagination };
 };
 
 const detail = async (params: IOrderDetailParams) => {

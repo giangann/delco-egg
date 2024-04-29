@@ -125,7 +125,7 @@ const clientOrderEggStatistic: IController = async (req, res) => {
     const eggs = await eggService.list();
 
     // get all orders
-    const orders = await orderService.list({
+    const {response: orders} = await orderService.list({
       ...params,
       limit: null,
       page: null,
@@ -194,7 +194,9 @@ const clientOrderOverview: IController = async (req, res) => {
     // params.startDate = '2024-01-01';
     // params.endDate = '2024-03-09';
 
-    const ordersOfClient = await orderService.list(params);
+    const { response: ordersOfClient } = await orderService.list(
+      params,
+    );
 
     let status = {
       success: 0,
@@ -351,7 +353,7 @@ const resetPasswordDefault: IController = async (req, res) => {
 
 const list: IController = async (req, res) => {
   try {
-    console.log('req query',req.query)
+    console.log('req query', req.query);
     const limit = ApiUtility.getQueryParam(req, 'limit');
     const page = ApiUtility.getQueryParam(req, 'page');
     const isAdmin = ApiUtility.getQueryParam(req, 'isAdmin');

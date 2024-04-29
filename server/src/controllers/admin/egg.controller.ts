@@ -91,7 +91,7 @@ const remove: IController = async (req, res) => {
 
 // helper function
 async function checkIsEggHaveInWaitingOrder(eggId: number) {
-  const listWaitingOrder = await orderService.list({
+  const { response: listWaitingOrder } = await orderService.list({
     status: application.status.WAITING_APPROVAL,
     limit: null,
     page: null,
