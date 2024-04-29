@@ -62,8 +62,9 @@ export const EggOrderList = () => {
     );
     if (res.success) {
       setOrderList(res.data);
+      console.log("re fetch", res.data);
       setPagi(res.pagination || defaultPagi);
-    }
+    } 
   }, [params]);
 
   useEffect(() => {

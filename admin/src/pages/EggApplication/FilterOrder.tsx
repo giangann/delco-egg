@@ -1,4 +1,5 @@
 import {
+  Badge,
   Box,
   Button,
   Grid,
@@ -7,34 +8,34 @@ import {
   Typography,
 } from "@mui/material";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   CustomDateRangePicker,
   IDateRange,
 } from "../../components/DateRange/CustomDateRangePicker";
 import { MobileFilterDrawer } from "../../components/Drawer/MobileFilterDrawer";
 import { BaseInput } from "../../components/Input/BaseInput";
+import { OrderListContext } from "../../contexts/OrderListContext";
+import { CONFIG } from "../../shared/constants/common";
 import { FlowbiteAdjustmentsHorizontalOutline } from "../../shared/icons/Icon";
 import { InputLabelText } from "../../styled/styled";
-import { useForm } from "react-hook-form";
 
 export const FilterOrder = () => {
   const [open, setOpen] = useState(false);
+  const { params } = useContext(OrderListContext);
+  console.log('parmas',params)
+  const isHaveFilter = Object.keys(params).length > 3;
 
-  // use form params
-  const {} = useForm()
-  
   const onOpen = () => {
     setOpen(true);
   };
 
-  const handleFilter = () =>{
-    // const newParams = getValue
-  }
   return (
     <Box>
       <IconButton onClick={onOpen}>
-        <FlowbiteAdjustmentsHorizontalOutline />
+        <Badge color="secondary" variant="dot" invisible={!isHaveFilter}>
+          <FlowbiteAdjustmentsHorizontalOutline />
+        </Badge>
       </IconButton>
       <MobileFilterDrawer open={open} onClose={() => setOpen(false)}>
         <FilterOption />
@@ -44,15 +45,30 @@ export const FilterOrder = () => {
 };
 
 const FilterOption = () => {
+  const { params, setParams } = useContext(OrderListContext);
+  const { start_date, end_date } = params;
   const [date, setDate] = useState<IDateRange>({
-    startDate: dayjs(),
-    endDate: dayjs(),
+    startDate: start_date,
+    endDate: end_date,
   });
 
-  const [createdAtDate, setCreatedAtDate] = useState<IDateRange>({
-    startDate: dayjs(),
-    endDate: dayjs(),
-  });
+  const handleFilter = () => {
+    // const newParams = getValue
+    setParams(
+      "start_date",
+      dayjs(date.startDate).format(CONFIG.MY_SQL_DATE_FORMAT)
+    );
+    setParams(
+      "end_date",
+      dayjs(date.endDate).format(CONFIG.MY_SQL_DATE_FORMAT)
+    );
+  };
+
+  const clearFilter = () => {
+    delete params.start_date
+    delete params.end_date
+    setDate({ startDate: undefined, endDate: undefined });
+  };
   return (
     <Box>
       <Box sx={{ borderBottom: "1px solid black", py: 1.5, px: 2 }}>
@@ -67,7 +83,7 @@ const FilterOption = () => {
             <InputLabelText>Ngày lấy hàng trong khoảng:</InputLabelText>
             <Stack direction="row" alignItems={"center"}>
               <CustomDateRangePicker
-                dateRange={{ ...date }}
+                dateRange={date}
                 onChange={(newValue: IDateRange) => {
                   setDate(newValue);
                 }}
@@ -76,32 +92,24 @@ const FilterOption = () => {
           </Grid>
 
           <Grid item xs={12}>
-            <InputLabelText>Ngày đặt hàng trong khoảng:</InputLabelText>
-            <Stack direction="row" alignItems={"center"}>
-              <CustomDateRangePicker
-                dateRange={{ ...createdAtDate }}
-                onChange={(newValue: IDateRange) => {
-                  setCreatedAtDate(newValue);
-                }}
-              />
-            </Stack>
-          </Grid>
-
-          <Grid item xs={12}>
             <InputLabelText>Tên người đặt:</InputLabelText>
-            <BaseInput placeholder="Nhập tên" />
+            <BaseInput placeholder="Nhập tên ..." />
           </Grid>
 
           <Grid item xs={12}>
-            <InputLabelText>Tên công ty:</InputLabelText>
-            <BaseInput placeholder="Nhập tên" />
+            <InputLabelText>Số điện thoại:</InputLabelText>
+            <BaseInput placeholder="Nhập SĐT ..." />
           </Grid>
         </Grid>
 
         <Stack direction={"row"} spacing={2} my={2}>
-          <Button variant="outlined">Reset</Button>
+          <Button variant="outlined" onClick={clearFilter}>
+            Reset
+          </Button>
 
-          <Button variant="contained">Lọc</Button>
+          <Button variant="contained" onClick={handleFilter}>
+            Lọc
+          </Button>
         </Stack>
       </Box>
     </Box>

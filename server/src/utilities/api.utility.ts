@@ -39,12 +39,18 @@ export default class ApiUtility {
 
   static getQueryParam(req: any, type: string) {
     if (req && type && type !== '') {
+      if (req.query[type] === 'undefined' || req.query[type] === 'null')
+        return null;
       switch (type) {
         case 'limit': {
-          return req.query.limit ? parseInt(req.query.limit.toString(), 10) : null;
+          return req.query.limit
+            ? parseInt(req.query.limit.toString(), 10)
+            : null;
         }
         case 'page': {
-          return req.query.page ? parseInt(req.query.page.toString(), 10) : null;
+          return req.query.page
+            ? parseInt(req.query.page.toString(), 10)
+            : null;
         }
         default: {
           return req.query[type] ? req.query[type] : null;
@@ -58,14 +64,26 @@ export default class ApiUtility {
     return limit * page - limit;
   }
 
-  static getPagination(total: number, limit: number, currentPage: number) {
+  static getPagination(
+    total: number,
+    limit: number,
+    currentPage: number,
+  ) {
     if (total) {
-      console.log('total: ',total,' limit: ', limit, ' totalPages: ',Math.ceil(total/limit))
+      console.log(
+        'total: ',
+        total,
+        ' limit: ',
+        limit,
+        ' totalPages: ',
+        Math.ceil(total / limit),
+      );
       const pagination: IPagination = {
         currentPage,
         totalPages: Math.ceil(total / limit),
         previousPage: currentPage <= 1 ? null : currentPage - 1,
-        nextPage: total - (currentPage * limit) > 0 ? currentPage + 1 : null,
+        nextPage:
+          total - currentPage * limit > 0 ? currentPage + 1 : null,
         totalItems: total,
       };
       return { pagination };

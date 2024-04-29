@@ -29,12 +29,15 @@ const list: IController = async (req, res) => {
     const page = ApiUtility.getQueryParam(req, 'page');
     const user_id = ApiUtility.getQueryParam(req, 'user_id');
     const status = parseInt(ApiUtility.getQueryParam(req, 'status'));
-    console.log('query status', status);
+    const startDate = ApiUtility.getQueryParam(req, 'start_date');
+    const endDate = ApiUtility.getQueryParam(req, 'end_date');
     let params: IOrderQueryParams = {
       limit,
       page,
       user_id,
       status,
+      startDate,
+      endDate
     };
 
     let { response: listOrder, pagination } = await orderService.list(

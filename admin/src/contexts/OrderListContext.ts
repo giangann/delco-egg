@@ -3,11 +3,15 @@ import { ORDER_STATUS } from "../shared/constants/orderStatus";
 import { IOrderRow } from "../shared/types/order";
 import { IPagination } from "../shared/types/base";
 
+export type FilterParams = {
+  start_date?: string;
+  end_date?: string;
+};
 export type OrderParams = {
   status: ORDER_STATUS | null;
-  page?: number;
+  page?: number;  
   limit?: number;
-};
+} & FilterParams;
 export const OrderListContext = createContext<{
   params: OrderParams;
   setParams: (_key: keyof OrderParams, value: any) => void;
