@@ -20,7 +20,7 @@ export interface IOrder {
   reason?: string;
 }
 
-export interface IOrderRow {
+export interface IOrderRow extends Record<string, unknown> {
   id: number | string;
   date: string;
   time: string;

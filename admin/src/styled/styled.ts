@@ -18,10 +18,10 @@ export const TextButton = styled(Typography)(({ theme }) => ({
 }));
 export const InputLabelText = styled(Typography)(({ theme }) => ({
   fontWeight: 500,
-  fontSize: 14,
+  fontSize: 16,
   marginBottom: 4,
   [theme.breakpoints.up("sm")]: {
-    fontSize: 16,
+    fontSize: 18,
   },
 }));
 export const InputErrorText = styled(Typography)(({ theme }) => ({

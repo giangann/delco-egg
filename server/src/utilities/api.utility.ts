@@ -60,6 +60,7 @@ export default class ApiUtility {
 
   static getPagination(total: number, limit: number, currentPage: number) {
     if (total) {
+      console.log('total: ',total,' limit: ', limit, ' totalPages: ',Math.ceil(total/limit))
       const pagination: IPagination = {
         currentPage,
         totalPages: Math.ceil(total / limit),

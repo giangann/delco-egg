@@ -17,11 +17,13 @@ import { PageMobile } from "../../components/Page/PageMobile";
 import { FilterList } from "./FilterList";
 import { useContext } from "react";
 import { OrderListContext } from "../../contexts/OrderListContext";
+import { FilterOrder } from "./FilterOrder";
 
 export const EggOrderListMobile = () => {
   return (
     <PageMobile title="Danh sách đơn hàng">
       <FilterList />
+      <FilterOrder/>
       <OrderList />
     </PageMobile>
   );

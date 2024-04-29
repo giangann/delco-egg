@@ -12,6 +12,7 @@ import { toDayOrTomorrowOrYesterday } from "../../shared/helper";
 import { IOrderRow } from "../../shared/types/order";
 import { useContext } from "react";
 import { OrderListContext } from "../../contexts/OrderListContext";
+import { ReactExportCsv } from "../../components/Excel/ReactExportCsv";
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
@@ -63,6 +64,10 @@ export const EggOrderListDesktop = () => {
 
   return (
     <Page title="Danh sách đơn trứng">
+      <ReactExportCsv
+        fileName="danh-sach-don-hang"
+        data={toCsv(orderList, fields)}
+      />
       <CustomTable
         fields={fields}
         data={orderList}
@@ -71,3 +76,24 @@ export const EggOrderListDesktop = () => {
     </Page>
   );
 };
+
+// need a function transform from object key to real name for table in excet
+//  vd: user_name => Ten nguoi dung
+
+function toCsv(data: IOrderRow[], fields: StrictField<IOrderRow>[]) {
+  const dataJson = JSON.stringify(data);
+  const newData: IOrderRow[] = JSON.parse(dataJson);
+  return newData.map((row) => {
+    // get keys of this object
+    let keys = Object.keys(row);
+
+    for (let key of keys) {
+      // find the header correspond with this key
+      let newKey = fields.filter((field) => field.fieldKey === key)[0]?.header;
+      row[newKey] = row[key];
+      delete row[key];
+    }
+
+    return row;
+  });
+}

@@ -6,8 +6,8 @@ import { CONFIG } from "../../shared/constants/common";
 import { IcBaselineArrowDropDown } from "../../shared/icons/Icon";
 
 export interface IDateRange {
-  startDate: Dayjs;
-  endDate: Dayjs;
+  startDate: Dayjs | null;
+  endDate: Dayjs | null;
 }
 type CustomDateRangePickerProps = {
   onChange: (newValue: IDateRange) => void;
@@ -24,7 +24,6 @@ export const CustomDateRangePicker = ({
 }: CustomDateRangePickerProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const openStart = Boolean(anchorEl);
-
   const openDatePicker = (event: MouseEvent<HTMLDivElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -36,7 +35,7 @@ export const CustomDateRangePicker = ({
     }
     if (anchorEl?.getAttribute(attributeName) === "end-date") {
       let newStartDate = dateRange.startDate;
-      if (dateRange.startDate > newValue) {
+      if (dateRange.startDate !== null && dateRange?.startDate > newValue) {
         newStartDate = newValue;
       }
       onChange({ ...dateRange, endDate: newValue, startDate: newStartDate });
@@ -58,9 +57,12 @@ export const CustomDateRangePicker = ({
         data-date-range-type="start-date"
         onClick={isActive ? openDatePicker : () => {}}
       >
-        <TextDate>
-          {dayjs(dateRange.startDate).format(CONFIG.VIEWR_DATE_FORMAT)}
-        </TextDate>
+        {dateRange.startDate === null && "__/__/____"}
+        {dateRange.startDate !== null && (
+          <TextDate>
+            {dayjs(dateRange.startDate).format(CONFIG.VIEWR_DATE_FORMAT)}
+          </TextDate>
+        )}
       </Box>
 
       <div>{" -> "}</div>
@@ -71,9 +73,12 @@ export const CustomDateRangePicker = ({
         data-date-range-type="end-date"
         onClick={isActive ? openDatePicker : () => {}}
       >
-        <TextDate>
-          {dayjs(dateRange.endDate).format(CONFIG.VIEWR_DATE_FORMAT)}
-        </TextDate>{" "}
+        {dateRange.endDate === null && "__/__/____"}
+        {dateRange.endDate !== null && (
+          <TextDate>
+            {dayjs(dateRange.endDate).format(CONFIG.VIEWR_DATE_FORMAT)}
+          </TextDate>
+        )}
       </Box>
       {isActive && <IcBaselineArrowDropDown />}
       <Menu

@@ -14,8 +14,8 @@ export const FilterList = () => {
   };
   return (
     <Box
-      py={1}
-      my={1}
+      // py={1}
+      // my={1}
       //sx={{overflowX:'scroll'}}
     >
       <StatusTabs onChange={onStatusChange} />
