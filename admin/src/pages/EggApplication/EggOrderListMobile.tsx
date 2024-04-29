@@ -18,12 +18,13 @@ import { FilterList } from "./FilterList";
 import { useContext } from "react";
 import { OrderListContext } from "../../contexts/OrderListContext";
 import { FilterOrder } from "./FilterOrder";
+import { BasePagi } from "../../components/Pagi/BasePagi";
 
 export const EggOrderListMobile = () => {
   return (
     <PageMobile title="Danh sách đơn hàng">
       <FilterList />
-      <FilterOrder/>
+      <FilterOrder />
       <OrderList />
     </PageMobile>
   );
@@ -36,11 +37,28 @@ const OrderList = () => {
       {!orderList || !orderList.length ? (
         <NoOrder />
       ) : (
-        orderList.map((order) => (
-          <Order order={order} onViewDetail={onViewDetail} />
-        ))
+        <>
+          {orderList.map((order) => (
+            <Order order={order} onViewDetail={onViewDetail} />
+          ))}
+          <Pagination />
+        </>
       )}
     </Box>
+  );
+};
+
+const Pagination = () => {
+  const { pagination, setParams } = useContext(OrderListContext);
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setParams("page", value);
+  };
+  return (
+    <BasePagi
+      currentPage={pagination?.currentPage}
+      totalPages={pagination?.totalPages}
+      onChange={handleChange}
+    />
   );
 };
 

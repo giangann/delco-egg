@@ -13,17 +13,28 @@ import { IOrderRow } from "../../shared/types/order";
 import { EggOrderListDesktop } from "./EggOrderListDesktop";
 import { EggOrderListMobile } from "./EggOrderListMobile";
 import { ORDER_STATUS } from "../../shared/constants/orderStatus";
+import { IPagination } from "../../shared/types/base";
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
+const defaultPagi = {
+  currentPage: 1,
+  totalItems: 0,
+  totalPages: 0,
+  previousPage: null,
+  nextPage: null,
+};
 // featch api
 // layout by device
 // filter bar
 export const EggOrderList = () => {
   const [orderList, setOrderList] = useState<IOrderRow[]>([]);
+  const [pagi, setPagi] = useState<IPagination>(defaultPagi);
   const { isMobile } = useDevice();
   const [params, setParams] = useState<OrderParams>({
     status: isMobile ? ORDER_STATUS.WAITING_APPROVAL : null,
+    page: 1,
+    limit: 5,
   });
   const navigate = useNavigate();
   const wsServer = useContext(SocketContext);
@@ -36,11 +47,12 @@ export const EggOrderList = () => {
   };
 
   const onSetParams = (_key: keyof OrderParams, value: any) => {
-    let newParams = {
-      ...params,
-      [_key]: value,
-    };
-    setParams(newParams);
+    setParams((_prev) => {
+      return {
+        ..._prev,
+        [_key]: value,
+      };
+    });
   };
 
   const fetchMyListOrder = useCallback(async () => {
@@ -48,7 +60,10 @@ export const EggOrderList = () => {
       "order",
       params as unknown as Record<string, string>
     );
-    if (res.success) setOrderList(res.data);
+    if (res.success) {
+      setOrderList(res.data);
+      setPagi(res.pagination || defaultPagi);
+    }
   }, [params]);
 
   useEffect(() => {
@@ -72,6 +87,7 @@ export const EggOrderList = () => {
         setParams: onSetParams,
         onViewDetail,
         orderList,
+        pagination: pagi,
       }}
     >
       {isMobile ? <EggOrderListMobile /> : <EggOrderListDesktop />}

@@ -11,12 +11,13 @@ export const FilterList = () => {
     let newStatus: ORDER_STATUS = ORDER_STATUS.WAITING_APPROVAL;
     if (newValue in ORDER_STATUS) newStatus = newValue;
     setParams("status", newStatus);
+    setParams("page", 1);
   };
   return (
     <Box
-      // py={1}
-      // my={1}
-      //sx={{overflowX:'scroll'}}
+    // py={1}
+    // my={1}
+    //sx={{overflowX:'scroll'}}
     >
       <StatusTabs onChange={onStatusChange} />
     </Box>

@@ -1,8 +1,10 @@
+import { IPagination } from "../../../shared/types/base";
 import { baseURL } from "../../query/request";
 
 export type TResponseSuccess<T> = {
   success: true;
   data: T;
+  pagination?: IPagination
 };
 export type TResponseFailure = {
   success: false;
