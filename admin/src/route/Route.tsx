@@ -8,20 +8,20 @@ import { UpdateQuantity } from "../pages/EggManagement/UpdateQuantity";
 import { Home } from "../pages/Home/Home";
 import { Layout } from "../pages/Layout/Layout";
 import { Login } from "../pages/Login/Login";
+import { EggManage } from "../pages/Management/EggManage";
+import { Manage } from "../pages/Management/Manage";
 import { MyProfile } from "../pages/Setting/MyProfile";
-import { UserCreateForm } from "../pages/UserManagement/UserCreateForm";
+import { EggStatistic } from "../pages/Statistic/Egg/EggStatistic";
+import { OrderStatistic } from "../pages/Statistic/Order/OrderStatistic";
+import { Statistic } from "../pages/Statistic/Statistic";
+import { UserStatistic } from "../pages/Statistic/User/UserStatistic";
+import { Test } from "../pages/Test";
 import { ClientDetail } from "../pages/UserManagement/ClientDetail";
+import { UserCreateForm } from "../pages/UserManagement/UserCreateForm";
 import { UserList } from "../pages/UserManagement/UserList";
 import SCREEN_PATHS from "../shared/constants/screenPaths";
-import { ProtectedRoute } from "./ProtectedRoute";
-import { UserStatistic } from "../pages/Statistic/User/UserStatistic";
 import { SLUG } from "../shared/constants/slug";
-import { Manage } from "../pages/Management/Manage";
-import { EggManage } from "../pages/Management/EggManage";
-import { Statistic } from "../pages/Statistic/Statistic";
-import { OrderStatistic } from "../pages/Statistic/Order/OrderStatistic";
-import { EggStatistic } from "../pages/Statistic/Egg/EggStatistic";
-import { Test } from "../pages/Test";
+import { ProtectedRoute } from "./ProtectedRoute";
 const routes: RouteObject[] = [
   {
     path: "/",

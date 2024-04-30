@@ -30,7 +30,19 @@ export interface IUserCreate {
   isAdmin?: string;
 }
 
-export interface IUserList extends Partial<IUserCreate> {
-  id: number;
+export interface IUserList
+  extends Partial<IUserCreate>,
+    Record<string, unknown> {
+  id: number | string;
 }
+
+export interface IUserRow {
+  id: number;
+  username: string;
+  fullname: string;
+  phone_number: string;
+  company_name?: string;
+  note?: string;
+}
+
 export type TUserUpdate = Omit<IUserProfile, "username">;

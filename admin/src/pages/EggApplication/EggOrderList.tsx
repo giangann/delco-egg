@@ -26,7 +26,7 @@ export const EggOrderList = () => {
   const [pagi, setPagi] = useState<IPagination>(defaultPagi);
   const { isMobile } = useDevice();
   const [params, setParams] = useState<OrderParams>({
-    status: isMobile ? ORDER_STATUS.WAITING_APPROVAL : null,
+    status: ORDER_STATUS.WAITING_APPROVAL,
     page: 1,
     limit: 5,
   });
