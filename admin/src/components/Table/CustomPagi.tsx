@@ -3,6 +3,7 @@ import React, { ChangeEventHandler } from "react";
 import { BoxFlexEnd } from "../../styled/styled";
 
 export interface CustomPagiProps {
+  totalItems: number;
   totalPage: number;
   perpage: number;
   currPage: number;
@@ -14,6 +15,7 @@ export interface CustomPagiProps {
 }
 
 export const CustomPagi = ({
+  totalItems,
   totalPage,
   perpage,
   currPage,
@@ -23,8 +25,7 @@ export const CustomPagi = ({
   onGoToEnd,
   onGoToStart,
 }: CustomPagiProps) => {
-  const defaultOptions = [5, 10, 15];
-
+  const defaultOptions = [5, 10, 15, totalItems];
   const handleChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
     const newPerPage = parseInt(event.target.value);
     onPerPageChange(newPerPage);

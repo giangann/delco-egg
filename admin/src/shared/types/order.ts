@@ -30,6 +30,7 @@ export interface IOrderRow extends Record<string, unknown> {
   fullname: string;
   phone_number: string;
   company_name: string;
+  total: number;
   items?: IOrderItem[];
 }
 

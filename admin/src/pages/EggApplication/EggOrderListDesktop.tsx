@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
@@ -13,7 +13,10 @@ import {
   StrictField,
 } from "../../components/Table/Customtable";
 import { OrderListContext } from "../../contexts/OrderListContext";
-import { toDayOrTomorrowOrYesterday } from "../../shared/helper";
+import {
+  numberWithComma,
+  toDayOrTomorrowOrYesterday,
+} from "../../shared/helper";
 import { IOrderRow } from "../../shared/types/order";
 import { FilterList } from "./FilterList";
 import { FilterOrder } from "./FilterOrder";
@@ -25,9 +28,11 @@ export const EggOrderListDesktop = () => {
     useContext(OrderListContext);
 
   const { limit } = params;
-  const { currentPage, nextPage, previousPage, totalPages } = pagination;
+  const { currentPage, nextPage, previousPage, totalPages, totalItems } =
+    pagination;
 
   const pagiProps: CustomPagiProps = {
+    totalItems: totalItems,
     currPage: currentPage,
     totalPage: totalPages,
     onGoToEnd: () => {
@@ -73,6 +78,23 @@ export const EggOrderListDesktop = () => {
       width: 250,
     },
     {
+      header: "Tổng tiền",
+      fieldKey: "total",
+      width: 250,
+      render: ({ total }) => {
+        return (
+          <Typography
+            fontSize={18}
+            textAlign={"center"}
+            fontWeight={500}
+            color="blue"
+          >
+            {numberWithComma(total)} đ
+          </Typography>
+        );
+      },
+    },
+    {
       header: "Trạng thái",
       fieldKey: "status",
       width: 250,
@@ -97,7 +119,7 @@ export const EggOrderListDesktop = () => {
       <Stack direction={"row"} justifyContent={"space-between"} my={1}>
         <Stack direction={"row"}>
           <FilterList />
-          <FilterOrder/>
+          <FilterOrder />
         </Stack>
         <ReactExportCsv
           fileName="danh-sach-don-hang"

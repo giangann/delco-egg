@@ -39,6 +39,7 @@ export function CustomTable<TData extends UnknownObj>({
   onActionViewDetail,
 }: CustomTableProps<TData>) {
   const {
+    totalItems,
     totalPage,
     perpage,
     currPage,
@@ -117,6 +118,7 @@ export function CustomTable<TData extends UnknownObj>({
         )}
       </TableContainer>
       <CustomPagi
+        totalItems={totalItems}
         totalPage={totalPage}
         perpage={perpage}
         currPage={currPage}
