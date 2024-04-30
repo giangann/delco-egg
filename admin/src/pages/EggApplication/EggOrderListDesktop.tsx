@@ -1,23 +1,53 @@
+import { Stack } from "@mui/material";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
+import { useContext } from "react";
+import { ReactExportCsv } from "../../components/Excel/ReactExportCsv";
 import { Page } from "../../components/Page/Page";
 import { BoxByStatus } from "../../components/Table/BoxByStatus";
+import { CustomPagiProps } from "../../components/Table/CustomPagi";
 import {
   CustomTable,
   DefaultBodyText,
   StrictField,
 } from "../../components/Table/Customtable";
+import { OrderListContext } from "../../contexts/OrderListContext";
 import { toDayOrTomorrowOrYesterday } from "../../shared/helper";
 import { IOrderRow } from "../../shared/types/order";
-import { useContext } from "react";
-import { OrderListContext } from "../../contexts/OrderListContext";
-import { ReactExportCsv } from "../../components/Excel/ReactExportCsv";
+import { FilterList } from "./FilterList";
+import { FilterOrder } from "./FilterOrder";
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
 export const EggOrderListDesktop = () => {
-  const { orderList, onViewDetail } = useContext(OrderListContext);
+  const { params, pagination, setParams, orderList, onViewDetail } =
+    useContext(OrderListContext);
+
+  const { limit } = params;
+  const { currentPage, nextPage, previousPage, totalPages } = pagination;
+
+  const pagiProps: CustomPagiProps = {
+    currPage: currentPage,
+    totalPage: totalPages,
+    onGoToEnd: () => {
+      setParams("page", totalPages);
+    },
+    onGoToStart: () => {
+      setParams("page", 1);
+    },
+    onNextPage: () => {
+      setParams("page", nextPage);
+    },
+    onPerPageChange: (newLimit: number) => {
+      setParams("limit", newLimit);
+      setParams("page", 1);
+    },
+    onPrevPage: () => {
+      setParams("page", previousPage);
+    },
+    perpage: limit as number,
+  };
   const fields: StrictField<IOrderRow>[] = [
     {
       header: "Người tạo",
@@ -64,14 +94,21 @@ export const EggOrderListDesktop = () => {
 
   return (
     <Page title="Danh sách đơn trứng">
-      <ReactExportCsv
-        fileName="danh-sach-don-hang"
-        data={toCsv(orderList, fields)}
-      />
+      <Stack direction={"row"} justifyContent={"space-between"} my={1}>
+        <Stack direction={"row"}>
+          <FilterList />
+          <FilterOrder/>
+        </Stack>
+        <ReactExportCsv
+          fileName="danh-sach-don-hang"
+          data={toCsv(orderList, fields)}
+        />
+      </Stack>
       <CustomTable
         fields={fields}
         data={orderList}
         onActionViewDetail={onViewDetail}
+        pagiProps={pagiProps}
       />
     </Page>
   );

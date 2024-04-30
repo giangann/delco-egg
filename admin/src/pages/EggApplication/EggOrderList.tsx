@@ -14,16 +14,10 @@ import { EggOrderListDesktop } from "./EggOrderListDesktop";
 import { EggOrderListMobile } from "./EggOrderListMobile";
 import { ORDER_STATUS } from "../../shared/constants/orderStatus";
 import { IPagination } from "../../shared/types/base";
+import { defaultPagi } from "../../shared/constants/common";
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
-const defaultPagi = {
-  currentPage: 1,
-  totalItems: 0,
-  totalPages: 0,
-  previousPage: null,
-  nextPage: null,
-};
 // featch api
 // layout by device
 // filter bar
@@ -46,12 +40,19 @@ export const EggOrderList = () => {
     navigate(`${newPathWithoutSlug}/${id}`);
   };
 
-  const onSetParams = (_key: keyof OrderParams, value: any) => {
-    setParams((_prev) => {
+  const onSetParams = (key: keyof OrderParams, value: any) => {
+    setParams((prev) => {
       return {
-        ..._prev,
-        [_key]: value,
+        ...prev,
+        [key]: value,
       };
+    });
+  };
+
+  const onClearParams = (key: keyof OrderParams) => {
+    setParams((prev) => {
+      delete prev[key];
+      return { ...prev };
     });
   };
 
@@ -62,9 +63,8 @@ export const EggOrderList = () => {
     );
     if (res.success) {
       setOrderList(res.data);
-      console.log("re fetch", res.data);
       setPagi(res.pagination || defaultPagi);
-    } 
+    }
   }, [params]);
 
   useEffect(() => {
@@ -86,6 +86,7 @@ export const EggOrderList = () => {
       value={{
         params: params,
         setParams: onSetParams,
+        clearParams: onClearParams,
         onViewDetail,
         orderList,
         pagination: pagi,

@@ -19,11 +19,11 @@ import { OrderListContext } from "../../contexts/OrderListContext";
 import { CONFIG } from "../../shared/constants/common";
 import { FlowbiteAdjustmentsHorizontalOutline } from "../../shared/icons/Icon";
 import { InputLabelText } from "../../styled/styled";
+import { useForm } from "react-hook-form";
 
 export const FilterOrder = () => {
   const [open, setOpen] = useState(false);
   const { params } = useContext(OrderListContext);
-  console.log('parmas',params)
   const isHaveFilter = Object.keys(params).length > 3;
 
   const onOpen = () => {
@@ -45,29 +45,59 @@ export const FilterOrder = () => {
 };
 
 const FilterOption = () => {
-  const { params, setParams } = useContext(OrderListContext);
-  const { start_date, end_date } = params;
+  const { params, setParams, clearParams } = useContext(OrderListContext);
+  const { start_date, end_date, phone_number, fullname } = params;
   const [date, setDate] = useState<IDateRange>({
     startDate: start_date,
     endDate: end_date,
   });
-
+  const { register, getValues, setValue } = useForm<{
+    phone_number: string;
+    fullname: string;
+  }>({
+    defaultValues: {
+      phone_number: phone_number || "",
+      fullname: fullname || "",
+    },
+  });
   const handleFilter = () => {
-    // const newParams = getValue
-    setParams(
-      "start_date",
-      dayjs(date.startDate).format(CONFIG.MY_SQL_DATE_FORMAT)
-    );
-    setParams(
-      "end_date",
-      dayjs(date.endDate).format(CONFIG.MY_SQL_DATE_FORMAT)
-    );
+    if (date.startDate) {
+      setParams(
+        "start_date",
+        dayjs(date.startDate).format(CONFIG.MY_SQL_DATE_FORMAT)
+      );
+    }
+    if (date.endDate) {
+      setParams(
+        "end_date",
+        dayjs(date.endDate).format(CONFIG.MY_SQL_DATE_FORMAT)
+      );
+    }
+
+    const phoneNumber = getValues("phone_number");
+    if (phoneNumber) {
+      setParams("phone_number", phoneNumber);
+    }
+
+    const fullName = getValues("fullname");
+    if (fullName) {
+      setParams("fullname", getValues("fullname"));
+    }
+
+    setParams("page", 1); // reset to first page
   };
 
   const clearFilter = () => {
-    delete params.start_date
-    delete params.end_date
+    // clear params
+    clearParams("start_date");
+    clearParams("end_date");
+    clearParams("fullname");
+    clearParams("phone_number");
+
+    // clear input
     setDate({ startDate: undefined, endDate: undefined });
+    setValue('fullname','')
+    setValue('phone_number','')
   };
   return (
     <Box>
@@ -93,12 +123,15 @@ const FilterOption = () => {
 
           <Grid item xs={12}>
             <InputLabelText>Tên người đặt:</InputLabelText>
-            <BaseInput placeholder="Nhập tên ..." />
+            <BaseInput {...register("fullname")} placeholder="Nhập tên ..." />
           </Grid>
 
           <Grid item xs={12}>
             <InputLabelText>Số điện thoại:</InputLabelText>
-            <BaseInput placeholder="Nhập SĐT ..." />
+            <BaseInput
+              {...register("phone_number")}
+              placeholder="Nhập SĐT ..."
+            />
           </Grid>
         </Grid>
 

@@ -1,5 +1,9 @@
 import { Box, Typography, styled } from "@mui/material";
+import { useContext } from "react";
+import { PageMobile } from "../../components/Page/PageMobile";
+import { BasePagi } from "../../components/Pagi/BasePagi";
 import { BoxByStatus } from "../../components/Table/BoxByStatus";
+import { OrderListContext } from "../../contexts/OrderListContext";
 import { OPACITY_TO_HEX } from "../../shared/constants/common";
 import {
   diffDateTimeWithNow,
@@ -13,12 +17,8 @@ import {
   StackAlignCenterJustifySpaceBetween,
   alignCenterSx,
 } from "../../styled/styled";
-import { PageMobile } from "../../components/Page/PageMobile";
 import { FilterList } from "./FilterList";
-import { useContext } from "react";
-import { OrderListContext } from "../../contexts/OrderListContext";
 import { FilterOrder } from "./FilterOrder";
-import { BasePagi } from "../../components/Pagi/BasePagi";
 
 export const EggOrderListMobile = () => {
   return (
@@ -50,15 +50,17 @@ const OrderList = () => {
 
 const Pagination = () => {
   const { pagination, setParams } = useContext(OrderListContext);
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChange = (_event: React.ChangeEvent<unknown>, value: number) => {
     setParams("page", value);
   };
   return (
-    <BasePagi
-      currentPage={pagination?.currentPage}
-      totalPages={pagination?.totalPages}
-      onChange={handleChange}
-    />
+    <Box my={1}>
+      <BasePagi
+        currentPage={pagination?.currentPage}
+        totalPages={pagination?.totalPages}
+        onChange={handleChange}
+      />
+    </Box>
   );
 };
 

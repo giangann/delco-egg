@@ -113,12 +113,19 @@ export const CHART_COLORS = {
     "rgb(255, 99, 132)",
     "rgb(53, 162, 235)",
     "rgba(255, 206, 86, 0.75)",
-    'rgba(153, 102, 255)',
+    "rgba(153, 102, 255)",
   ],
   BG: [
     "rgba(255, 99, 132, 0.5)",
     "rgba(53, 162, 235, 0.5)",
     "rgba(255, 206, 86, 0.5)",
-    'rgba(153, 102, 255, 0.5)',
+    "rgba(153, 102, 255, 0.5)",
   ],
+};
+export const defaultPagi = {
+  currentPage: 1,
+  totalItems: 0,
+  totalPages: 0,
+  previousPage: null,
+  nextPage: null,
 };

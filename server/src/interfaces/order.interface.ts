@@ -6,6 +6,7 @@ import {
   IBaseStatisticParams,
   IDetailById,
 } from 'common.interface';
+import { IUserRecord } from 'user.interface';
 
 export interface IOrderRecord {
   id: number;
@@ -39,7 +40,7 @@ export type IUpdateStatusOrder = {
 export interface IOrderQueryParams
   extends IBaseQueryParams,
     Partial<IBaseStatisticParams>,
-    Partial<ICreateOrder> {}
+    Partial<ICreateOrder>, Partial<IUserRecord> {}
 
 export interface IOrderDetailParams extends IDetailById {
   user_id?: number;

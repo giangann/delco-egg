@@ -1,7 +1,6 @@
-import * as React from "react";
-import Typography from "@mui/material/Typography";
 import Pagination, { PaginationProps } from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import * as React from "react";
 
 type Props = {
   currentPage?: number;
@@ -14,7 +13,6 @@ export const BasePagi: React.FC<Props> = ({
 }) => {
   return (
     <Stack spacing={2}>
-      <Typography>Page: {currentPage}</Typography>
       <Pagination count={totalPages || 1} page={currentPage} {...pagiProps} />
     </Stack>
   );

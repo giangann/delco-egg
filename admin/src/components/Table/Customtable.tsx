@@ -9,12 +9,11 @@ import {
   styled,
 } from "@mui/material";
 import React from "react";
-import { usePagination } from "../../hooks/usePagination";
 import { IcRoundKeyboardBackspace } from "../../shared/icons/Icon";
 import { UnknownObj } from "../../shared/types/base";
 import { GREEN } from "../../styled/color";
 import { ButtonResponsive } from "../../styled/styled";
-import { CustomPagi } from "./CustomPagi";
+import { CustomPagi, CustomPagiProps } from "./CustomPagi";
 
 export interface StrictField<T> {
   header: string;
@@ -26,6 +25,7 @@ export interface StrictField<T> {
 export interface CustomTableProps<TData extends UnknownObj> {
   fields: StrictField<TData>[];
   data: TData[];
+  pagiProps: CustomPagiProps;
   rows?: number;
   onActionViewDetail?: (row: TData) => void;
 }
@@ -34,7 +34,7 @@ const DEFAULT_CELL_WIDTH = "20%";
 
 export function CustomTable<TData extends UnknownObj>({
   data,
-  rows = data.length,
+  pagiProps,
   fields,
   onActionViewDetail,
 }: CustomTableProps<TData>) {
@@ -47,7 +47,7 @@ export function CustomTable<TData extends UnknownObj>({
     onPerPageChange,
     onGoToEnd,
     onGoToStart,
-  } = usePagination({ rows: rows });
+  } = pagiProps;
 
   return (
     <Box sx={{ border: `1px solid ${GREEN["500"]}` }}>
@@ -79,42 +79,40 @@ export function CustomTable<TData extends UnknownObj>({
           <NoTableData />
         ) : (
           <TableBody>
-            {data
-              .slice((currPage - 1) * perpage, currPage * perpage)
-              .map((row: TData) => (
-                <TableRow>
-                  {fields.map(({ fieldKey, render }: StrictField<TData>) => {
-                    return (
-                      <TableCell sx={{ padding: { xs: "12px", sm: "16px" } }}>
-                        {render ? (
-                          render(row)
-                        ) : (
-                          <React.Fragment>
-                            <DefaultBodyText>
-                              {row[fieldKey] ?? "none"}
-                            </DefaultBodyText>
-                          </React.Fragment>
-                        )}
-                      </TableCell>
-                    );
-                  })}
-                  {onActionViewDetail && (
-                    <TableCell sx={{ padding: { xs: "8px", sm: "16px" } }}>
-                      <ButtonResponsive
-                        // @ts-ignore
-                        onClick={() => onActionViewDetail(row)}
-                        startIcon={
-                          <IcRoundKeyboardBackspace
-                            style={{ transform: "rotate(180deg)" }}
-                          />
-                        }
-                      >
-                        chi tiết
-                      </ButtonResponsive>
+            {data.map((row: TData) => (
+              <TableRow>
+                {fields.map(({ fieldKey, render }: StrictField<TData>) => {
+                  return (
+                    <TableCell sx={{ padding: { xs: "12px", sm: "16px" } }}>
+                      {render ? (
+                        render(row)
+                      ) : (
+                        <React.Fragment>
+                          <DefaultBodyText>
+                            {row[fieldKey] ?? "none"}
+                          </DefaultBodyText>
+                        </React.Fragment>
+                      )}
                     </TableCell>
-                  )}
-                </TableRow>
-              ))}
+                  );
+                })}
+                {onActionViewDetail && (
+                  <TableCell sx={{ padding: { xs: "8px", sm: "16px" } }}>
+                    <ButtonResponsive
+                      // @ts-ignore
+                      onClick={() => onActionViewDetail(row)}
+                      startIcon={
+                        <IcRoundKeyboardBackspace
+                          style={{ transform: "rotate(180deg)" }}
+                        />
+                      }
+                    >
+                      chi tiết
+                    </ButtonResponsive>
+                  </TableCell>
+                )}
+              </TableRow>
+            ))}
           </TableBody>
         )}
       </TableContainer>

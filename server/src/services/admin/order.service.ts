@@ -41,6 +41,23 @@ const list = async (params: IOrderQueryParams) => {
     orderRepo.andWhere('order.user_id = :userId', { userId });
   }
 
+  const userFullName = params.fullname;
+  if (userFullName) {
+    orderRepo.andWhere('(LOWER(user.fullname) LIKE LOWER(:fullname))', {
+      fullname: `%${userFullName}%`,
+    });
+  }
+
+  const phoneNumber = params.phone_number;
+  if (phoneNumber) {
+    orderRepo.andWhere(
+      '(LOWER(user.phone_number) LIKE LOWER(:phone_number))',
+      {
+        phone_number: `%${phoneNumber}%`,
+      },
+    );
+  }
+
   let listOrders = await orderRepo.getMany();
   const total = listOrders.length;
 

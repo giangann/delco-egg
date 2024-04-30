@@ -2,7 +2,7 @@ import { Button, Stack, Typography } from "@mui/material";
 import React, { ChangeEventHandler } from "react";
 import { BoxFlexEnd } from "../../styled/styled";
 
-interface CustomPagiProps {
+export interface CustomPagiProps {
   totalPage: number;
   perpage: number;
   currPage: number;

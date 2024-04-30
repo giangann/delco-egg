@@ -11,3 +11,4 @@ export interface IPagination {
   nextPage: number | null;
   totalItems: number;
 }
+

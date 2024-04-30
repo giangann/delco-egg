@@ -21,7 +21,7 @@ import { EggManage } from "../pages/Management/EggManage";
 import { Statistic } from "../pages/Statistic/Statistic";
 import { OrderStatistic } from "../pages/Statistic/Order/OrderStatistic";
 import { EggStatistic } from "../pages/Statistic/Egg/EggStatistic";
-
+import { Test } from "../pages/Test";
 const routes: RouteObject[] = [
   {
     path: "/",
@@ -114,6 +114,10 @@ const routes: RouteObject[] = [
     path: SCREEN_PATHS.LOGIN,
     element: <Login />,
   },
+  {
+    path:'/test',
+    element:<Test/>
+  }
 ];
 
 export const appRouters = createBrowserRouter(routes);
