@@ -14,8 +14,9 @@ import ApiUtility from '../../utilities/api.utility';
 const list = async (params: IOrderQueryParams) => {
   const orderRepo = getRepository(Order).createQueryBuilder('order');
 
-  orderRepo.leftJoinAndSelect('order.items', 'item');
   orderRepo.leftJoinAndSelect('order.user', 'user');
+  orderRepo.leftJoinAndSelect('order.items', 'item');
+  orderRepo.leftJoinAndSelect('item.egg','egg')
 
   const startDate = params.startDate;
   const endDate = params.endDate;

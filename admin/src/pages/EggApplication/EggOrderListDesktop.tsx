@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import { useContext } from "react";
-import { ReactExportCsv } from "../../components/Excel/ReactExportCsv";
 import { Page } from "../../components/Page/Page";
 import { BoxByStatus } from "../../components/Table/BoxByStatus";
 import { CustomPagiProps } from "../../components/Table/CustomPagi";
@@ -20,6 +19,7 @@ import {
 import { IOrderRow } from "../../shared/types/order";
 import { FilterList } from "./FilterList";
 import { FilterOrder } from "./FilterOrder";
+import { OrderListToCSV } from "./OrderListToCSV";
 dayjs.extend(timezone);
 dayjs.extend(utc);
 
@@ -121,10 +121,11 @@ export const EggOrderListDesktop = () => {
           <FilterList />
           <FilterOrder />
         </Stack>
-        <ReactExportCsv
+        {/* <ReactExportCsv
           fileName="danh-sach-don-hang"
           data={toCsv(orderList, fields)}
-        />
+        /> */}
+        <OrderListToCSV />
       </Stack>
       <CustomTable
         fields={fields}
@@ -135,24 +136,3 @@ export const EggOrderListDesktop = () => {
     </Page>
   );
 };
-
-// need a function transform from object key to real name for table in excet
-//  vd: user_name => Ten nguoi dung
-
-function toCsv(data: IOrderRow[], fields: StrictField<IOrderRow>[]) {
-  const dataJson = JSON.stringify(data);
-  const newData: IOrderRow[] = JSON.parse(dataJson);
-  return newData.map((row) => {
-    // get keys of this object
-    let keys = Object.keys(row);
-
-    for (let key of keys) {
-      // find the header correspond with this key
-      let newKey = fields.filter((field) => field.fieldKey === key)[0]?.header;
-      row[newKey] = row[key];
-      delete row[key];
-    }
-
-    return row;
-  });
-}

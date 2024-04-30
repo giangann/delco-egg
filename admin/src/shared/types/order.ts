@@ -5,7 +5,7 @@ export interface IOrderItem {
   egg_id: number;
   quantity: number;
   deal_price: number;
-  egg?: IEgg;
+  egg: IEgg;
 }
 
 export interface IOrder {
@@ -20,7 +20,7 @@ export interface IOrder {
   reason?: string;
 }
 
-export interface IOrderRow extends Record<string, unknown> {
+export interface IOrderRow {
   id: number | string;
   date: string;
   time: string;
@@ -31,8 +31,10 @@ export interface IOrderRow extends Record<string, unknown> {
   phone_number: string;
   company_name: string;
   total: number;
-  items?: IOrderItem[];
+  items: IOrderItem[];
 }
+
+export interface IOrderAllFields extends IOrderRow {}
 
 export interface IOrderUserInfo {
   id?: number;

@@ -1,16 +1,17 @@
-import { Button } from "@mui/material";
+import { Button, ButtonProps } from "@mui/material";
 import { CSVLink } from "react-csv";
 
 type Props = {
   fileName: string;
   data: any;
+  buttonProps?: ButtonProps;
 };
-export const ReactExportCsv: React.FC<Props> = ({ fileName, data }) => {
+export const ReactExportCsv: React.FC<Props> = ({ fileName, data , buttonProps}) => {
   return (
     <div>
-      <Button variant="contained">
+      <Button variant="contained" {...buttonProps}>
         <CSVLink data={data} filename={fileName}>
-          Export
+          Tải file
         </CSVLink>
       </Button>
     </div>
