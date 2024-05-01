@@ -1,11 +1,11 @@
-import { Box, Grid, Typography, styled } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
+import { Page } from "../../components/Page/Page";
+import useAuth from "../../hooks/useAuth";
+import { useDevice } from "../../hooks/useDevice";
 import SCREEN_PATHS from "../../shared/constants/screenPaths";
 import { SLUG } from "../../shared/constants/slug";
 import { EggPricesBlock } from "./EggPricesBlock";
 import { TodayOverview } from "./TodayOverview";
-import { useDevice } from "../../hooks/useDevice";
-import { Page } from "../../components/Page/Page";
-import useAuth from "../../hooks/useAuth";
 
 export const Home = () => {
   const { isMobile } = useDevice();

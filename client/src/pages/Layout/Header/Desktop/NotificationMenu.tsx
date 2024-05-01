@@ -59,7 +59,7 @@ export const NotificationMenu = () => {
       >
         <Box>
           {listNoti && listNoti?.length ? (
-            listNoti.map((noti, index) => (
+            listNoti.map((noti, _index) => (
               <NotiItem {...noti} handleNotiClick={handleNotiClick} />
             ))
           ) : (

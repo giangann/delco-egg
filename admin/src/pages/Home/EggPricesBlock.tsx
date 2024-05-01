@@ -1,23 +1,23 @@
-import { Box, Grid, Paper, Stack, Typography, styled } from "@mui/material";
+import { Box, Grid, Paper, Typography, styled } from "@mui/material";
+import dayjs, { Dayjs } from "dayjs";
+import { useEffect, useState } from "react";
 import { BoxAnnotate } from "../../components/Box/BoxAnnotate";
+import { BoxStatisticWithTimeRange } from "../../components/Box/BoxStatisticWithTimeRange";
+import { CustomDatePicker } from "../../components/DateRange/CustomDatePicker";
+import { useDevice } from "../../hooks/useDevice";
+import { getApi } from "../../lib/utils/fetch/fetchRequest";
+import { CONFIG } from "../../shared/constants/common";
 import {
   IcBaselineArrowDropUp,
   IcOutlineNavigateNext,
 } from "../../shared/icons/Icon";
+import { IEggPrice } from "../../shared/types/egg-price-qty";
 import {
   RowStatisticStyled,
   StackAlignCenterJustifySpaceBetween,
   alignCenterSx,
 } from "../../styled/styled";
-import { BoxStatisticWithTimeRange } from "../../components/Box/BoxStatisticWithTimeRange";
 import { DateTabs, OTHER_DATE_TAB_INDEX } from "./DateTabs";
-import dayjs, { Dayjs } from "dayjs";
-import { useEffect, useState } from "react";
-import { useDevice } from "../../hooks/useDevice";
-import { CustomDatePicker } from "../../components/DateRange/CustomDatePicker";
-import { getApi } from "../../lib/utils/fetch/fetchRequest";
-import { CONFIG } from "../../shared/constants/common";
-import { IEggPrice } from "../../shared/types/egg-price-qty";
 
 export const EggPricesBlock = () => {
   const today = dayjs();

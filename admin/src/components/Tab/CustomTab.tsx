@@ -9,7 +9,7 @@ type TabProps = {
 };
 
 export const CustomTab = forwardRef(
-  (props: TabProps, ref: React.ForwardedRef<HTMLDivElement>) => {
+  (props: TabProps, _ref: React.ForwardedRef<HTMLDivElement>) => {
     const { value, tabIndex, label } = props;
     const { activeTabIndex, getMap, onChange, onTabClick } =
       useContext(TabContext);
@@ -38,7 +38,7 @@ export const CustomTab = forwardRef(
 
 const TabStyled = styled("div", {
   shouldForwardProp: (props) => props !== "active",
-})<{ active: boolean }>(({ active, theme }) => ({
+})<{ active: boolean }>(({ theme }) => ({
   cursor: "pointer",
   opacity: 1,
   padding: "3px 10px",

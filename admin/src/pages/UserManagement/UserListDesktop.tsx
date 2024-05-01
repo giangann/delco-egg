@@ -19,9 +19,11 @@ export const UserListDesktop = () => {
     userList,
     onViewDetail,
   } = useContext(UserListContext);
-  const { currentPage, nextPage, previousPage, totalPages } = pagination;
+  const { currentPage, nextPage, previousPage, totalPages, totalItems } =
+    pagination;
 
   const pagiProps: CustomPagiProps = {
+    totalItems: totalItems,
     currPage: currentPage,
     totalPage: totalPages,
     onGoToEnd: () => {
@@ -73,7 +75,7 @@ export const UserListDesktop = () => {
     <Page title="Danh sách người dùng">
       <Stack direction={"row"} justifyContent={"space-between"} my={1}>
         <FilterUser />
-        <NewUser/>
+        <NewUser />
       </Stack>
       <CustomTable
         pagiProps={pagiProps}
@@ -86,7 +88,7 @@ export const UserListDesktop = () => {
 };
 
 const NewUser = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <ButtonResponsive
       onClick={() => {

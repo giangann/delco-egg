@@ -10,7 +10,6 @@ import {
 import { useDevice } from "../../../hooks/useDevice";
 import { getApi } from "../../../lib/utils/fetch/fetchRequest";
 import { CONFIG } from "../../../shared/constants/common";
-import { alignCenterSx } from "../../../styled/styled";
 import { OrderStatusStatisticDoughnut } from "./OrderStatusStatisticDoughnut";
 
 export const defaultDateRange = {

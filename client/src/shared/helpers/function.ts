@@ -118,23 +118,22 @@ export function numberWithComma(number: number) {
 }
 
 export function diffDateTimeWithNow(dateTime: string | Date) {
-  let res = "";
   const diffYear = dayjs().diff(dateTime, "year");
-  if (diffYear) return (res = diffYear + " năm trước");
+  if (diffYear) return diffYear + " năm trước";
 
   const diffMonth = dayjs().diff(dateTime, "month");
-  if (diffMonth) return (res = diffMonth + " tháng trước");
+  if (diffMonth) return diffMonth + " tháng trước";
 
   const diffWeek = dayjs().diff(dateTime, "week");
-  if (diffWeek) return (res = diffWeek + " tuần trước");
+  if (diffWeek) return diffWeek + " tuần trước";
 
   const diffDay = dayjs().diff(dateTime, "day");
-  if (diffDay) return (res = diffDay + " ngày trước");
+  if (diffDay) return diffDay + " ngày trước";
 
   const diffHour = dayjs().diff(dateTime, "hour");
-  if (diffHour) return (res = diffHour + " giờ trước");
+  if (diffHour) return diffHour + " giờ trước";
 
   const diffMinute = dayjs().diff(dateTime, "minute");
-  if (diffMinute) return (res = diffMinute + " phút trước");
-  else return (res = "Vừa xong");
+  if (diffMinute) return diffMinute + " phút trước";
+  else return "Vừa xong";
 }

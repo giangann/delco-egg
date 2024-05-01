@@ -58,7 +58,7 @@ const DetailFormInfo = ({ orderId }: { orderId: number }) => {
   useEffect(() => {
     fetchOrderById();
 
-    socketClient.on("updateOrder", (message) => {
+    socketClient.on("updateOrder", (_message) => {
       fetchOrderById();
     });
 

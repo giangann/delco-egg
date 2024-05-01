@@ -5,7 +5,7 @@ import { OrderListContext } from "../../contexts/OrderListContext";
 import { ORDER_STATUS } from "../../shared/constants/orderStatus";
 
 export const FilterList = () => {
-  const { params, setParams } = useContext(OrderListContext);
+  const { setParams } = useContext(OrderListContext);
 
   const onStatusChange = (newValue: number) => {
     let newStatus: ORDER_STATUS = ORDER_STATUS.WAITING_APPROVAL;

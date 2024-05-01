@@ -198,7 +198,6 @@ const QuantityRow = ({
   listEgg,
   register,
   remove,
-  getValues,
 }: QuantityRowProps) => {
   const [openDelDialog, setOpenDelDialog] = useState(false);
   return (

@@ -1,17 +1,17 @@
-import { Box, Paper, Stack, Typography, styled } from "@mui/material";
+import { Box, Paper, Typography, styled } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { NoOrderBox } from "../../components/Box/NoOrderBox";
+import { getApi } from "../../lib/utils/fetch/fetchRequest";
+import SCREEN_PATHS from "../../shared/constants/screenPaths";
+import { numberWithComma } from "../../shared/helper";
+import { IcOutlineNavigateNext } from "../../shared/icons/Icon";
 import {
   FakeATag,
   RowStatisticStyled,
   StackAlignCenterJustifySpaceBetween,
 } from "../../styled/styled";
-import { IcOutlineNavigateNext } from "../../shared/icons/Icon";
-import { numberWithComma } from "../../shared/helper";
-import { useNavigate, useParams } from "react-router-dom";
-import SCREEN_PATHS from "../../shared/constants/screenPaths";
 import { IOrderStatistic } from "../Statistic/Order/OrderTotalStatistic";
-import { useEffect, useState } from "react";
-import { getApi } from "../../lib/utils/fetch/fetchRequest";
-import { NoOrderBox } from "../../components/Box/NoOrderBox";
 
 export const ClientDetailRecentOrder = () => {
   const [orderList, setOrderList] = useState<IOrderStatistic[]>([]);
