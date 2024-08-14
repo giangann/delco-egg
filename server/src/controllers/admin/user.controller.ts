@@ -353,7 +353,6 @@ const resetPasswordDefault: IController = async (req, res) => {
 
 const list: IController = async (req, res) => {
   try {
-    console.log('req query', req.query);
     const limit = ApiUtility.getQueryParam(req, 'limit');
     const page = ApiUtility.getQueryParam(req, 'page');
     const isAdmin = ApiUtility.getQueryParam(req, 'isAdmin');
