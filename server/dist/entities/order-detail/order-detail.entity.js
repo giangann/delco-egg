@@ -16,38 +16,46 @@ const base_entity_1 = require("../base/base.entity");
 const order_entity_1 = require("../order/order.entity");
 const egg_entity_1 = require("../egg/egg.entity");
 let OrderDetail = class OrderDetail extends base_entity_1.BaseEntity {
+    // id, order_id, egg_id, deal_price, quantity
+    id;
+    order_id;
+    egg_id;
+    deal_price;
+    quantity;
+    order;
+    egg;
 };
+exports.OrderDetail = OrderDetail;
 __decorate([
-    typeorm_1.PrimaryGeneratedColumn({ type: 'int' }),
+    (0, typeorm_1.PrimaryGeneratedColumn)({ type: 'int' }),
     __metadata("design:type", Number)
 ], OrderDetail.prototype, "id", void 0);
 __decorate([
-    typeorm_1.Column({ type: 'int', nullable: false }),
+    (0, typeorm_1.Column)({ type: 'int', nullable: false }),
     __metadata("design:type", Number)
 ], OrderDetail.prototype, "order_id", void 0);
 __decorate([
-    typeorm_1.Column({ type: 'int', nullable: false }),
+    (0, typeorm_1.Column)({ type: 'int', nullable: false }),
     __metadata("design:type", Number)
 ], OrderDetail.prototype, "egg_id", void 0);
 __decorate([
-    typeorm_1.Column({ nullable: false }),
+    (0, typeorm_1.Column)({ nullable: false }),
     __metadata("design:type", Number)
 ], OrderDetail.prototype, "deal_price", void 0);
 __decorate([
-    typeorm_1.Column({ nullable: false }),
+    (0, typeorm_1.Column)({ nullable: false }),
     __metadata("design:type", Number)
 ], OrderDetail.prototype, "quantity", void 0);
 __decorate([
-    typeorm_1.ManyToOne(() => order_entity_1.Order, (order) => order.items),
-    typeorm_1.JoinColumn({ name: 'order_id', referencedColumnName: 'id' }),
+    (0, typeorm_1.ManyToOne)(() => order_entity_1.Order, (order) => order.items),
+    (0, typeorm_1.JoinColumn)({ name: 'order_id', referencedColumnName: 'id' }),
     __metadata("design:type", order_entity_1.Order)
 ], OrderDetail.prototype, "order", void 0);
 __decorate([
-    typeorm_1.ManyToOne(() => egg_entity_1.Egg),
-    typeorm_1.JoinColumn({ name: 'egg_id', referencedColumnName: 'id' }),
+    (0, typeorm_1.ManyToOne)(() => egg_entity_1.Egg),
+    (0, typeorm_1.JoinColumn)({ name: 'egg_id', referencedColumnName: 'id' }),
     __metadata("design:type", egg_entity_1.Egg)
 ], OrderDetail.prototype, "egg", void 0);
-OrderDetail = __decorate([
-    typeorm_1.Entity('order_detail', { orderBy: { createdAt: 'ASC' } })
+exports.OrderDetail = OrderDetail = __decorate([
+    (0, typeorm_1.Entity)('order_detail', { orderBy: { createdAt: 'ASC' } })
 ], OrderDetail);
-exports.OrderDetail = OrderDetail;

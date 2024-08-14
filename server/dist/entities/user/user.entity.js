@@ -15,53 +15,64 @@ const typeorm_1 = require("typeorm");
 const base_entity_1 = require("../base/base.entity");
 const order_entity_1 = require("../order/order.entity");
 let User = class User extends base_entity_1.BaseEntity {
+    // username, password, phone_number, fullname, company_name, note, *softdelete
+    id;
+    username;
+    password;
+    phone_number;
+    fullname;
+    isAdmin;
+    company_name;
+    note;
+    isDeleted;
+    orders;
     toJSON() {
         delete this.isDeleted;
         return this;
     }
 };
+exports.User = User;
 __decorate([
-    typeorm_1.PrimaryGeneratedColumn({ type: 'int' }),
+    (0, typeorm_1.PrimaryGeneratedColumn)({ type: 'int' }),
     __metadata("design:type", Number)
 ], User.prototype, "id", void 0);
 __decorate([
-    typeorm_1.Column({ length: 100, nullable: false }),
-    typeorm_1.Unique(['username']),
+    (0, typeorm_1.Column)({ length: 100, nullable: false }),
+    (0, typeorm_1.Unique)(['username']),
     __metadata("design:type", String)
 ], User.prototype, "username", void 0);
 __decorate([
-    typeorm_1.Column({ length: 100, nullable: false, select: false }),
+    (0, typeorm_1.Column)({ length: 100, nullable: false, select: false }),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
-    typeorm_1.Column({ length: 100, nullable: false }),
+    (0, typeorm_1.Column)({ length: 100, nullable: false }),
     __metadata("design:type", String)
 ], User.prototype, "phone_number", void 0);
 __decorate([
-    typeorm_1.Column({ length: 255, nullable: false }),
+    (0, typeorm_1.Column)({ length: 255, nullable: false }),
     __metadata("design:type", String)
 ], User.prototype, "fullname", void 0);
 __decorate([
-    typeorm_1.Column({ default: false }),
+    (0, typeorm_1.Column)({ default: false }),
     __metadata("design:type", Boolean)
 ], User.prototype, "isAdmin", void 0);
 __decorate([
-    typeorm_1.Column({ length: 255 }),
+    (0, typeorm_1.Column)({ length: 255 }),
     __metadata("design:type", String)
 ], User.prototype, "company_name", void 0);
 __decorate([
-    typeorm_1.Column({ length: 255 }),
+    (0, typeorm_1.Column)({ length: 255 }),
     __metadata("design:type", String)
 ], User.prototype, "note", void 0);
 __decorate([
-    typeorm_1.Column({ default: false }),
+    (0, typeorm_1.Column)({ default: false }),
     __metadata("design:type", Boolean)
 ], User.prototype, "isDeleted", void 0);
 __decorate([
-    typeorm_1.OneToMany(() => order_entity_1.Order, (order) => order.user),
+    (0, typeorm_1.OneToMany)(() => order_entity_1.Order, (order) => order.user),
     __metadata("design:type", Array)
 ], User.prototype, "orders", void 0);
-User = __decorate([
-    typeorm_1.Entity('user', { orderBy: { id: 'DESC' } })
+exports.User = User = __decorate([
+    (0, typeorm_1.Entity)('user', { orderBy: { id: 'DESC' } })
 ], User);
-exports.User = User;

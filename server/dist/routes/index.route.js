@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -23,19 +27,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = __importStar(require("express"));
+const admin_1 = __importDefault(require("./admin"));
+const client_1 = __importDefault(require("./client"));
 const default_route_1 = __importDefault(require("./default/default.route"));
-const auth_route_1 = __importDefault(require("./auth/auth.route"));
-const me_route_1 = __importDefault(require("./me/me.route"));
-const user_route_1 = __importDefault(require("./user/user.route"));
-const egg_route_1 = __importDefault(require("./egg/egg.route"));
-const egg_price_qty_route_1 = __importDefault(require("./egg-price-qty/egg-price-qty.route"));
-const order_route_1 = __importDefault(require("./order/order.route"));
+const permission_handler_middleware_1 = require("../middlewares/permission-handler.middleware");
 const router = express.Router();
+router.use('/admin', (0, permission_handler_middleware_1.isAdmin)(), admin_1.default);
+router.use('/client', client_1.default);
 router.use('/', default_route_1.default);
-router.use('/auth', auth_route_1.default);
-router.use('/me', me_route_1.default);
-router.use('/user', user_route_1.default);
-router.use('/egg', egg_route_1.default);
-router.use('/egg-price-qty', egg_price_qty_route_1.default);
-router.use('/order', order_route_1.default);
 exports.default = router;

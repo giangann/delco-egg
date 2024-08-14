@@ -15,20 +15,28 @@ const base_entity_1 = require("../base/base.entity");
 // Entities
 // columns: id, type_name, weight, createdAt
 let Egg = class Egg extends base_entity_1.BaseEntity {
+    id;
+    type_name;
+    weight;
+    isDeleted;
 };
+exports.Egg = Egg;
 __decorate([
-    typeorm_1.PrimaryGeneratedColumn({ type: 'int' }),
+    (0, typeorm_1.PrimaryGeneratedColumn)({ type: 'int' }),
     __metadata("design:type", Number)
 ], Egg.prototype, "id", void 0);
 __decorate([
-    typeorm_1.Column({ length: 20, nullable: false }),
+    (0, typeorm_1.Column)({ length: 20, nullable: false }),
     __metadata("design:type", String)
 ], Egg.prototype, "type_name", void 0);
 __decorate([
-    typeorm_1.Column({ nullable: false }),
+    (0, typeorm_1.Column)({ nullable: false }),
     __metadata("design:type", String)
 ], Egg.prototype, "weight", void 0);
-Egg = __decorate([
-    typeorm_1.Entity('egg', { orderBy: { id: 'DESC' } })
+__decorate([
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], Egg.prototype, "isDeleted", void 0);
+exports.Egg = Egg = __decorate([
+    (0, typeorm_1.Entity)('egg', { orderBy: { id: 'DESC' } })
 ], Egg);
-exports.Egg = Egg;

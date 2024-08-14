@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -31,7 +35,7 @@ const constants_1 = __importDefault(require("../constants"));
 const index_route_1 = __importDefault(require("../routes/index.route"));
 const joi_error_handler_middleware_1 = __importDefault(require("../middlewares/joi-error-handler.middleware"));
 const api_error_handler_middleware_1 = require("../middlewares/api-error-handler.middleware");
-const app = express_1.default();
+const app = (0, express_1.default)();
 app.use((req, res, next) => {
     const origin = req.get('origin');
     res.header('Access-Control-Allow-Origin', origin);
@@ -50,9 +54,9 @@ const corsOption = {
     methods: 'GET,POST,HEAD,OPTIONS,PUT,PATCH,DELETE',
     credentials: true,
 };
-app.use(cors_1.default(corsOption));
+app.use((0, cors_1.default)(corsOption));
 app.use(bodyParser.json());
-app.use(morgan_1.default('dev'));
+app.use((0, morgan_1.default)('dev'));
 app.use(authenticate_middleware_1.default);
 // Router
 app.use(constants_1.default.APPLICATION.url.basePath, index_route_1.default);
