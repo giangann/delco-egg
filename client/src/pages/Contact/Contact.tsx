@@ -1,24 +1,10 @@
 import { Box, Grid, Typography, styled } from "@mui/material";
 import { Page } from "../../components/Page/Page";
 import { GREEN } from "../../styled/color";
-import { BaseInput } from "../../components/Input/BaseInput";
 
 export const Contact = () => {
   return (
     <Page title="Thông tin liên hệ">
-      <Box mb={3}>
-        <form>
-          <Grid container>
-            <Grid item xs={6} sm={4}>
-              <BaseInput
-                label="Nhập email"
-                required
-                placeholder="vd: an@gmail.com"
-              />
-            </Grid>
-          </Grid>
-        </form>
-      </Box>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={4}>
           <ContactBox />
