@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "esModuleInterop": true,
-    "target": "es6",
+    "target": "ESNext",
     "noImplicitAny": true,
     "moduleResolution": "node",
     "sourceMap": false,
@@ -14,8 +14,8 @@
     "paths": {
       "*": ["node_modules/*", "src/interfaces/*"]
     },
-    "lib": ["es2015", "es5", "es6", "dom"],
-    "typeRoots": ["src/types"]
+    "lib": ["ESNext", "es5", "es6", "dom"],
+    "typeRoots": ["src/types", "node_modules/@types"]
   },
   "include": ["src/**/*"]
 }
