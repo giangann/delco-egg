@@ -15,7 +15,6 @@ import { EggStatistic } from "../pages/Statistic/Egg/EggStatistic";
 import { OrderStatistic } from "../pages/Statistic/Order/OrderStatistic";
 import { Statistic } from "../pages/Statistic/Statistic";
 import { UserStatistic } from "../pages/Statistic/User/UserStatistic";
-import { Test } from "../pages/Test";
 import { ClientDetail } from "../pages/UserManagement/ClientDetail";
 import { UserCreateForm } from "../pages/UserManagement/UserCreateForm";
 import { UserList } from "../pages/UserManagement/UserList";
@@ -114,10 +113,6 @@ const routes: RouteObject[] = [
     path: SCREEN_PATHS.LOGIN,
     element: <Login />,
   },
-  {
-    path:'/test',
-    element:<Test/>
-  }
 ];
 
 export const appRouters = createBrowserRouter(routes);
